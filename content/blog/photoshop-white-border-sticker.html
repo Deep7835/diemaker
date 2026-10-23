@@ -1,0 +1,99 @@
+<!--meta
+{
+ "slug": "photoshop-white-border-sticker",
+ "cat": "Tutorial", "app": "Photoshop",
+ "h1": "How to Add a White Sticker Border in Photoshop",
+ "metaTitle": "Add a White Sticker Border in Photoshop: 2 Easy Methods",
+ "metaDesc": "Two ways to add a white sticker border in Photoshop: the Stroke layer style set to Outside, and the expand-and-fill method. With pixel sizes for 2 to 3 mm at 300 ppi.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Tutorial",
+ "crumb": "White border in Photoshop",
+ "summary": "The classic die-cut sticker look in two methods, with the right border width in pixels for print.",
+ "related": ["photoshop-cut-line-stickers", "photoshop-export-stickers-for-print", "sticker-bleed-and-safe-zone"],
+ "sources": [
+  ["Adobe: Create a sticker in Photoshop on the web", "https://www.adobe.com/learn/photoshop/web/create-sticker-photoshop-web"],
+  ["Adobe: Stroke a selection or layer with colour (Photoshop help)", "https://helpx.adobe.com/ca/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/stroke-selection-layer-color.html"],
+  ["Adobe: Expand or contract a selection (Photoshop help)", "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/expand-or-contract-selection.html"],
+  ["Adobe Community: Outside stroke corners", "https://community.adobe.com/t5/photoshop-ecosystem-ideas/p-layer-styles-ability-to-make-outside-stroke-corners-sharp/idc-p/14733401"],
+  ["Sticker Mule: How intricate can inner cuts be", "https://www.stickermule.com/eu/support/how-intricate-can-inner-cuts-be"],
+  ["StickerApp: Custom shapes and cutlines", "https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers"]
+ ]
+}
+-->
+<p class="intro">Put a design on a laptop and it looks nice. Put the same design inside a thick white outline and suddenly it looks like a real sticker. That white edge is the signature of a die-cut sticker, and adding a <strong>white sticker border in Photoshop</strong> takes about a minute.</p>
+<p class="intro">You can absolutely do this. I'll show you two methods, explain when to use each, and give you the exact pixel sizes so the border prints at the width you expect.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="how-wide">How wide should the border be?</h2>
+<p>Printers care about this more than you'd think. Sticker Mule considers areas around a cut narrower than 0.25 in (6.35 mm) too thin and more likely to be damaged, and StickerApp warns that narrow sections can tear or lift. For most stickers, a white border of 2 to 4 mm (about 0.08 to 0.16 in) looks clean and survives handling.</p>
+<p>Photoshop works in pixels, so here's a quick conversion at 300 ppi:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Border</th><th>In inches</th><th>At 300 ppi</th></tr></thead>
+<tbody>
+<tr><td>2 mm</td><td>0.08 in</td><td>about 24 px</td></tr>
+<tr><td>3 mm</td><td>0.12 in</td><td>about 35 px</td></tr>
+<tr><td>4 mm</td><td>0.16 in</td><td>about 47 px</td></tr>
+<tr><td>6.35 mm</td><td>0.25 in</td><td>75 px</td></tr>
+</tbody></table></div>
+<p>The rule: 1 mm is about 11.8 px at 300 ppi. If your file is at a different resolution, multiply the millimetres by ppi ÷ 25.4.</p>
+
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li>Put the design on its own layer with a <strong>transparent</strong> background.</li>
+<li>Make sure the canvas is larger than the design plus the border. A border can't grow past the canvas edge.</li>
+</ul>
+
+<h2 id="method-1">Method 1: Stroke layer style (fast and editable)</h2>
+<ol>
+<li>Double-click the design layer (or click <strong>fx</strong> at the bottom of the Layers panel) and choose <strong>Stroke</strong>. Click the word "Stroke" itself, not just the checkbox, to see the settings.</li>
+<li>Set <strong>Position</strong> to <strong>Outside</strong>.</li>
+<li>Set <strong>Size</strong> to your border in pixels, for example 35 px for 3 mm at 300 ppi.</li>
+<li>Set the colour to pure white and click OK.</li>
+</ol>
+<p>Adobe's own sticker tutorial for Photoshop on the web uses the same idea: a Stroke effect placed outside, which gives the sticker its crisp border. A nice bonus: an outside stroke naturally rounds the corners. Adobe community threads note that outside strokes produce rounded outer corners, and rounded corners are exactly what cutters prefer.</p>
+<p>When you're happy, right-click the layer and choose <strong>Rasterize Layer Style</strong> so the border becomes real pixels before you export.</p>
+
+<h2 id="method-2">Method 2: Expand and fill (more control)</h2>
+<ol>
+<li><kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + click the layer thumbnail to select the design's shape.</li>
+<li>Choose <strong>Select, then Modify, then Expand</strong> and enter your border in pixels. Adobe allows 1 to 100 px per step, so for wider borders, run Expand twice.</li>
+<li>Create a new layer <strong>below</strong> the design.</li>
+<li>Choose <strong>Edit, then Fill</strong>, pick White, and click OK.</li>
+<li>Deselect (<kbd>Ctrl</kbd> / <kbd>Cmd</kbd> + <kbd>D</kbd>).</li>
+</ol>
+<p>This method gives you a separate white layer you can tweak, smooth or recolour. For example, you might make the border white ink only on clear vinyl.</p>
+
+<h2 id="compare">Which method should you choose?</h2>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Stroke layer style</th><th>Expand and fill</th></tr></thead>
+<tbody>
+<tr><td>Speed</td><td>Fastest</td><td>A few more clicks</td></tr>
+<tr><td>Editable later</td><td>Yes, change the size any time</td><td>Edit the white layer directly</td></tr>
+<tr><td>Corners</td><td>Rounded automatically</td><td>Follows the expanded selection</td></tr>
+<tr><td>Best for</td><td>Most stickers</td><td>Wide borders, or a separate white layer</td></tr>
+</tbody></table></div>
+<p>Both are great. The Stroke style shines for quick, everyday stickers; expand-and-fill shines when you want a separate layer to work with.</p>
+
+<h2 id="smooth">Make the border smooth, not bumpy</h2>
+<p>If your design has spiky bits or lots of small details, the white border copies every bump. That makes a fussy cut. Two quick fixes:</p>
+<ul>
+<li>Use a wider border. More white rounds off small bumps.</li>
+<li>In Method 2, choose <strong>Select, then Modify, then Smooth</strong> before filling to round the selection.</li>
+</ul>
+
+<h2 id="next">Next: the cut line</h2>
+<p>A white border is the print. The cut still needs its own line, usually just inside or along the border's outer edge. Export a transparent PNG and the free <a href="../editor.html">Die Line Maker</a> can add the cut line for you, or follow the <a href="photoshop-cut-line-stickers.html">Photoshop cut line tutorial</a>.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To add a white sticker border in Photoshop, use a Stroke layer style set to Outside, or expand the selection and fill a layer below with white. Aim for 2 to 4 mm (about 24 to 47 px at 300 ppi), keep the canvas big enough, and rasterize before export. Your sticker will look finished and cut beautifully.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>How thick should a white sticker border be?</summary><p>2 to 4 mm (about 0.08 to 0.16 in) suits most stickers. Sticker Mule considers areas around a cut narrower than 0.25 in (6.35 mm) more likely to be damaged, so a wider border is safer. Check your printer's spec.</p></details>
+<details><summary>How many pixels is a 3 mm border?</summary><p>About 35 px at 300 ppi. One millimetre is about 11.8 px at 300 ppi.</p></details>
+<details><summary>Why is my white border cut off at the edge?</summary><p>The canvas is too small. Strokes and expanded selections can't grow past the canvas edge. Use Image, then Canvas Size to add space first.</p></details>
+</section>

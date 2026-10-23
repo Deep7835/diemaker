@@ -1,0 +1,2518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--seo:start--><title>Die Line Editor: Make a CutContour Cut Line Online · Die Line Maker</title>
+<meta name="description" content="Upload a sticker or label image and get a CorelDraw-ready CutContour cut line, bleed, white border and sheet layout. Free and private: it runs in your browser.">
+<meta property="og:site_name" content="Die Line Maker">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Die Line Editor: Make a CutContour Cut Line Online · Die Line Maker">
+<meta property="og:description" content="Upload a sticker or label image and get a CorelDraw-ready CutContour cut line, bleed, white border and sheet layout. Free and private: it runs in your browser.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Die Line Editor: Make a CutContour Cut Line Online · Die Line Maker">
+<meta name="twitter:description" content="Upload a sticker or label image and get a CorelDraw-ready CutContour cut line, bleed, white border and sheet layout. Free and private: it runs in your browser.">
+<!--seo:end-->
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#f4f5f8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f172a'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%234d8dff' stroke-width='2.4' stroke-dasharray='3.4 2.6'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/uncut-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/uncut-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=b5748bae">
+<style>
+/* Layout: product site. Sticky header, split hero with a live preview card, then the tool as an
+   editor (icon rail · canvas · properties panel), then steps, features, guide and FAQ. */
+
+/* ---------- hero ---------- */
+.hero{padding-block:64px 48px}
+.hero .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(38px,5.2vw,62px);font-weight:600;line-height:1.03;letter-spacing:-.045em;margin-top:18px}
+.hero h1 span{color:var(--accent)}
+.hero p.sub{font-size:17.5px;color:var(--muted);max-width:52ch;margin:20px 0 0;line-height:1.6}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin:26px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.trust li{display:inline-flex;align-items:center;gap:7px}
+.trust svg{width:16px;height:16px;color:var(--ok)}
+.preview-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;max-width:100%}
+.pc-bar{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.pc-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pc-bar span{margin-left:8px;font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:4px 10px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-bar b{white-space:nowrap;margin-left:auto;font-size:12px;font-weight:600;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:5px 10px}
+.pc-canvas{background-color:var(--canvas);background-image:radial-gradient(var(--grid-major) 1px, transparent 1px);background-size:16px 16px;aspect-ratio:16/11}
+.pc-canvas svg{display:block;width:100%;height:100%}
+
+/* ---------- tool ---------- */
+.toolsec{padding-block:24px 64px}
+.toolhead{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px;margin-bottom:18px}
+.toolnote{font-size:14px;color:var(--muted);margin:0;max-width:52ch}
+.toolnote b{color:var(--ink);font-weight:500}
+.app{display:grid;grid-template-columns:60px minmax(0,1fr) 352px;align-items:start;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+.rail{position:sticky;top:calc(var(--nav-h) + 12px);display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 0;border-right:1px solid var(--line);align-self:stretch}
+.rail .rb{position:relative;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:10px;background:none;color:var(--muted);cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease)}
+.rail .rb:hover{background:var(--soft);color:var(--ink)}
+.rail .rb.on{background:var(--accent-soft);color:var(--accent)}
+.rail .rb svg{width:20px;height:20px}
+.rail .rb::after{content:attr(data-tip);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:var(--ink);color:var(--bg);font-size:12.5px;font-weight:500;padding:5px 9px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s var(--ease);z-index:5}
+.rail .rb:hover::after,.rail .rb:focus-visible::after{opacity:1}
+.rail .sep{width:24px;height:1px;background:var(--line);margin:6px 0}
+.rail .bottom{margin-top:auto}
+.stage{position:sticky;top:calc(var(--nav-h) + 12px + env(safe-area-inset-top, 0px));height:calc(100vh - var(--nav-h) - 24px);height:calc(100dvh - var(--nav-h) - 24px);min-height:560px;max-height:960px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-width:0;border-right:1px solid var(--line)}
+.topbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);min-width:0}
+.topbar .sp{flex:1}
+.filepill{display:inline-flex;align-items:center;gap:8px;min-width:0;max-width:52%;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13.5px;font-weight:500}
+.filepill svg{width:16px;height:16px;color:var(--muted)}
+.filepill .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filepill .sz{color:var(--muted);font-weight:400;white-space:nowrap}
+.tag{font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:3px 8px}
+.busy{font-size:12.5px;color:var(--accent);opacity:0;transition:opacity .1s}
+.busy.on{opacity:1;transition-delay:.18s}
+.menu{position:relative}
+.menu > summary{list-style:none}
+.menu > summary::-webkit-details-marker{display:none}
+.menu-pop{position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:280px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:8px;display:grid;gap:2px}
+.menu-pop .mi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:none;border-radius:9px;padding:9px 10px;cursor:pointer;font-size:14px;color:var(--ink)}
+.menu-pop .mi:hover{background:var(--soft)}
+.menu-pop .mi:disabled{opacity:.45;cursor:not-allowed}
+.menu-pop .mi small{margin-left:auto;color:var(--faint);font-size:12px}
+.menu-pop .mi svg{width:17px;height:17px;color:var(--muted)}
+.menu-pop hr{border:0;border-top:1px solid var(--line);margin:6px 2px}
+.menu-pop .chk{padding:6px 10px;font-size:13.5px}
+.menu-pop .hint{padding:2px 10px 4px}
+.wrap{position:relative;min-height:0;overflow:hidden;background:var(--canvas)}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#view.picking{cursor:crosshair}
+.floatbar{position:absolute;bottom:12px;display:flex;align-items:center;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:4px;z-index:3;max-width:calc(100% - 24px);flex-wrap:wrap}
+.floatbar.left{left:12px}
+.floatbar.right{right:12px}
+.tgl{position:relative;display:inline-flex}
+.tgl input{position:absolute;opacity:0;inset:0;margin:0;pointer-events:none}
+.tgl span{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease)}
+.tgl span:hover{background:var(--soft)}
+.tgl input:checked + span{color:var(--ink);background:var(--soft)}
+.tgl input:focus-visible + span{outline:2px solid var(--accent);outline-offset:1px}
+.tgl svg{width:16px;height:16px}
+.tgl em{font-style:normal}
+.sw{display:inline-block;width:14px;height:0;border-top:2.5px solid var(--c);border-radius:2px;flex:none}
+.sw.dash{border-top-style:dashed}
+.sw.fill{height:10px;border:0;background:var(--c);opacity:.75;border-radius:3px}
+.tgl input:not(:checked) + span .sw{opacity:.35}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);padding:0 8px;height:32px}
+.zb{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:8px;background:none;color:var(--ink-2);cursor:pointer}
+.zb:hover{background:var(--soft)}
+.zb svg{width:16px;height:16px}
+.zpct{min-width:46px;text-align:center;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
+.gridlbl{font-size:12px;color:var(--faint);padding:0 8px 0 4px;white-space:nowrap}
+.status{border-top:1px solid var(--line);padding:10px 14px;display:grid;gap:8px;max-height:30vh;overflow-y:auto}
+.stats{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13px;font-variant-numeric:tabular-nums}
+.stats div span{color:var(--faint);margin-right:6px}
+.warn{display:grid;gap:6px}
+.warn div{background:var(--warn-bg);color:var(--warn-ink);border-radius:9px;padding:7px 11px;font-size:13px}
+.emptystate{position:absolute;inset:0;display:grid;place-items:center;padding:20px;z-index:2}
+.ebox{display:grid;justify-items:center;gap:8px;text-align:center;max-width:360px;background:var(--surface);border:1.5px dashed var(--accent-line);border-radius:18px;padding:30px 26px;box-shadow:var(--shadow)}
+.ebox h3{font-size:18px}
+.ebox p{margin:0;color:var(--muted);font-size:14px}
+.ebtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+
+/* properties panel */
+.side{min-width:0;font-size:14px}
+.ptitle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);font-weight:600}
+.ptitle span{font-size:12.5px;font-weight:400;color:var(--muted)}
+.psec{border-bottom:1px solid var(--line)}
+.psec:last-child{border-bottom:0}
+.psec > summary,.psec > .hd{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;font-weight:600;user-select:none;color:var(--ink)}
+.psec > .hd{cursor:default}
+.psec > summary::-webkit-details-marker{display:none}
+.psec > summary::after{content:"";margin-left:auto;width:7px;height:7px;border-right:1.75px solid var(--faint);border-bottom:1.75px solid var(--faint);transform:rotate(45deg) translateY(-2px);transition:transform .2s var(--ease)}
+.psec[open] > summary::after{transform:rotate(-135deg) translateY(-1px)}
+.psec > summary:hover{background:var(--surface-2)}
+.psec > summary svg,.psec > .hd svg{width:18px;height:18px;color:var(--muted)}
+.psec.flash > summary{background:var(--accent-soft)}
+.body{padding:2px 16px 18px;display:grid;gap:14px}
+.f{display:grid;gap:6px}
+.fl{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.f > label,.fl label{font-weight:500;color:var(--ink-2);font-size:13.5px}
+.val{display:inline-flex;align-items:center;gap:4px}
+.val em{font-style:normal;font-size:12px;color:var(--faint);min-width:18px}
+input[type=number],input[type=text],select{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;min-width:0;font-size:14px;color:var(--ink);transition:border-color .15s var(--ease),box-shadow .15s var(--ease)}
+input[type=number]:hover,input[type=text]:hover,select:hover{border-color:color-mix(in srgb, var(--ink) 18%, var(--line))}
+input[type=number]:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input[type=number]{width:78px;text-align:right;font-variant-numeric:tabular-nums}
+select{width:100%;appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b93a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;background-size:16px}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:18px}
+input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;margin:0;flex:none}
+input[type=color]{width:38px;height:32px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:3px}
+.hint{margin:0;color:var(--muted);font-size:12.5px;line-height:1.5}
+.chk{display:flex;align-items:center;gap:9px;font-weight:500;cursor:pointer;min-height:30px;color:var(--ink-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grp{display:grid;gap:12px}
+.seg{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;padding:3px;border-radius:11px;background:var(--soft)}
+.seg input{position:absolute;top:0;left:0;width:1px;height:1px;margin:0;opacity:0;pointer-events:none}
+.seg label{display:grid;justify-items:center;align-content:center;gap:4px;padding:7px 4px;font-size:12px;font-weight:500;cursor:pointer;color:var(--muted);border-radius:8px;text-align:center;transition:background .15s var(--ease),color .15s var(--ease),box-shadow .15s var(--ease)}
+.seg label:hover{color:var(--ink)}
+.seg svg{width:20px;height:20px}
+.seg input:checked + label{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.seg input:focus-visible + label{outline:2px solid var(--accent);outline-offset:-2px}
+.seg input:disabled + label{opacity:.4;cursor:not-allowed}
+.linkbtn{background:none;border:0;color:var(--accent);padding:0;cursor:pointer;font-weight:500;justify-self:start;font-size:13.5px}
+.linkbtn:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* upload */
+.dropzone{display:grid;justify-items:center;gap:8px;text-align:center;padding:26px 14px 22px;border:1.5px dashed color-mix(in srgb, var(--faint) 70%, transparent);border-radius:14px;background:var(--surface-2);cursor:pointer;transition:background .18s var(--ease),border-color .18s var(--ease)}
+.dropzone:hover{border-color:var(--accent)}
+.dropzone:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.dropzone.over{background:var(--accent-soft);border-color:var(--accent)}
+.upicon{width:40px;height:40px;color:var(--faint);transition:color .18s var(--ease),transform .18s var(--ease)}
+.dropzone:hover .upicon,.dropzone.over .upicon{color:var(--accent)}
+.dropzone.over .upicon{transform:translateY(-3px)}
+.dz-text{font-weight:500;font-size:14px;color:var(--ink)}
+.dz-text u{text-underline-offset:3px;text-decoration-thickness:1.5px}
+.dz-sub{font-size:12px;color:var(--muted)}
+.dz-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;font-size:11.5px;color:var(--faint);margin-top:-6px}
+.filelist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.filelist:empty{display:none}
+.fitem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 8px 10px 12px;background:var(--surface)}
+.fitem > svg{width:22px;height:22px;color:var(--ink-2)}
+.fname{font-weight:500;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fmeta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.factions{display:flex;gap:2px}
+.iconbtn{display:inline-grid;place-items:center;width:34px;height:34px;border:0;border-radius:9px;background:none;color:var(--faint);cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease)}
+.iconbtn:hover{background:var(--soft);color:var(--ink)}
+.iconbtn svg{width:18px;height:18px}
+.fbar{grid-column:1/-1;height:6px;border-radius:99px;background:var(--soft);overflow:hidden;margin-top:6px}
+.fbar i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .2s var(--ease)}
+.fbar.busy i{width:35%;animation:fbusy 1.1s var(--ease) infinite}
+@keyframes fbusy{from{transform:translateX(-100%)}to{transform:translateX(290%)}}
+.fitem.err{border-color:color-mix(in srgb, var(--err) 45%, var(--line))}
+.fitem.err .fmeta{color:var(--err);font-weight:500}
+.fitem.err > svg{color:var(--err)}
+.cardfoot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.helplink{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;min-height:32px}
+.helplink:hover{color:var(--ink)}
+.helplink svg{width:16px;height:16px}
+.dragchip{position:fixed;left:0;top:0;z-index:70;pointer-events:none;background:var(--accent);color:var(--accent-ink);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap}
+.fitwrap{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+table.fit{min-width:0;width:100%;font-size:13px;border-collapse:collapse}
+table.fit th,table.fit td{padding:0;border-bottom:1px solid var(--line-2);text-align:left}
+table.fit tr:last-child td{border-bottom:0}
+table.fit th{padding:7px 10px;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface-2)}
+table.fit td.nm{padding:7px 10px;font-weight:500;white-space:nowrap}
+.fitbtn{display:block;width:100%;text-align:left;background:none;border:0;border-left:1px solid var(--line-2);padding:7px 10px;cursor:pointer;font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.fitbtn b{color:var(--ink);font-size:14px;font-weight:600}
+.fitbtn:hover{background:var(--soft)}
+.fitbtn.best b{color:var(--accent)}
+.fitbtn.cur{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+
+/* ---------- sections ---------- */
+.sec{padding-block:72px;border-top:1px solid var(--line)}
+.sech{max-width:640px}
+.sech h2{margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:32px 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;counter-increment:s;min-width:0;box-shadow:var(--shadow-sm)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:14px;margin-bottom:16px}
+.steps h3{font-size:18px;margin-bottom:6px;letter-spacing:-.01em}
+.steps p{margin:0;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
+.feats > div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0;box-shadow:var(--shadow-sm)}
+.feats .fi{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent);margin-bottom:14px}
+.feats .fi svg{width:20px;height:20px}
+.feats h3{font-size:16px;margin-bottom:6px;letter-spacing:-.01em}
+.feats p{margin:0;color:var(--muted);font-size:14.5px}
+.guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0;box-shadow:var(--shadow-sm)}
+.gcard h3{font-size:17px;margin-bottom:12px;letter-spacing:-.01em}
+.gcard ol,.gcard ul{margin:0;padding-left:20px;display:grid;gap:9px;font-size:14.5px;color:var(--ink-2)}
+.gcard li::marker{color:var(--accent)}
+kbd{font-size:12px;background:var(--surface);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 5px;color:var(--ink)}
+code{font-size:13px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:0 5px}
+.tablewrap{overflow-x:auto;margin-top:28px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.tablewrap table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+.tablewrap th,.tablewrap td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+.tablewrap tr:last-child td{border-bottom:0}
+.tablewrap th{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--surface-2)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.formats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}
+.fmt{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.fmt b{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
+.fmt.best{border-color:var(--accent-line);background:linear-gradient(var(--accent-soft), var(--accent-soft)), var(--surface)}
+.fmt.best b{color:var(--accent)}
+.fmt p{margin:0;font-size:13.5px;color:var(--muted)}
+.faq{max-width:820px;margin-top:28px}
+
+@media (max-width: 1080px){
+  .hero .in{grid-template-columns:1fr;gap:36px}
+  .formats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .guide{grid-template-columns:1fr}
+  .app{grid-template-columns:60px minmax(0,1fr) 320px}
+}
+@media (max-width: 900px){
+  .app{grid-template-columns:1fr}
+  .rail{display:none}
+  .side{border-top:1px solid var(--line);order:2}
+  .stage{order:1;position:static;height:auto;min-height:0;max-height:none;grid-template-rows:auto 60vh auto;border-right:0}
+  .steps,.feats{grid-template-columns:1fr}
+  .hero{padding-block:40px 32px}
+  .topbar{flex-wrap:wrap}
+  .topbar .sp,.busy{display:none}
+  .filepill{max-width:none;flex:1 1 100%}
+  .menu{flex:1 1 auto}
+  .menu > summary{width:100%}
+  #exPdf{flex:1 1 auto}
+  .menu-pop{left:0;right:auto;width:min(280px, calc(100vw - 56px))}
+  .floatbar.left .tgl em{display:none}
+  .floatbar.right{top:12px;bottom:auto}
+  .gridlbl{display:none}
+}
+@media (pointer: coarse){ .chk{min-height:44px} .seg label{min-height:44px} .zb,.tgl span{min-height:40px;min-width:40px} }
+@media (prefers-reduced-motion: reduce){ .blade{display:none} .fbar.busy i{animation:none;width:100%;opacity:.5} }
+
+/* ---------- editor page: a fixed full-screen app. Only the settings panel scrolls. ---------- */
+html:has(body.editor){scroll-padding-top:0}
+body.editor{height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
+.ed{display:grid;grid-template-columns:56px minmax(0,1fr) 348px;grid-template-rows:58px minmax(0,1fr);height:100%}
+.ed-top{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:0 12px 0 12px;background:var(--surface);border-bottom:1px solid var(--line);min-width:0}
+.ed-top .logo{font-size:15px;min-height:40px;gap:9px;flex:none}
+.ed-top .logo .mark{width:30px;height:30px;border-radius:9px}
+.ed-top .vr{width:1px;height:24px;background:var(--line);flex:none;margin:0 4px}
+.ed-top .filepill{max-width:min(420px, 40vw)}
+.ed .rail{position:static;top:auto;align-self:stretch;background:var(--surface);border-right:1px solid var(--line);padding:10px 0;overflow-y:auto;min-height:0}
+.ed .stage{position:relative;top:auto;height:auto;min-height:0;max-height:none;grid-template-rows:minmax(0,1fr) auto;border-right:1px solid var(--line);border-radius:0;overflow:hidden}
+.ed .side{background:var(--surface);overflow-y:auto;overscroll-behavior:contain;min-height:0;border-top:0}
+.ed .ptitle{position:sticky;top:0;background:var(--surface);z-index:2}
+.ed .side > *{scroll-margin-top:56px}
+.sidefoot{display:flex;flex-wrap:wrap;gap:4px 14px;padding:18px 18px 22px;margin:0;font-size:13px}
+.sidefoot a{color:var(--muted);text-decoration:none}
+.sidefoot a:hover{color:var(--accent);text-decoration:underline}
+.ed-top .themebtn{margin-left:0}
+.ed .status{max-height:24vh;background:var(--surface)}
+.upcard{width:min(480px, 100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:24px;display:grid;gap:14px;text-align:left}
+.upcard h2{font-size:19px;letter-spacing:-.015em}
+.dropzone.big{padding:42px 18px 36px}
+.dropzone.big .upicon{width:46px;height:46px}
+.upfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ed .emptystate{background:color-mix(in srgb, var(--canvas) 70%, transparent);backdrop-filter:blur(2px)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap:has(#empty:not([hidden])) .floatbar{display:none}
+.ed-top .sp{display:block;flex:1}
+.ed-top .menu,.ed-top #exPdf{flex:none}
+.ed-top .menu > summary{width:auto}
+.ed-top .menu-pop{left:auto;right:0}
+@media (max-width: 900px){
+  .ed-top .logo{order:0}
+  .ed-top .sp{order:1}
+  .ed-top #exPdf{order:2}
+  .ed-top::after{content:"";order:3;flex:0 0 100%;height:0}
+  .ed-top .filepill{order:4;flex:1 1 0;min-width:0;overflow:hidden}
+  .ed-top .menu{order:5}
+  .ed-top .themebtn{order:6}
+  .ed .wrap:has(#empty:not([hidden])){min-height:470px}
+  .ed .stage:has(#empty:not([hidden])){grid-template-rows:auto auto}
+  .upcard .dz-sub,.ed-top .filepill .sz{display:none}
+  body.editor{height:auto;overflow:auto}
+  .ed{grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto}
+  .ed-top{position:sticky;top:0;z-index:30;flex-wrap:wrap;padding:8px 12px;row-gap:8px}
+  .ed-top .vr,.ed-top .guides{display:none}
+  .ed .rail{display:none}
+  .ed .stage{grid-template-rows:62vh auto;border-right:0;order:1}
+  .ed .side{overflow:visible;order:2;border-top:1px solid var(--line)}
+  .upcard{padding:18px}
+  .dropzone.big{padding:28px 14px}
+}
+</style>
+<!--head:start-->
+<script>try{var t=localStorage.getItem('dlm-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<!--head:end-->
+</head>
+<body class="editor">
+<a class="skip" href="#settings">Skip to settings</a>
+<p class="sr-only" id="toolNote" aria-live="polite"></p>
+<div class="ed" id="tool">
+  <header class="topbar ed-top">
+    <a class="logo" href="index.html" aria-label="Die Line Maker home"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></span><span>Die Line Maker<b>.</b></span></a>
+    <span class="vr" aria-hidden="true"></span>
+    <div class="filepill"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/></svg><span class="nm" id="pillName">No image</span><span class="sz" id="pillSize"></span><span class="tag" id="sampleTag">Sample</span></div>
+          <span class="busy" id="busy" aria-hidden="true">Updating…</span>
+          <span class="sp"></span>
+          <button class="themebtn" type="button" aria-label="Switch colour theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7Z"/></svg></button>
+          <a class="btn ghost guides" href="blog/index.html"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>Guides</a>
+          <details class="menu" id="fmtMenu">
+            <summary class="btn">Other formats <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="menu-pop">
+              <button class="mi" id="exSvg" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/></svg>SVG<small>vector</small></button>
+              <button class="mi" id="exEps" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/></svg>EPS<small>cut lines</small></button>
+              <button class="mi" id="exDxf" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/></svg>DXF<small>cut lines, mm</small></button>
+              <button class="mi" id="exPng" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>PNG<small>print, 300 dpi</small></button>
+              <button class="mi" id="exZip" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg>All formats<small>ZIP</small></button>
+              <hr>
+              <label class="chk"><input type="checkbox" id="inclArt" checked> Include artwork in PDF / SVG</label>
+              <p class="hint">Need a <b>.cdr</b>? Open the PDF in CorelDraw, then Save As .cdr. <a href="index.html#faq-cdr">Why</a></p>
+            </div>
+          </details>
+          <button class="btn primary" id="exPdf" type="button" disabled><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 10l5 5 5-5M5 21h14"/></svg>Download PDF</button>
+  </header>
+  <nav class="rail" aria-label="Settings sections"><button class="rb" type="button" data-sec="secUpload" data-tip="Upload image" aria-label="Upload image"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5H7.5a2.5 2.5 0 0 0-2.5 2.5v12a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V8.5"/><path d="M12 15V8M9 11l3-3 3 3"/></svg></button><button class="rb" type="button" data-sec="secSize" data-tip="Size" aria-label="Size"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></svg></button><button class="rb" type="button" data-sec="secShape" data-tip="Cut line shape" aria-label="Cut line shape"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></button><button class="rb" type="button" data-sec="secBorder" data-tip="Border & bleed" aria-label="Border & bleed"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3a2 2 0 0 0-2 2M19 3a2 2 0 0 1 2 2M21 19a2 2 0 0 1-2 2M5 21a2 2 0 0 1-2-2M9 3h1M9 21h1M14 3h1M14 21h1M3 9v1M21 9v1M3 14v1M21 14v1"/></svg></button><button class="rb" type="button" data-sec="secCut" data-tip="Cut lines" aria-label="Cut lines"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 21.3a1 1 0 0 1-1.4 0l-1.6-1.6a1 1 0 0 1 0-1.4l5.6-5.6a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 1 0 1.4z"/><path d="m18 13-1.4-6.9a1 1 0 0 0-.7-.8L3.2 2a1 1 0 0 0-1.2 1.2l3.3 12.7a1 1 0 0 0 .8.7L13 18M2.3 2.3l7.3 7.3"/><circle cx="11" cy="11" r="2"/></svg></button><button class="rb" type="button" data-sec="secArt" data-tip="Artwork style" aria-label="Artwork style"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1a1.6 1.6 0 0 1 1.7-1.7h2c3 0 5.5-2.5 5.5-5.5C22 6 17.5 2 12 2z"/><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/></svg></button><button class="rb" type="button" data-sec="secWhite" data-tip="White ink" aria-label="White ink"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></button><button class="rb" type="button" data-sec="secBg" data-tip="Background removal" aria-label="Background removal"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21M22 21H7M5 11l9 9"/></svg></button><button class="rb" type="button" data-sec="secSheet" data-tip="Sheet layout" aria-label="Sheet layout"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/></svg></button><span class="sep"></span><a class="rb bottom" href="blog/index.html" data-tip="Guides" aria-label="Guides"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></a><a class="rb" href="index.html#faq" data-tip="Help" aria-label="Help"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg></a></nav>
+  <main class="stage" aria-label="Preview">
+        <div class="wrap" id="wrap">
+          <canvas id="view" aria-label="Preview of artwork and cut line. Scroll to zoom, drag to move."></canvas>
+          <div class="emptystate" id="empty" hidden>
+            <div class="upcard" role="region" aria-label="Upload an image">
+              <h2>Upload your sticker</h2>
+              <label class="dropzone big" for="file" id="drop2">
+                <svg class="upicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3.5H7.5a2.5 2.5 0 0 0-2.5 2.5v12a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V8.5"/><path d="M12 15V8M9 11l3-3 3 3"/></svg>
+                <span class="dz-text">Drag and drop your image here or <u>Choose here</u></span>
+                <span class="dz-sub">or paste it with Ctrl + V</span>
+              </label>
+              <div class="dz-meta"><span>Supported formats: PNG, JPG, WEBP, GIF, BMP</span><span>Maximum size: 50 MB</span></div>
+              <div class="upfoot">
+                <a class="helplink" href="blog/die-cut-lines-in-coreldraw.html"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg>Help</a>
+                <span class="ebtns"><button class="btn" id="emptySample" type="button">Try the sample</button><button class="btn primary" id="emptyChoose" type="button">Choose image</button></span>
+              </div>
+            </div>
+          </div>
+          <div class="floatbar left" role="group" aria-label="Show in preview">
+            <label class="tgl" title="Artwork"><input type="checkbox" id="vArt" checked><span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg><em>Artwork</em></span></label>
+            <label class="tgl" title="Cut line"><input type="checkbox" id="vDie" checked><span><i class="sw" id="swCut" style="--c:#EC008C"></i><em>Cut line</em></span></label>
+            <label class="tgl" title="Safe zone"><input type="checkbox" id="vSafe" checked><span><i class="sw dash" style="--c:#16a34a"></i><em>Safe zone</em></span></label>
+            <label class="tgl" id="lgWhite" title="White ink"><input type="checkbox" id="vWhite" checked><span><i class="sw fill" style="--c:#7c3aed"></i><em>White ink</em></span></label>
+            <label class="tgl" title="Nodes"><input type="checkbox" id="vNodes"><span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><path d="M5 17A12 12 0 0 1 17 5"/></svg><em>Nodes</em></span></label>
+            <span class="lg" id="lgTc" hidden><i class="sw" style="--c:#00AEEF"></i>Through cut</span>
+            <span class="lg" id="lgThin" hidden><i class="sw fill" style="--c:#ff8c00"></i>Too narrow</span>
+          </div>
+          <div class="floatbar right" role="group" aria-label="Zoom">
+            <button class="zb" id="zoomOut" type="button" aria-label="Zoom out"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <span class="zpct" id="zoomPct">100%</span>
+            <button class="zb" id="zoomIn" type="button" aria-label="Zoom in"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+            <button class="zb" id="fitBtn" type="button" aria-label="Fit to view" title="Fit (double-click the preview)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+            <span class="gridlbl" id="gridLbl">Grid 10 mm</span>
+          </div>
+        </div>
+        <div class="status">
+          <div class="stats" id="stats"><div><span>Status</span>Loading the sample sticker…</div></div>
+          <div class="warn" id="warn"></div>
+        </div>
+  </main>
+  <aside class="side" id="settings" aria-label="Settings">
+        <div class="ptitle">Settings <span>Changes update the preview instantly</span></div>
+        <section class="psec" id="secUpload">
+          <div class="hd"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5H7.5a2.5 2.5 0 0 0-2.5 2.5v12a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V8.5"/><path d="M12 15V8M9 11l3-3 3 3"/></svg> Upload image</div>
+          <div class="body">
+            <label class="dropzone" id="drop">
+              <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" hidden>
+              <svg class="upicon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25.5 12.5H28a4 4 0 0 1 4 4v11.2L24.7 35H12a4 4 0 0 1-4-4V16.5a4 4 0 0 1 4-4h2.5"/><path d="M24.5 35v-4.5a3 3 0 0 1 3-3H32"/><path d="M20 24.5V5.5M14.5 11 20 5.5l5.5 5.5"/></svg>
+              <span class="dz-text">Drag and drop your image here or <u>Choose here</u></span>
+              <span class="dz-sub">You can also paste an image (Ctrl + V)</span>
+            </label>
+            <div class="dz-meta"><span>Supported formats: PNG, JPG, WEBP, GIF, BMP</span><span>Maximum size: 50 MB</span></div>
+            <ul class="filelist" id="fileList" aria-live="polite"></ul>
+            <div class="f">
+              <label id="uploadLbl">What are you uploading?</label>
+              <div class="seg" role="radiogroup" aria-labelledby="uploadLbl">
+                <input type="radio" name="upload" id="up1" value="single" checked><label for="up1">One sticker or design</label>
+                <input type="radio" name="upload" id="up2" value="sheet"><label for="up2">A sheet of stickers</label>
+              </div>
+              <p class="hint" id="uploadHint">The tool traces your design and builds the sticker around it: border, bleed and cut line.</p>
+            </div>
+            <div class="cardfoot">
+              <a class="helplink" href="index.html#faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17h.01"/></svg>Help</a>
+              <button class="linkbtn" id="sampleBtn" type="button">Use the sample sticker</button>
+            </div>
+          </div>
+        </section>
+
+        <details class="psec" id="secSize" open>
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></svg> Size</summary>
+          <div class="body">
+            <div class="two">
+              <div class="f"><label for="sizeOf">Size refers to</label>
+                <select id="sizeOf"><option value="die">Cut line (final sticker)</option><option value="art">Artwork only</option></select></div>
+              <div class="f"><label for="unit">Units</label>
+                <select id="unit"><option value="mm">mm</option><option value="in">inch</option></select></div>
+            </div>
+            <div class="two">
+              <div class="f"><label for="wIn">Width</label><span class="val"><input type="number" id="wIn" min="1" step="0.1" value="75" style="width:100%"><em class="uLbl">mm</em></span></div>
+              <div class="f"><label for="hIn">Height</label><span class="val"><input type="number" id="hIn" min="1" step="0.1" value="" style="width:100%"><em class="uLbl">mm</em></span></div>
+            </div>
+            <p class="hint">Proportions are locked. Change either value and the other updates.</p>
+          </div>
+        </details>
+
+        <details class="psec" id="secShape" open>
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg> Cut line shape</summary>
+          <div class="body">
+            <div class="seg" role="radiogroup" aria-label="Die shape">
+              <input type="radio" name="shape" id="sh1" value="contour" checked><label for="sh1"><svg viewBox="0 0 24 24"><path d="M12 3c3 0 4 3 6 4s3 4 1 7-1 6-5 6-5-2-7-4-3-5-1-8 3-5 6-5z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Contour</label>
+              <input type="radio" name="shape" id="sh2" value="rect"><label for="sh2"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Rectangle</label>
+              <input type="radio" name="shape" id="sh3" value="round"><label for="sh3"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Rounded</label>
+              <input type="radio" name="shape" id="sh4" value="circle"><label for="sh4"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Circle</label>
+              <input type="radio" name="shape" id="sh5" value="ellipse"><label for="sh5"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Oval</label>
+            </div>
+            <div class="f" id="outlineRow" hidden>
+              <label for="outline">Outline (sticker sheets)</label>
+              <select id="outline">
+                <option value="close">Close to the white border</option>
+                <option value="smooth">Smoother, fewer nodes</option>
+                <option value="smoothest">Smoothest, fewest nodes</option>
+              </select>
+              <p class="hint">Smoother outlines bridge the small gaps between star points and sparkles. The tool paints those bridged areas white, so each sticker keeps a clean white edge.</p>
+            </div>
+            <div class="f">
+              <div class="fl"><label for="offset">Gap from artwork</label><span class="val"><input type="number" id="offset" min="-5" max="50" step="0.1" value="2"><em>mm</em></span></div>
+              <input type="range" id="offsetR" min="-3" max="15" step="0.1" value="2" aria-label="Gap from artwork">
+              <p class="hint">How far the cut sits outside the design. Use 1.5 to 3 mm for a white-border sticker. A negative value cuts inside the edge: −0.5 mm cuts just inside a printed white border.</p>
+            </div>
+            <div class="f" data-for="round">
+              <div class="fl"><label for="radius">Corner radius</label><span class="val"><input type="number" id="radius" min="0" step="0.1" value="3"><em>mm</em></span></div>
+              <input type="range" id="radiusR" min="0" max="25" step="0.1" value="3" aria-label="Corner radius">
+            </div>
+            <div class="f" data-for="contour">
+              <div class="fl"><label for="smooth">Smoothness</label><span class="val"><input type="number" id="smooth" min="0" max="10" step="1" value="4"><em></em></span></div>
+              <input type="range" id="smoothR" min="0" max="10" step="1" value="4" aria-label="Smoothness">
+              <p class="hint">Higher values give fewer nodes and softer curves. Every node is smooth, so the blade never has to stop and turn. At 4 the line stays within 0.21 mm of the edge; at 8, within 0.37 mm.</p>
+            </div>
+            <div class="f" data-for="contour">
+              <div class="fl"><label for="merge">Join nearby pieces</label><span class="val"><input type="number" id="merge" min="0" max="40" step="0.5" value="0"><em>mm</em></span></div>
+              <input type="range" id="mergeR" min="0" max="20" step="0.5" value="0" aria-label="Join nearby pieces">
+              <p class="hint">Bridges gaps between separate letters or parts so you get one outline. Set 0 to turn it off.</p>
+            </div>
+            <div class="f" data-for="contour">
+              <div class="fl"><label for="corner">Round inside corners</label><span class="val"><input type="number" id="corner" min="0" max="10" step="0.1" value="1"><em>mm</em></span></div>
+              <input type="range" id="cornerR" min="0" max="6" step="0.1" value="1" aria-label="Round inside corners">
+              <p class="hint">Minimum radius for inward corners and notches. Printers usually ask for 1 to 3 mm. The gap already rounds outer corners. Parts narrower than 2 mm are shown in orange.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="psec" id="secBorder" open>
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3a2 2 0 0 0-2 2M19 3a2 2 0 0 1 2 2M21 19a2 2 0 0 1-2 2M5 21a2 2 0 0 1-2-2M9 3h1M9 21h1M14 3h1M14 21h1M3 9v1M21 9v1M3 14v1M21 14v1"/></svg> Border &amp; bleed</summary>
+          <div class="body">
+            <div class="seg" role="radiogroup" aria-label="Fill between artwork and cut">
+              <input type="radio" name="fill" id="fl1" value="white" checked><label for="fl1">White border</label>
+              <input type="radio" name="fill" id="fl2" value="bleed"><label for="fl2">Extend colours</label>
+              <input type="radio" name="fill" id="fl3" value="none"><label for="fl3">Nothing</label>
+            </div>
+            <div class="f" id="bleedRow">
+              <div class="fl"><label for="bleed">Bleed past the cut</label><span class="val"><input type="number" id="bleed" min="0" max="10" step="0.1" value="2"><em>mm</em></span></div>
+              <input type="range" id="bleedR" min="0" max="5" step="0.1" value="2" aria-label="Bleed">
+              <p class="hint">The print extends this far beyond the cut so small cutting shifts don't leave a gap. 2 to 3 mm is typical. Many printers ask for 3 mm (⅛").</p>
+            </div>
+            <div class="f">
+              <div class="fl"><label for="safe">Safe zone inside the cut</label><span class="val"><input type="number" id="safe" min="0" max="20" step="0.5" value="3"><em>mm</em></span></div>
+              <input type="range" id="safeR" min="0" max="6" step="0.5" value="3" aria-label="Safe zone">
+              <p class="hint">Shown as a dashed green line. Keep text and logos inside it. Most printers ask for 3 mm (⅛").</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="psec" id="secCut" open>
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 21.3a1 1 0 0 1-1.4 0l-1.6-1.6a1 1 0 0 1 0-1.4l5.6-5.6a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 1 0 1.4z"/><path d="m18 13-1.4-6.9a1 1 0 0 0-.7-.8L3.2 2a1 1 0 0 0-1.2 1.2l3.3 12.7a1 1 0 0 0 .8.7L13 18M2.3 2.3l7.3 7.3"/><circle cx="11" cy="11" r="2"/></svg> Cut lines</summary>
+          <div class="body">
+            <div class="f"><label for="spot">Spot colour name</label>
+              <select id="spot">
+                <option value="CutContour">CutContour (Roland VersaWorks and most print &amp; cut RIPs)</option>
+                <option value="PerfCutContour">PerfCutContour (perforated cut)</option>
+                <option value="DieCutLine">DieCutLine</option>
+                <option value="Die">Die</option>
+                <option value="KissCut">KissCut</option>
+                <option value="ThroughCut">ThroughCut</option>
+                <option value="custom">Custom name…</option>
+              </select>
+            </div>
+            <div class="f" id="spotCustomRow" hidden><label for="spotCustom">Custom name (spelling and capitals must match)</label><input type="text" id="spotCustom" value="CutContour" maxlength="60"></div>
+            <div class="two">
+              <div class="f"><label for="lineColor">Display colour</label>
+                <select id="lineColor"><option value="magenta">Magenta 100% M</option><option value="green">Green</option><option value="red">Red</option><option value="cyan">Cyan</option></select></div>
+              <div class="f"><label for="stroke">Line width</label><span class="val"><input type="number" id="stroke" min="0" max="2" step="0.05" value="0.25" style="width:100%"><em>pt</em></span></div>
+            </div>
+            <p class="hint">The cut line is a stroke-only, overprinting spot colour on its own layer. Set the width to 0 for a hairline.</p>
+            <div class="f"><label for="tc">Through cut (cuts the backing too)</label>
+              <select id="tc"><option value="none">None (kiss cut only)</option><option value="each">Rectangle around each sticker</option><option value="sheet">Rectangle around all stickers on the sheet</option></select></div>
+            <div class="grp" id="tcRows" hidden>
+              <div class="two">
+                <div class="f"><label for="tcMargin">Distance from cut</label><span class="val"><input type="number" id="tcMargin" min="0" step="0.5" value="2" style="width:100%"><em>mm</em></span></div>
+                <div class="f"><label for="tcRadius">Corner radius</label><span class="val"><input type="number" id="tcRadius" min="0" step="0.5" value="2" style="width:100%"><em>mm</em></span></div>
+              </div>
+              <div class="f"><label for="tcSpot">Through-cut spot colour name</label><input type="text" id="tcSpot" value="ThroughCut" maxlength="60"></div>
+              <p class="hint">The main line becomes the kiss cut, through the sticker only. This second line, shown in blue, cuts through the backing as well. It gets its own spot colour and layer. Check the name with your printer or RIP.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="psec" id="secArt">
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1a1.6 1.6 0 0 1 1.7-1.7h2c3 0 5.5-2.5 5.5-5.5C22 6 17.5 2 12 2z"/><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/></svg> Artwork style</summary>
+          <div class="body">
+            <div class="seg" role="radiogroup" aria-label="Artwork style">
+              <input type="radio" name="artMode" id="am1" value="image" checked><label for="am1">Image (as uploaded)</label>
+              <input type="radio" name="artMode" id="am2" value="vector"><label for="am2">Vector shapes</label>
+            </div>
+            <div class="grp" id="vecRows" hidden>
+              <div class="f">
+                <div class="fl"><label for="vColors">Maximum colours</label><span class="val"><input type="number" id="vColors" min="2" max="32" step="1" value="8"><em></em></span></div>
+                <input type="range" id="vColorsR" min="2" max="24" step="1" value="8" aria-label="Colours">
+              </div>
+              <div class="f">
+                <div class="fl"><label for="vDetail">Detail</label><span class="val"><input type="number" id="vDetail" min="1" max="10" step="1" value="6"><em></em></span></div>
+                <input type="range" id="vDetailR" min="1" max="10" step="1" value="6" aria-label="Detail">
+                <p class="hint">Higher detail keeps small shapes and sharper edges, with more nodes. Lower is cleaner and lighter.</p>
+              </div>
+            </div>
+            <p class="hint">Vector shapes turn flat-colour artwork (logos, text, solid-colour cartoons) into editable filled curves in the PDF, SVG and EPS. Photos and 3D-shaded art come out blotchy, so keep those as an image.</p>
+          </div>
+        </details>
+
+        <details class="psec" id="secWhite">
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg> White ink layer</summary>
+          <div class="body">
+            <label class="chk"><input type="checkbox" id="white"> Add a white ink layer</label>
+            <div class="grp" id="whiteRows" hidden>
+              <div class="f"><label for="whiteArea">White ink covers</label>
+                <select id="whiteArea"><option value="cut">The whole sticker, up to the cut line</option><option value="design">The design only</option></select></div>
+              <div class="f"><label for="whiteSpot">Spot colour name</label><input type="text" id="whiteSpot" value="RDG_WHITE" maxlength="60"></div>
+            </div>
+            <p class="hint">For clear, transparent or metallic vinyl. Roland VersaWorks prints white ink wherever the spot colour <code>RDG_WHITE</code> is used. The layer is placed above the artwork and set to overprint, shown in violet in the preview.</p>
+          </div>
+        </details>
+
+        <details class="psec" id="secBg">
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21M22 21H7M5 11l9 9"/></svg> Background removal</summary>
+          <div class="body">
+            <div class="f"><label for="bgMode">Detect the design by</label>
+              <select id="bgMode">
+                <option value="auto">Automatic</option>
+                <option value="alpha">Transparency (PNG)</option>
+                <option value="flood">Removing background colour from the edges</option>
+                <option value="key">Removing background colour everywhere</option>
+                <option value="white">White sticker borders (sticker sheets)</option>
+              </select>
+            </div>
+            <div class="fl"><label for="bgColor">Background colour</label>
+              <span class="val"><input type="color" id="bgColor" value="#ffffff"><button class="btn small" id="pickBtn" type="button">Pick from image</button></span></div>
+            <div class="f">
+              <div class="fl"><label for="tol">Colour tolerance</label><span class="val"><input type="number" id="tol" min="0" max="150" step="1" value="40"><em></em></span></div>
+              <input type="range" id="tolR" min="0" max="150" step="1" value="40" aria-label="Colour tolerance">
+            </div>
+            <div class="f">
+              <div class="fl"><label for="alphaThr">Transparency threshold</label><span class="val"><input type="number" id="alphaThr" min="1" max="254" step="1" value="40"><em></em></span></div>
+              <input type="range" id="alphaThrR" min="1" max="254" step="1" value="40" aria-label="Transparency threshold">
+              <p class="hint">Raise this to ignore soft drop shadows and glows.</p>
+            </div>
+            <div class="f">
+              <div class="fl"><label for="speck">Ignore specks smaller than</label><span class="val"><input type="number" id="speck" min="0" max="200" step="0.1" value="0.3"><em>mm²</em></span></div>
+              <input type="range" id="speckR" min="0" max="50" step="0.1" value="0.3" aria-label="Ignore specks">
+              <p class="hint">On sticker sheets, 25 mm² (5 × 5 mm) drops stray logo or text bits without losing real stickers.</p>
+            </div>
+            <div class="f"><label for="keep">Pieces</label>
+              <select id="keep"><option value="all">Keep all pieces</option><option value="largest">Largest piece only</option></select></div>
+            <label class="chk"><input type="checkbox" id="keepBg"> Keep the image's own background in the print</label>
+            <div class="f"><label for="quality">Tracing detail</label>
+              <select id="quality"><option value="900">Fast</option><option value="1400" selected>Balanced</option><option value="2200">Maximum (slower)</option></select></div>
+          </div>
+        </details>
+
+        <details class="psec" id="secSheet">
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/></svg> Sheet layout (gang-up)</summary>
+          <div class="body">
+            <div class="seg" role="radiogroup" aria-label="Layout">
+              <input type="radio" name="layout" id="ly1" value="single" checked><label for="ly1">Single sticker</label>
+              <input type="radio" name="layout" id="ly2" value="sheet"><label for="ly2">Fill a sheet</label>
+            </div>
+            <div class="f"><label for="sheet">Sheet size</label>
+              <select id="sheet">
+                <option value="A4">A4 (210 × 297 mm)</option>
+                <option value="A3">A3 (297 × 420 mm)</option>
+                <option value="A3+">A3+ / Super A3 (329 × 483 mm)</option>
+                <option value="12x18" selected>12 × 18 in</option>
+                <option value="13x19">13 × 19 in</option>
+                <option value="Letter">Letter (8.5 × 11 in)</option>
+                <option value="custom">Custom…</option>
+              </select>
+            </div>
+            <div class="two" id="customSheet" hidden>
+              <div class="f"><label for="sheetW">Sheet width</label><span class="val"><input type="number" id="sheetW" min="10" step="1" value="300" style="width:100%"><em>mm</em></span></div>
+              <div class="f"><label for="sheetH">Sheet height</label><span class="val"><input type="number" id="sheetH" min="10" step="1" value="450" style="width:100%"><em>mm</em></span></div>
+            </div>
+            <div class="two">
+              <div class="f"><label for="margin">Sheet margin</label><span class="val"><input type="number" id="margin" min="0" step="0.5" value="10" style="width:100%"><em>mm</em></span></div>
+              <div class="f"><label for="gap">Gap between cuts</label><span class="val"><input type="number" id="gap" min="0" step="0.5" value="4" style="width:100%"><em>mm</em></span></div>
+            </div>
+            <label class="chk"><input type="checkbox" id="landscape"> Landscape sheet</label>
+            <p class="hint">Leave room in the margin for your cutter's registration marks.</p>
+            <div class="f">
+              <label>How many stickers fit at this size</label>
+              <div class="fitwrap"><table class="fit" id="fitTable"><tr><td class="nm">Load an image to see counts</td></tr></table></div>
+              <p class="hint">Click a count to use that sheet. Counts use your sticker size, margin, gap and through-cut settings. The highest count for each sheet is in pink.</p>
+            </div>
+          </div>
+        </details>
+        <p class="sidefoot"><a href="index.html">Home</a><a href="blog/index.html">Guides</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></p>
+      </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="dragchip" id="dragChip" hidden>Drop image to upload</div>
+<script>
+'use strict';
+/* =========================================================================
+   Die Line Maker: image → die cut line (CutContour) for CorelDraw.
+   Everything runs locally: mask → distance field → marching squares →
+   smoothing/simplify → bezier → PDF / SVG / EPS / DXF / PNG.
+   ========================================================================= */
+const $ = (id) => document.getElementById(id);
+const PT = 72 / 25.4;               // points per mm
+const INF = 1e20;
+const SHEETS = { A4:[210,297], A3:[297,420], 'A3+':[329,483], '12x18':[304.8,457.2], '13x19':[330.2,482.6], Letter:[215.9,279.4] };
+const LINE_COLORS = {
+  magenta:{ hex:'#EC008C', cmyk:[0,1,0,0] },
+  green:  { hex:'#3CC83C', cmyk:[0.6,0,1,0] },
+  red:    { hex:'#ED1C24', cmyk:[0,1,1,0] },
+  cyan:   { hex:'#00AEEF', cmyk:[1,0,0,0] },
+};
+
+const state = {
+  img:null, imgId:0, name:'sticker', W0:0, H0:0, isSample:false,
+  work:null, hasAlpha:false, bgAuto:null, bgPicked:false,
+  baseMask:null, baseKey:'', maskWH:null, maskVer:0,
+  target:{ of:'die', dim:'w', mm:75 },
+  artW:0, artH:0, geo:null, S:null, artPrev:null, artSrc:null,
+  view:{ s:1, ox:0, oy:0, user:false }, picking:false, lay:null,
+};
+
+const mkCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w|0); c.height = Math.max(1, h|0); return c; };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const radio = (name) => document.querySelector(`input[name="${name}"]:checked`).value;
+const hexToRgb = (h) => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+const rgbToHex = (r, g, b) => '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 3200); }
+
+/* ---------------- Euclidean distance transform (Felzenszwalb) ---------------- */
+function dt1d(f, n, d, ix, v, z){
+  let k = 0; v[0] = 0; z[0] = -Infinity; z[1] = Infinity;
+  for (let q = 1; q < n; q++){
+    let s = ((f[q] + q*q) - (f[v[k]] + v[k]*v[k])) / (2*q - 2*v[k]);
+    while (s <= z[k]){ k--; s = ((f[q] + q*q) - (f[v[k]] + v[k]*v[k])) / (2*q - 2*v[k]); }
+    k++; v[k] = q; z[k] = s; z[k+1] = Infinity;
+  }
+  k = 0;
+  for (let q = 0; q < n; q++){
+    while (z[k+1] < q) k++;
+    const dq = q - v[k]; d[q] = dq*dq + f[v[k]]; ix[q] = v[k];
+  }
+}
+// src[i]=1 marks the pixels distances are measured to. Returns dist (px) and optional nearest-source index.
+function edt(src, W, H, wantNear){
+  const n = Math.max(W, H);
+  const f = new Float64Array(n), d = new Float64Array(n), ix = new Int32Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+  const tmp = new Float64Array(W*H), rowOf = wantNear ? new Int32Array(W*H) : null;
+  for (let x = 0; x < W; x++){
+    for (let y = 0; y < H; y++) f[y] = src[y*W + x] ? 0 : INF;
+    dt1d(f, H, d, ix, v, z);
+    for (let y = 0; y < H; y++){ tmp[y*W + x] = d[y]; if (rowOf) rowOf[y*W + x] = ix[y]; }
+  }
+  const dist = new Float32Array(W*H), near = wantNear ? new Int32Array(W*H) : null;
+  for (let y = 0; y < H; y++){
+    const o = y*W;
+    for (let x = 0; x < W; x++) f[x] = tmp[o + x];
+    dt1d(f, W, d, ix, v, z);
+    for (let x = 0; x < W; x++){
+      dist[o + x] = Math.sqrt(d[x]);
+      if (near){ const xn = ix[x]; near[o + x] = rowOf[o + xn]*W + xn; }
+    }
+  }
+  return { dist, near };
+}
+
+// Pixels with block=0 reachable from the border (4-connected). Used to fill holes.
+function outsideRegion(block, W, H){
+  const out = new Uint8Array(W*H), st = new Int32Array(W*H); let sp = 0;
+  const push = (i) => { if (!block[i] && !out[i]){ out[i] = 1; st[sp++] = i; } };
+  for (let x = 0; x < W; x++){ push(x); push((H-1)*W + x); }
+  for (let y = 0; y < H; y++){ push(y*W); push(y*W + W - 1); }
+  while (sp){
+    const i = st[--sp], x = i % W;
+    if (x > 0) push(i - 1);
+    if (x < W - 1) push(i + 1);
+    if (i >= W) push(i - W);
+    if (i < W*(H-1)) push(i + W);
+  }
+  return out;
+}
+
+// 8-connected component labels
+function labelComponents(M, w, h){
+  const lab = new Int32Array(w*h), st = new Int32Array(w*h), areas = [0];
+  let n = 0;
+  for (let s = 0; s < w*h; s++){
+    if (!M[s] || lab[s]) continue;
+    n++; let sp = 0, a = 0; st[sp++] = s; lab[s] = n;
+    while (sp){
+      const i = st[--sp]; a++;
+      const x = i % w, y = (i - x) / w;
+      for (let dy = -1; dy <= 1; dy++){
+        const yy = y + dy; if (yy < 0 || yy >= h) continue;
+        for (let dx = -1; dx <= 1; dx++){
+          const xx = x + dx; if (xx < 0 || xx >= w) continue;
+          const j = yy*w + xx;
+          if (M[j] && !lab[j]){ lab[j] = n; st[sp++] = j; }
+        }
+      }
+    }
+    areas.push(a);
+  }
+  return { lab, areas, n };
+}
+// Drop specks, optionally keep only the largest piece.
+function filterComponents(M, w, h, minArea, largestOnly){
+  if (minArea <= 1 && !largestOnly) return M;
+  const { lab, areas, n } = labelComponents(M, w, h);
+  let best = 0; for (let i = 1; i <= n; i++) if (areas[i] > areas[best]) best = i;
+  const keep = new Uint8Array(n + 1);
+  for (let i = 1; i <= n; i++) keep[i] = largestOnly ? (i === best) : (areas[i] >= minArea || i === best);
+  const out = new Uint8Array(w*h);
+  for (let i = 0; i < w*h; i++) if (lab[i] && keep[lab[i]]) out[i] = 1;
+  return out;
+}
+
+/* ---------------- Marching squares on a scalar field (inside: f<0) ---------------- */
+function marchingSquares(f, W, H){
+  const adj = new Map();
+  const add = (a, b) => {
+    let l = adj.get(a); if (!l){ l = []; adj.set(a, l); } l.push(b);
+    l = adj.get(b); if (!l){ l = []; adj.set(b, l); } l.push(a);
+  };
+  for (let y = 0; y < H - 1; y++){
+    for (let x = 0; x < W - 1; x++){
+      const i = y*W + x;
+      const a = f[i], b = f[i+1], c = f[i+W+1], d = f[i+W];
+      const code = (a < 0 ? 8 : 0) | (b < 0 ? 4 : 0) | (c < 0 ? 2 : 0) | (d < 0 ? 1 : 0);
+      if (code === 0 || code === 15) continue;
+      const T = i*2, R = (i+1)*2 + 1, B = (i+W)*2, L = i*2 + 1;
+      switch (code){
+        case 1: case 14: add(L, B); break;
+        case 2: case 13: add(B, R); break;
+        case 3: case 12: add(L, R); break;
+        case 4: case 11: add(T, R); break;
+        case 6: case 9:  add(T, B); break;
+        case 7: case 8:  add(L, T); break;
+        case 5:  if ((a+b+c+d) < 0){ add(T, L); add(R, B); } else { add(T, R); add(L, B); } break;
+        case 10: if ((a+b+c+d) < 0){ add(T, R); add(L, B); } else { add(T, L); add(R, B); } break;
+      }
+    }
+  }
+  const pt = (k) => {
+    const i = k >> 1, x = i % W, y = (i - x) / W;
+    if ((k & 1) === 0){ const f0 = f[i], f1 = f[i+1]; return [x + f0/(f0 - f1), y]; }
+    const f0 = f[i], f1 = f[i+W]; return [x, y + f0/(f0 - f1)];
+  };
+  const seen = new Set(), loops = [];
+  for (const k of adj.keys()){
+    if (seen.has(k)) continue;
+    const loop = []; let cur = k;
+    while (cur !== -1){
+      seen.add(cur); loop.push(pt(cur));
+      let nx = -1; for (const q of adj.get(cur)) if (!seen.has(q)){ nx = q; break; }
+      cur = nx;
+    }
+    if (loop.length > 2) loops.push(loop);
+  }
+  return loops;
+}
+
+/* ---------------- polyline helpers ---------------- */
+function polyArea(P){ let a = 0; for (let i = 0, n = P.length; i < n; i++){ const p = P[i], q = P[(i+1) % n]; a += p[0]*q[1] - q[0]*p[1]; } return a / 2; }
+function taubin(P, iters){
+  const n = P.length; let A = P.map(p => [p[0], p[1]]), B = P.map(() => [0, 0]);
+  for (let k = 0; k < iters; k++){
+    for (const lam of [0.5, -0.53]){
+      for (let i = 0; i < n; i++){
+        const a = A[(i-1+n) % n], b = A[i], c = A[(i+1) % n];
+        B[i][0] = b[0] + lam*((a[0] + c[0])/2 - b[0]);
+        B[i][1] = b[1] + lam*((a[1] + c[1])/2 - b[1]);
+      }
+      const t = A; A = B; B = t;
+    }
+  }
+  return A;
+}
+function segDist(p, a, b){
+  const dx = b[0]-a[0], dy = b[1]-a[1], L = dx*dx + dy*dy;
+  let t = L ? ((p[0]-a[0])*dx + (p[1]-a[1])*dy) / L : 0; t = clamp(t, 0, 1);
+  const x = a[0] + t*dx - p[0], y = a[1] + t*dy - p[1]; return Math.sqrt(x*x + y*y);
+}
+function rdp(P, tol){
+  const n = P.length; if (n < 3) return P.slice();
+  const keep = new Uint8Array(n); keep[0] = keep[n-1] = 1;
+  const st = [[0, n-1]];
+  while (st.length){
+    const [s, e] = st.pop(); let md = 0, mi = -1;
+    for (let i = s + 1; i < e; i++){ const d = segDist(P[i], P[s], P[e]); if (d > md){ md = d; mi = i; } }
+    if (md > tol && mi > 0){ keep[mi] = 1; st.push([s, mi], [mi, e]); }
+  }
+  return P.filter((_, i) => keep[i]);
+}
+function rdpClosed(P, tol){
+  if (P.length < 5) return P;
+  let far = 0, md = -1;
+  for (let i = 1; i < P.length; i++){ const d = (P[i][0]-P[0][0])**2 + (P[i][1]-P[0][1])**2; if (d > md){ md = d; far = i; } }
+  const a = rdp(P.slice(0, far + 1), tol), b = rdp(P.slice(far).concat([P[0]]), tol);
+  return a.slice(0, -1).concat(b.slice(0, -1));
+}
+// Closed Catmull-Rom spline → cubic bezier sub-path
+function catmull(P){
+  const n = P.length, segs = [];
+  for (let i = 0; i < n; i++){
+    const p0 = P[(i-1+n) % n], p1 = P[i], p2 = P[(i+1) % n], p3 = P[(i+2) % n];
+    segs.push({ c1:[p1[0] + (p2[0]-p0[0])/6, p1[1] + (p2[1]-p0[1])/6], c2:[p2[0] - (p3[0]-p1[0])/6, p2[1] - (p3[1]-p1[1])/6], p:[p2[0], p2[1]] });
+  }
+  return { start:[P[0][0], P[0][1]], segs };
+}
+function rectSub(x, y, w, h, r){
+  r = Math.max(0, Math.min(r, w/2, h/2));
+  const L = (px, py) => ({ p:[px, py] }), C = (a, b, c, d, e, f) => ({ c1:[a, b], c2:[c, d], p:[e, f] });
+  if (r < 0.001) return { start:[x, y], segs:[L(x+w, y), L(x+w, y+h), L(x, y+h), L(x, y)] };
+  const k = 0.5522847498*r;
+  return { start:[x+r, y], segs:[
+    L(x+w-r, y), C(x+w-r+k, y, x+w, y+r-k, x+w, y+r),
+    L(x+w, y+h-r), C(x+w, y+h-r+k, x+w-r+k, y+h, x+w-r, y+h),
+    L(x+r, y+h), C(x+r-k, y+h, x, y+h-r+k, x, y+h-r),
+    L(x, y+r), C(x, y+r-k, x+r-k, y, x+r, y) ] };
+}
+function ellipseSub(cx, cy, rx, ry){
+  const kx = 0.5522847498*rx, ky = 0.5522847498*ry;
+  return { start:[cx+rx, cy], segs:[
+    { c1:[cx+rx, cy+ky], c2:[cx+kx, cy+ry], p:[cx, cy+ry] },
+    { c1:[cx-kx, cy+ry], c2:[cx-rx, cy+ky], p:[cx-rx, cy] },
+    { c1:[cx-rx, cy-ky], c2:[cx-kx, cy-ry], p:[cx, cy-ry] },
+    { c1:[cx+kx, cy-ry], c2:[cx+rx, cy-ky], p:[cx+rx, cy] } ] };
+}
+function flatten(sub, steps = 12){
+  const out = [sub.start]; let p0 = sub.start;
+  for (const s of sub.segs){
+    if (!s.c1){ out.push(s.p); p0 = s.p; continue; }
+    for (let i = 1; i <= steps; i++){
+      const t = i/steps, u = 1 - t;
+      out.push([u*u*u*p0[0] + 3*u*u*t*s.c1[0] + 3*u*t*t*s.c2[0] + t*t*t*s.p[0],
+                u*u*u*p0[1] + 3*u*u*t*s.c1[1] + 3*u*t*t*s.c2[1] + t*t*t*s.p[1]]);
+    }
+    p0 = s.p;
+  }
+  return out;
+}
+function convexHull(pts){
+  pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+  const lo = [], up = [];
+  for (const p of pts){ while (lo.length >= 2 && cr(lo[lo.length-2], lo[lo.length-1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = pts.length - 1; i >= 0; i--){ const p = pts[i]; while (up.length >= 2 && cr(up[up.length-2], up[up.length-1], p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+function minCircle(pts){
+  const p = pts.slice();
+  for (let i = p.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [p[i], p[j]] = [p[j], p[i]]; }
+  const inC = (c, q) => c && Math.hypot(q[0]-c[0], q[1]-c[1]) <= c[2] + 1e-7;
+  const c2 = (a, b) => [(a[0]+b[0])/2, (a[1]+b[1])/2, Math.hypot(a[0]-b[0], a[1]-b[1])/2];
+  const c3 = (a, b, c) => {
+    const d = 2*(a[0]*(b[1]-c[1]) + b[0]*(c[1]-a[1]) + c[0]*(a[1]-b[1]));
+    if (Math.abs(d) < 1e-12){ const cs = [c2(a,b), c2(a,c), c2(b,c)]; return cs.sort((x, y) => y[2] - x[2])[0]; }
+    const A = a[0]*a[0] + a[1]*a[1], B = b[0]*b[0] + b[1]*b[1], C = c[0]*c[0] + c[1]*c[1];
+    const x = (A*(b[1]-c[1]) + B*(c[1]-a[1]) + C*(a[1]-b[1]))/d, y = (A*(c[0]-b[0]) + B*(a[0]-c[0]) + C*(b[0]-a[0]))/d;
+    return [x, y, Math.hypot(a[0]-x, a[1]-y)];
+  };
+  let c = null;
+  for (let i = 0; i < p.length; i++) if (!inC(c, p[i])){
+    c = [p[i][0], p[i][1], 0];
+    for (let j = 0; j < i; j++) if (!inC(c, p[j])){
+      c = c2(p[i], p[j]);
+      for (let k = 0; k < j; k++) if (!inC(c, p[k])) c = c3(p[i], p[j], p[k]);
+    }
+  }
+  return c;
+}
+
+/* ---------------- image loading ---------------- */
+/* ---------------- upload: one file row with reading → tracing → ready / failed ---------------- */
+const MAX_BYTES = 50*1024*1024;
+const ICONS = { file:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/><path d="M9 12.5h6M9 16h4"/></svg>', trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/></svg>', retry:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></svg>' };
+const fmtSize = (b) => b >= 1048576 ? (b/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b/1024)) + ' KB';
+function renderFileItem(){
+  const it = state.item, ul = $('fileList');
+  if (!it){ ul.innerHTML = ''; return; }
+  const size = it.size != null ? fmtSize(it.size) : (it.dims || '');
+  let meta, bar = '';
+  if (it.status === 'reading'){ meta = `${size} | ${it.pct}% · reading`; bar = `<div class="fbar" role="progressbar" aria-valuenow="${it.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${it.pct}%"></i></div>`; }
+  else if (it.status === 'tracing'){ meta = `${size} | Tracing the cut line…`; bar = '<div class="fbar busy" aria-hidden="true"><i></i></div>'; }
+  else if (it.status === 'done') meta = `${size}${it.summary ? ' | ' + it.summary : ''}`;
+  else meta = `Upload failed: ${it.error}`;
+  const retry = it.status === 'error' && it.canRetry && state.file ? `<button class="iconbtn" type="button" data-act="retry" aria-label="Try again" title="Try again">${ICONS.retry}</button>` : '';
+  ul.innerHTML = `<li class="fitem${it.status === 'error' ? ' err' : ''}">${ICONS.file}<div style="min-width:0"><div class="fname" title="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div><div class="fmeta">${meta}</div></div>` +
+    `<div class="factions">${retry}<button class="iconbtn" type="button" data-act="remove" aria-label="Remove image" title="Remove">${ICONS.trash}</button></div>${bar}</li>`;
+}
+function failUpload(file, msg, canRetry){
+  state.item = { name:file ? file.name : 'image', size:file ? file.size : null, status:'error', error:msg, canRetry:!!canRetry };
+  renderFileItem(); toast('Upload failed: ' + msg);
+}
+function loadFile(file){
+  if (!file) return;
+  state.file = file;
+  const okType = /^image\/(png|jpe?g|webp|gif|bmp)$/.test(file.type) || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name);
+  if (!okType) return failUpload(file, 'this isn\'t a PNG, JPG, WEBP, GIF or BMP image.');
+  if (file.size > MAX_BYTES) return failUpload(file, `the file is ${fmtSize(file.size)}; the limit is 50 MB.`);
+  state.item = { name:file.name, size:file.size, status:'reading', pct:0 }; renderFileItem();
+  const fr = new FileReader();
+  fr.onprogress = (e) => { if (e.lengthComputable && state.item && state.item.status === 'reading'){ state.item.pct = Math.round(100*e.loaded/e.total); renderFileItem(); } };
+  fr.onerror = () => failUpload(file, 'the file couldn\'t be read. Try again, or save it again.', true);
+  fr.onload = () => {
+    const url = URL.createObjectURL(new Blob([fr.result], { type:file.type || 'image/png' }));
+    const img = new Image();
+    img.onload = () => {
+      state.item = { name:file.name, size:file.size, status:'tracing' }; renderFileItem();
+      setTimeout(() => setImage(img, file.name.replace(/\.[^.]+$/, '') || 'sticker', '', false), 30);   // let "Tracing" paint first
+    };
+    img.onerror = () => failUpload(file, 'the image data is damaged or unsupported. Try saving it as PNG or JPG.', true);
+    img.src = url;
+  };
+  fr.readAsArrayBuffer(file);
+}
+function clearImage(){
+  Object.assign(state, { img:null, item:null, file:null, geo:null, lay:null, artPrev:null, vec:null, vecMM:null, isSample:false });
+  renderFileItem(); renderStats([]);
+  $('empty').hidden = false; $('sampleTag').hidden = true; $('pillName').textContent = 'No image'; $('pillSize').textContent = '';
+  $('toolNote').innerHTML = '<b>No image yet.</b> Upload a sticker image to make its cut line.';
+  ['exPdf','exSvg','exEps','exDxf','exPng','exZip'].forEach(id => $(id).disabled = true);
+  draw();
+}
+function setImage(img, name, info, isSample){
+  state.img = img; state.imgId++; state.name = name.replace(/[^\w\-]+/g, '_').slice(0, 60) || 'sticker';
+  state.W0 = img.naturalWidth || 1000; state.H0 = img.naturalHeight || 1000; state.isSample = isSample;
+  state.bgPicked = false; state.baseKey = ''; state.artSrc = null; state.artW = 0;
+  state.view.user = false;
+  $('empty').hidden = true;
+  if (isSample){ state.file = null; state.item = { name:'sample_sticker.png', dims:'1200 × 900 px', status:'tracing', sample:true }; renderFileItem(); }
+  $('sampleTag').hidden = !isSample;
+  $('toolNote').innerHTML = isSample
+    ? '<b>A sample sticker is loaded.</b> Choose your own image, or drop or paste it anywhere on this page.'
+    : '<b>Your image is loaded.</b> Adjust the settings and download the PDF.';
+  makeWork(+$('quality').value);
+  if (!state.bgPicked) $('bgColor').value = rgbToHex(...state.bgAuto);
+  if (radio('upload') === 'sheet') applyUploadMode(true);
+  schedule(0);
+}
+function makeWork(maxSide){
+  const { img, W0, H0 } = state;
+  const s = Math.min(1, maxSide / Math.max(W0, H0));
+  const w = Math.max(1, Math.round(W0*s)), h = Math.max(1, Math.round(H0*s));
+  const c = mkCanvas(w, h), x = c.getContext('2d', { willReadFrequently:true });
+  x.imageSmoothingQuality = 'high'; x.drawImage(img, 0, 0, w, h);
+  const data = x.getImageData(0, 0, w, h).data;
+  state.work = { w, h, data, canvas:c, maxSide };
+  let t = 0; for (let i = 3; i < data.length; i += 4) if (data[i] < 128) t++;
+  state.hasAlpha = t > w*h*0.002;
+  // most common border colour = background guess
+  const counts = new Map(); let best = null, bc = 0;
+  const visit = (i) => {
+    const k = ((data[i] >> 4) << 8) | ((data[i+1] >> 4) << 4) | (data[i+2] >> 4);
+    let e = counts.get(k); if (!e){ e = [0, 0, 0, 0]; counts.set(k, e); }
+    e[0]++; e[1] += data[i]; e[2] += data[i+1]; e[3] += data[i+2];
+    if (e[0] > bc){ bc = e[0]; best = e; }
+  };
+  for (let x2 = 0; x2 < w; x2++){ visit(x2*4); visit(((h-1)*w + x2)*4); }
+  for (let y = 0; y < h; y++){ visit(y*w*4); visit((y*w + w - 1)*4); }
+  state.bgAuto = best ? [Math.round(best[1]/best[0]), Math.round(best[2]/best[0]), Math.round(best[3]/best[0])] : [255, 255, 255];
+  state.baseKey = '';
+}
+
+/* ---------------- settings ---------------- */
+function readS(){
+  const n = (id) => { const v = parseFloat($(id).value); return isFinite(v) ? v : 0; };
+  const bgMode = $('bgMode').value;
+  const bgEff = bgMode === 'auto' ? (state.hasAlpha ? 'alpha' : 'flood') : bgMode;
+  const spotSel = $('spot').value;
+  const spot = (spotSel === 'custom' ? $('spotCustom').value.trim() : spotSel) || 'CutContour';
+  const fill = radio('fill');
+  return {
+    sheetArt: radio('upload') === 'sheet',
+    artVector: radio('artMode') === 'vector', vColors:clamp(Math.round(n('vColors')), 2, 32), vDetail:clamp(n('vDetail'), 1, 10),
+    bgEff, bgRGB:hexToRgb($('bgColor').value), tol:n('tol'), alphaThr:clamp(n('alphaThr'), 1, 254), speck:Math.max(0, n('speck')),
+    keep:$('keep').value, keepBg:$('keepBg').checked, quality:+$('quality').value,
+    shape:radio('shape'), offset:clamp(n('offset'), -20, 200), radius:Math.max(0, n('radius')), smooth:clamp(n('smooth'), 0, 10), merge:Math.max(0, n('merge')),
+    corner:clamp(n('corner'), 0, 20), safe:clamp(n('safe'), 0, 50),
+    fill, bleed: fill === 'none' ? 0 : clamp(n('bleed'), 0, 50),
+    tc:$('tc').value, tcMargin:Math.max(0, n('tcMargin')), tcRadius:Math.max(0, n('tcRadius')), tcSpot:$('tcSpot').value.trim() || 'ThroughCut',
+    white:$('white').checked, whiteArea:$('whiteArea').value, whiteSpot:$('whiteSpot').value.trim() || 'RDG_WHITE',
+    spot, lc:LINE_COLORS[$('lineColor').value], strokePt:clamp(n('stroke'), 0, 10),
+    layout:radio('layout'), sheet:$('sheet').value, sheetW:Math.max(10, n('sheetW')), sheetH:Math.max(10, n('sheetH')),
+    landscape:$('landscape').checked, margin:Math.max(0, n('margin')), gap:Math.max(0, n('gap')),
+    inclArt:$('inclArt').checked,
+  };
+}
+
+/* ---------------- background mask (work resolution, cached) ---------------- */
+function getBaseMask(S){
+  const key = [state.imgId, state.work.maxSide, S.bgEff, S.bgRGB.join(','), S.tol, S.alphaThr, S.sheetArt].join('|');
+  if (state.baseKey === key) return state.baseMask;
+  const { w, h, data } = state.work, N = w*h, M = new Uint8Array(N);
+  state.borderPx = 0;
+  if (S.bgEff === 'alpha'){
+    for (let i = 0; i < N; i++) M[i] = data[i*4 + 3] >= S.alphaThr ? 1 : 0;
+  } else if (S.bgEff === 'white'){
+    // Stickers with a white border on any background: the background is everything reachable
+    // from the image edge without crossing a near-white pixel. Borders are grown by 1 px so
+    // JPEG noise can't open a gap.
+    const wMin = 255 - S.tol/2, W = new Uint8Array(N);
+    for (let i = 0; i < N; i++){
+      const o = i*4, r = data[o], g = data[o+1], b = data[o+2];
+      if (data[o+3] >= 128 && Math.min(r, g, b) >= wMin && Math.max(r, g, b) - Math.min(r, g, b) <= 25) W[i] = 1;
+    }
+    const W2 = new Uint8Array(N);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+      const i = y*w + x; if (!W[i]) continue;
+      W2[i] = 1; if (x > 0) W2[i-1] = 1; if (x < w-1) W2[i+1] = 1; if (y > 0) W2[i-w] = 1; if (y < h-1) W2[i+w] = 1;
+    }
+    for (let i = 0; i < N; i++) if (data[i*4+3] < 128) W2[i] = 0;
+    const out = outsideRegion(W2, w, h);
+    // A light background (a glow, a white page corner) can join a sticker's white border.
+    // Borders have a near-constant width around the artwork, so measure that width per
+    // sticker and trim any white that reaches much farther from the artwork.
+    const din = edt(out, w, h, false).dist;                                  // distance to background
+    const core0 = new Uint8Array(N);
+    for (let i = 0; i < N; i++) core0[i] = !out[i] && !W[i] && din[i] > 2.5 ? 1 : 0;   // coloured art, away from the edge
+    const coreLab = labelComponents(core0, w, h), core = new Uint8Array(N);
+    for (let i = 0; i < N; i++) core[i] = coreLab.lab[i] && coreLab.areas[coreLab.lab[i]] >= 50 ? 1 : 0;
+    const coreOut = outsideRegion(core, w, h);
+    for (let i = 0; i < N; i++) core[i] = coreOut[i] ? 0 : 1;               // fill holes (white eyes, letters)
+    const dcore = edt(core, w, h, false).dist;
+    const M0 = new Uint8Array(N); for (let i = 0; i < N; i++) M0[i] = out[i] ? 0 : 1;
+    const { lab, n, areas } = labelComponents(M0, w, h), dists = Array.from({ length:n + 1 }, () => []);
+    const artPx = new Float64Array(n + 1); for (let i = 0; i < N; i++) if (lab[i] && core0[i]) artPx[lab[i]]++;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+      const i = y*w + x; if (!M0[i]) continue;
+      if (x === 0 || y === 0 || x === w-1 || y === h-1 || !M0[i-1] || !M0[i+1] || !M0[i-w] || !M0[i+w]) dists[lab[i]].push(dcore[i]);
+    }
+    const lim = new Float32Array(n + 1).fill(-1), widths = [];
+    for (let k = 1; k <= n; k++){
+      const a = dists[k]; if (!a.length) continue;
+      a.sort((p, q) => p - q);
+      const b = a[Math.floor(a.length*0.4)];                                // typical border width (px)
+      // no artwork inside, or a white patch that is mostly white (a glow, a highlight): not a sticker
+      if (b < 1e6 && artPx[k] >= areas[k]*0.15){ lim[k] = b + Math.max(2, b*0.25); if (a.length > 200) widths.push(b); }
+    }
+    widths.sort((p, q) => p - q);
+    state.borderPx = widths.length ? widths[Math.floor(widths.length*0.25)] : 0;      // a narrow-ish border, to be safe
+    for (let i = 0; i < N; i++) M[i] = M0[i] && dcore[i] <= lim[lab[i]] ? 1 : 0;
+  } else {
+    const [br, bgc, bb] = S.bgRGB, t2 = S.tol*S.tol*3;
+    const isBg = (i) => {
+      const o = i*4; if (data[o+3] < 128) return true;
+      const dr = data[o] - br, dg = data[o+1] - bgc, db = data[o+2] - bb;
+      return dr*dr + dg*dg + db*db <= t2;
+    };
+    if (S.bgEff === 'key'){ for (let i = 0; i < N; i++) M[i] = isBg(i) ? 0 : 1; }
+    else {
+      const bgm = new Uint8Array(N), st = new Int32Array(N); let sp = 0;
+      const push = (i) => { if (!bgm[i] && isBg(i)){ bgm[i] = 1; st[sp++] = i; } };
+      for (let x = 0; x < w; x++){ push(x); push((h-1)*w + x); }
+      for (let y = 0; y < h; y++){ push(y*w); push(y*w + w - 1); }
+      while (sp){
+        const i = st[--sp], x = i % w;
+        if (x > 0) push(i-1); if (x < w-1) push(i+1); if (i >= w) push(i-w); if (i < N - w) push(i+w);
+      }
+      for (let i = 0; i < N; i++) M[i] = bgm[i] ? 0 : 1;
+    }
+  }
+  state.baseKey = key; state.baseMask = M;
+  return M;
+}
+
+/* ---------------- geometry: mask → die path (mm, image coords) ---------------- */
+const THIN_MM = 2;            // parts of the sticker narrower than this are flagged
+const TC_HEX = '#00AEEF', TC_CMYK = [1, 0, 0, 0];          // through-cut display / alternate colour
+const WHITE_CMYK = [0.25, 0, 0, 0];                          // white ink alternate colour (screen only)
+
+// Field (inside: f<0) → smoothed closed bezier sub-paths in mm
+// Closed polyline with extra points so no segment is longer than maxStep (keeps the curve fit honest)
+function densify(P, maxStep){
+  const out = [], n = P.length;
+  for (let i = 0; i < n; i++){
+    const a = P[i], b = P[(i+1) % n], L = Math.hypot(b[0]-a[0], b[1]-a[1]), k = Math.ceil(L/maxStep);
+    for (let j = 0; j < k; j++) out.push([a[0] + (b[0]-a[0])*j/k, a[1] + (b[1]-a[1])*j/k]);
+  }
+  return out;
+}
+// tolMm: how far (mm) the fitted curve may stray from the traced edge. Bigger = fewer nodes.
+function tracePaths(f, W, H, padX, padY, mmpp, iters, tolMm, minArea, orient){
+  const subs = []; let nodes = 0;
+  for (const L of marchingSquares(f, W, H)){
+    let P = L.map(([gx, gy]) => [gx - padX + 0.5, gy - padY + 0.5]);
+    if (iters) P = taubin(P, iters);
+    if (Math.abs(polyArea(P)) < minArea) continue;
+    P = rdpClosed(P, 0.3);                                   // drop redundant pixel steps, keep the shape
+    if (P.length < 3) continue;
+    P = densify(P, 3);                                       // keep a point every 3 px so long straight edges can't bulge
+    if (orient && polyArea(P) < 0) P.reverse();
+    const sub = fitClosed(P.map(([x, y]) => [x*mmpp, y*mmpp]), tolMm);
+    nodes += sub.segs.length;
+    subs.push(sub);
+  }
+  return { subs, nodes };
+}
+
+/* ---------------- curve fitting: fewest smooth bezier nodes ----------------
+   Schneider, "An Algorithm for Automatically Fitting Digitized Curves" (Graphics Gems, 1990).
+   Fits cubic beziers to the traced points within maxErr, splitting only where needed.
+   Neighbouring curves share one tangent, so every node is smooth: no sharp turns for the blade. */
+const vsub = (a, b) => [a[0]-b[0], a[1]-b[1]], vadd = (a, b) => [a[0]+b[0], a[1]+b[1]];
+const vmul = (a, s) => [a[0]*s, a[1]*s], vdot = (a, b) => a[0]*b[0] + a[1]*b[1];
+const vnorm = (a) => { const l = Math.hypot(a[0], a[1]) || 1; return [a[0]/l, a[1]/l]; };
+function bezAt(b, t){
+  const u = 1 - t, a = u*u*u, c = 3*u*u*t, d = 3*u*t*t, e = t*t*t;
+  return [a*b[0][0] + c*b[1][0] + d*b[2][0] + e*b[3][0], a*b[0][1] + c*b[1][1] + d*b[2][1] + e*b[3][1]];
+}
+function fitClosed(P, maxErr){
+  const n = P.length;
+  if (n < 4) return catmull(P);
+  // start at the sharpest point so the loop's join lands where a node is useful anyway
+  let s0 = 0, best = Infinity;
+  for (let i = 0; i < n; i++){
+    const a = vnorm(vsub(P[i], P[(i-1+n) % n])), b = vnorm(vsub(P[(i+1) % n], P[i])), c = vdot(a, b);
+    if (c < best){ best = c; s0 = i; }
+  }
+  const d = P.slice(s0).concat(P.slice(0, s0)); d.push(d[0]);
+  const t1 = vnorm(vsub(d[1], d[n-1]));
+  const segs = [];
+  fitCubic(d, 0, n, t1, vmul(t1, -1), maxErr*maxErr, segs);
+  return { start:[d[0][0], d[0][1]], segs };
+}
+function fitCubic(d, first, last, tHat1, tHat2, err2, out){
+  const push = (b) => out.push({ c1:b[1], c2:b[2], p:[b[3][0], b[3][1]] });
+  if (last - first === 1){
+    const dist = Math.hypot(d[last][0]-d[first][0], d[last][1]-d[first][1]) / 3;
+    push([d[first], vadd(d[first], vmul(tHat1, dist)), vadd(d[last], vmul(tHat2, dist)), d[last]]);
+    return;
+  }
+  let u = chordParams(d, first, last), bez = genBezier(d, first, last, u, tHat1, tHat2);
+  let [maxE, split] = fitError(d, first, last, bez, u);
+  if (maxE < err2){ push(bez); return; }
+  if (maxE < err2*4){
+    for (let k = 0; k < 12; k++){
+      u = reparam(d, first, last, u, bez); bez = genBezier(d, first, last, u, tHat1, tHat2);
+      [maxE, split] = fitError(d, first, last, bez, u);
+      if (maxE < err2){ push(bez); return; }
+    }
+  }
+  const tC = vnorm(vsub(d[split-1], d[split+1]));
+  fitCubic(d, first, split, tHat1, tC, err2, out);
+  fitCubic(d, split, last, vmul(tC, -1), tHat2, err2, out);
+}
+function chordParams(d, first, last){
+  const u = [0];
+  for (let i = first + 1; i <= last; i++) u.push(u[u.length-1] + Math.hypot(d[i][0]-d[i-1][0], d[i][1]-d[i-1][1]));
+  const L = u[u.length-1] || 1; return u.map(x => x/L);
+}
+function genBezier(d, first, last, u, tHat1, tHat2){
+  const p0 = d[first], p3 = d[last];
+  let c00 = 0, c01 = 0, c11 = 0, x0 = 0, x1 = 0;
+  for (let i = 0; i < u.length; i++){
+    const t = u[i], m = 1 - t, b0 = m*m*m, b1 = 3*t*m*m, b2 = 3*t*t*m, b3 = t*t*t;
+    const a0 = vmul(tHat1, b1), a1 = vmul(tHat2, b2);
+    c00 += vdot(a0, a0); c01 += vdot(a0, a1); c11 += vdot(a1, a1);
+    const tmp = vsub(d[first + i], vadd(vmul(p0, b0 + b1), vmul(p3, b2 + b3)));
+    x0 += vdot(a0, tmp); x1 += vdot(a1, tmp);
+  }
+  const det = c00*c11 - c01*c01, seg = Math.hypot(p3[0]-p0[0], p3[1]-p0[1]);
+  let al = det ? (x0*c11 - x1*c01)/det : 0, ar = det ? (c00*x1 - c01*x0)/det : 0;
+  // degenerate or runaway handles: fall back to a third of the chord
+  if (al < 1e-6*seg || ar < 1e-6*seg || al > 2*seg || ar > 2*seg) al = ar = seg/3;
+  return [p0, vadd(p0, vmul(tHat1, al)), vadd(p3, vmul(tHat2, ar)), p3];
+}
+function fitError(d, first, last, bez, u){
+  let maxE = 0, split = Math.floor((first + last)/2);
+  for (let i = first + 1; i < last; i++){
+    const q = bezAt(bez, u[i - first]), e = (q[0]-d[i][0])**2 + (q[1]-d[i][1])**2;
+    if (e >= maxE){ maxE = e; split = i; }
+  }
+  return [maxE, split];
+}
+function reparam(d, first, last, u, b){
+  return u.map((t, k) => {
+    const p = d[first + k], q = bezAt(b, t), m = 1 - t;
+    const q1 = [3*(m*m*(b[1][0]-b[0][0]) + 2*m*t*(b[2][0]-b[1][0]) + t*t*(b[3][0]-b[2][0])),
+                3*(m*m*(b[1][1]-b[0][1]) + 2*m*t*(b[2][1]-b[1][1]) + t*t*(b[3][1]-b[2][1]))];
+    const q2 = [6*(m*(b[2][0]-2*b[1][0]+b[0][0]) + t*(b[3][0]-2*b[2][0]+b[1][0])),
+                6*(m*(b[2][1]-2*b[1][1]+b[0][1]) + t*(b[3][1]-2*b[2][1]+b[1][1]))];
+    const diff = vsub(q, p), den = vdot(q1, q1) + vdot(diff, q2);
+    const nt = den ? t - vdot(diff, q1)/den : t;
+    return Math.min(1, Math.max(0, nt));
+  });
+}
+// How far (mm) the fitted curve may stray from the traced line. Smoothness 0 to 10 asks for 0.05 to 0.8 mm,
+// capped by the free space around the cut: 45% of the gap outside the artwork, or (when cutting inside a
+// printed white border) the room to either side of the cut, but never below 0.2 mm.
+function curveTol(S, borderMm){
+  const want = 0.05 + 0.075*S.smooth;
+  let room;
+  if (S.offset >= 0) room = 0.45*S.offset;                                  // gap between artwork and cut
+  else {
+    const inset = -S.offset, b = borderMm || 2*inset;                       // cutting inside a white border
+    room = Math.max(0.2, Math.min(inset, b - inset) - 0.1);                 // a cutter is only accurate to about ±0.5 mm
+  }
+  return Math.max(0.05, Math.min(want, room));
+}
+function subsPath(subs){
+  const path = new Path2D();
+  for (const s of subs){
+    path.moveTo(s.start[0], s.start[1]);
+    for (const g of s.segs) g.c1 ? path.bezierCurveTo(g.c1[0], g.c1[1], g.c2[0], g.c2[1], g.p[0], g.p[1]) : path.lineTo(g.p[0], g.p[1]);
+    path.closePath();
+  }
+  return path;
+}
+function subsBBox(subs){
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const s of subs) for (const p of flatten(s, 16)){
+    if (p[0] < x0) x0 = p[0]; if (p[0] > x1) x1 = p[0]; if (p[1] < y0) y0 = p[1]; if (p[1] > y1) y1 = p[1];
+  }
+  return { x:x0, y:y0, w:x1 - x0, h:y1 - y0 };
+}
+
+// Signed field whose zero line is the cut: grow by (gap + close), fill holes, shrink by (close + inset).
+// A negative gap cuts inside the edge. Holes are filled so only the outer outline is cut.
+function cutField(G, W, H, offPx, closePx, dist){
+  const N = W*H, f = new Float32Array(N), d1 = dist || edt(G, W, H, false).dist;
+  if (closePx > 0.01 || offPx < 0){
+    const grow = Math.max(0, offPx) + closePx, shrink = closePx + Math.max(0, -offPx);
+    const B1 = new Uint8Array(N); for (let i = 0; i < N; i++) B1[i] = d1[i] <= grow + 0.5 ? 1 : 0;
+    const E2 = edt(outsideRegion(B1, W, H), W, H, false).dist;
+    for (let i = 0; i < N; i++) f[i] = (shrink + 0.5) - E2[i];
+  } else {
+    for (let i = 0; i < N; i++) f[i] = d1[i] - (offPx + 0.5);
+  }
+  const B = new Uint8Array(N); for (let i = 0; i < N; i++) B[i] = f[i] < 0 ? 1 : 0;
+  const out = outsideRegion(B, W, H);
+  for (let i = 0; i < N; i++) if (!B[i] && !out[i]) f[i] = -1;
+  return f;
+}
+function computeGeometry(artW, S){
+  const { w, h, data } = state.work;
+  const mmpp = artW / w;                         // mm per work pixel
+  const offPx = S.offset / mmpp, bleedPx = S.bleed / mmpp;
+  const contour = S.shape === 'contour';
+  // a morphological closing joins nearby pieces and rounds inside corners
+  const closePx = contour ? Math.max(S.merge, S.corner) / mmpp : 0;
+  const minA = S.speck / (mmpp*mmpp);
+  const M = filterComponents(getBaseMask(S), w, h, minA, S.keep === 'largest');
+  state.maskWH = M; state.maskVer++;
+  let count = 0, edgeHits = 0, x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const pts = [];
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+    const i = y*w + x; if (!M[i]) continue;
+    count++;
+    if (x < x0) x0 = x; if (x + 1 > x1) x1 = x + 1; if (y < y0) y0 = y; if (y + 1 > y1) y1 = y + 1;
+    const border = x === 0 || y === 0 || x === w-1 || y === h-1;
+    if (border) edgeHits++;
+    if (!contour && (border || !M[i-1] || !M[i+1] || !M[i-w] || !M[i+w])) pts.push([x, y], [x+1, y], [x, y+1], [x+1, y+1]);
+  }
+  if (!count) return { ok:false, mmpp };
+
+  let subs = [], nodes = 0;
+  if (!contour){
+    const o = S.offset;
+    if (S.shape === 'rect' || S.shape === 'round'){
+      subs.push(rectSub(x0*mmpp - o, y0*mmpp - o, (x1-x0)*mmpp + 2*o, (y1-y0)*mmpp + 2*o, S.shape === 'round' ? S.radius : 0));
+      nodes = S.shape === 'round' && S.radius > 0 ? 8 : 4;
+    } else {
+      const hull = convexHull(pts);
+      if (S.shape === 'circle'){
+        const c = minCircle(hull);
+        subs.push(ellipseSub(c[0]*mmpp, c[1]*mmpp, c[2]*mmpp + o, c[2]*mmpp + o));
+      } else {
+        const cx = (x0 + x1)/2, cy = (y0 + y1)/2, a = Math.max(0.5, (x1 - x0)/2), b = Math.max(0.5, (y1 - y0)/2);
+        let k = 0; for (const p of hull){ const v = ((p[0]-cx)/a)**2 + ((p[1]-cy)/b)**2; if (v > k) k = v; }
+        const s = Math.sqrt(Math.max(k, 1e-9));
+        subs.push(ellipseSub(cx*mmpp, cy*mmpp, a*s*mmpp + o, b*s*mmpp + o));
+      }
+      nodes = 4;
+    }
+  }
+  // working grid: the image plus room for the cut, the bleed beyond it and a margin
+  let reach = Math.max(0, offPx) + closePx + 1;
+  if (!contour){
+    const b = subsBBox(subs);
+    reach = Math.max(0, -b.x/mmpp, -b.y/mmpp, (b.x + b.w)/mmpp - w, (b.y + b.h)/mmpp - h);
+  }
+  const pad = Math.min(2500, Math.ceil(reach + bleedPx + 6));
+  const GW = w + 2*pad, GH = h + 2*pad, N = GW*GH;
+  const G = new Uint8Array(N);
+  for (let y = 0; y < h; y++){
+    const ro = (y + pad)*GW + pad, ri = y*w;
+    for (let x = 0; x < w; x++) if (M[ri + x]) G[ro + x] = 1;
+  }
+  const needNear = S.fill === 'bleed';
+  let E = null;
+
+  if (contour){
+    E = edt(G, GW, GH, needNear);
+    const iters = Math.round(S.smooth*S.smooth*0.6), tol = curveTol(S, state.borderPx*mmpp), minL = Math.max(6, minA);
+    if (S.sheetArt){
+      // each sticker on a sheet gets its own cut, so rounding never merges neighbours.
+      // Pieces less than about 1.5 mm apart (a sparkle beside its sticker) count as one sticker.
+      const rg = 0.75/mmpp, Gd = new Uint8Array(N);
+      for (let i = 0; i < N; i++) Gd[i] = E.dist[i] <= rg ? 1 : 0;
+      const { lab, n } = labelComponents(Gd, GW, GH), bb = [];
+      for (let i = 0; i < N; i++) if (!G[i]) lab[i] = 0;
+      for (let k = 0; k <= n; k++) bb.push([Infinity, Infinity, -1, -1]);
+      for (let i = 0; i < N; i++){
+        const k = lab[i]; if (!k) continue;
+        const x = i % GW, y = (i - x)/GW, q = bb[k];
+        if (x < q[0]) q[0] = x; if (y < q[1]) q[1] = y; if (x > q[2]) q[2] = x; if (y > q[3]) q[3] = y;
+      }
+      const m = Math.ceil(Math.max(0, offPx) + closePx + 4);
+      for (let k = 1; k <= n; k++){
+        const [x0, y0, x1, y1] = bb[k];
+        const cx0 = Math.max(0, x0 - m), cy0 = Math.max(0, y0 - m), cw = Math.min(GW - 1, x1 + m) - cx0 + 1, ch = Math.min(GH - 1, y1 + m) - cy0 + 1;
+        const Gc = new Uint8Array(cw*ch);
+        for (let y = 0; y < ch; y++){ const ro = (y + cy0)*GW + cx0; for (let x = 0; x < cw; x++) if (lab[ro + x] === k) Gc[y*cw + x] = 1; }
+        const t = tracePaths(cutField(Gc, cw, ch, offPx, closePx, null), cw, ch, pad - cx0, pad - cy0, mmpp, iters, tol, minL, true);
+        subs.push(...t.subs); nodes += t.nodes;
+      }
+    } else {
+      const t = tracePaths(cutField(G, GW, GH, offPx, closePx, E.dist), GW, GH, pad, pad, mmpp, iters, tol, minL, true);
+      subs = t.subs; nodes = t.nodes;
+    }
+  } else if (needNear){
+    E = edt(G, GW, GH, true);
+  }
+  if (!subs.length) return { ok:false, mmpp };
+
+  const bbox = subsBBox(subs);
+  const e = S.bleed + 0.3;                       // frame = cut bbox + bleed + stroke allowance
+  let frame = { x:bbox.x - e, y:bbox.y - e, w:bbox.w + 2*e, h:bbox.h + 2*e };
+  if (S.sheetArt){                               // sticker sheet: keep the whole designed page
+    const fx0 = Math.min(0, frame.x), fy0 = Math.min(0, frame.y);
+    // snap to the exact paper size when the sheet matches one (e.g. 210 × 297 mm, not 297.1)
+    const P = state.paper, pageH = P && Math.abs(artW - P.width) < 0.05 ? P.height : artW*h/w;
+    const fx1 = Math.max(artW, frame.x + frame.w), fy1 = Math.max(pageH, frame.y + frame.h);
+    frame = { x:fx0, y:fy0, w:fx1 - fx0, h:fy1 - fy0 };
+  }
+  let nearCanvas = null;
+  if (needNear && E && E.near){
+    nearCanvas = mkCanvas(GW, GH);
+    const nx = nearCanvas.getContext('2d'), id = nx.createImageData(GW, GH), o = id.data;
+    for (let i = 0; i < N; i++){
+      const n = E.near[i], gx = n % GW - pad, gy = (n / GW | 0) - pad;
+      if (gx < 0 || gy < 0 || gx >= w || gy >= h) continue;
+      const j = (gy*w + gx)*4;
+      o[i*4] = data[j]; o[i*4+1] = data[j+1]; o[i*4+2] = data[j+2]; o[i*4+3] = 255;
+    }
+    nx.putImageData(id, 0, 0);
+  }
+  return { ok:true, mmpp, pad, GW, GH, G, subs, nodes, pieces:subs.length, bbox, frame, e, path:subsPath(subs), nearCanvas,
+           edgeFrac: edgeHits / Math.max(1, 2*(w + h)), coverage: count/(w*h) };
+}
+
+// Uniformly rescale a computed geometry (and so the artwork with it) by k around the image origin
+function scaleGeometry(g, k, S){
+  const sc = (p) => [p[0]*k, p[1]*k];
+  g.subs = g.subs.map(s => ({ start:sc(s.start), segs:s.segs.map(q => q.c1 ? { c1:sc(q.c1), c2:sc(q.c2), p:sc(q.p) } : { p:sc(q.p) }) }));
+  g.mmpp *= k;
+  g.bbox = subsBBox(g.subs);
+  const e = g.e;
+  g.frame = { x:g.bbox.x - e, y:g.bbox.y - e, w:g.bbox.w + 2*e, h:g.bbox.h + 2*e };
+  g.path = subsPath(g.subs);
+}
+// Checks on the final cut: safe-zone line, artwork too close to the cut, narrow areas, white ink shape.
+function analyzeGeometry(g, S){
+  const { GW, GH, pad, mmpp, G } = g, N = GW*GH;
+  // rasterise the cut shape onto the grid (grid cell gx has its centre at work x = gx - pad + 0.5)
+  const rc = mkCanvas(GW, GH), rx = rc.getContext('2d', { willReadFrequently:true });
+  rx.setTransform(1/mmpp, 0, 0, 1/mmpp, pad, pad); rx.fillStyle = '#000'; rx.fill(g.path);
+  const rd = rx.getImageData(0, 0, GW, GH).data;
+  const R = new Uint8Array(N), notR = new Uint8Array(N);
+  for (let i = 0; i < N; i++){ R[i] = rd[i*4 + 3] > 127 ? 1 : 0; notR[i] = 1 - R[i]; }
+  const Din = edt(notR, GW, GH, false).dist;      // distance from inside the sticker to the cut
+
+  g.safePath = null; g.artNearCut = 0;
+  if (S.safe > 0){
+    const sp = S.safe / mmpp, f = new Float32Array(N);
+    for (let i = 0; i < N; i++) f[i] = sp + 0.5 - Din[i];
+    const path = new Path2D(); let any = false;
+    for (const L of marchingSquares(f, GW, GH)){
+      let P = L.map(([gx, gy]) => [(gx - pad + 0.5)*mmpp, (gy - pad + 0.5)*mmpp]);
+      if (P.length > 8) P = taubin(P, 3);
+      P = rdpClosed(P, 0.4*mmpp);
+      if (P.length < 3) continue;
+      path.moveTo(P[0][0], P[0][1]); for (let k = 1; k < P.length; k++) path.lineTo(P[k][0], P[k][1]); path.closePath(); any = true;
+    }
+    if (any) g.safePath = path;
+    let near = 0, tot = 0;
+    for (let i = 0; i < N; i++) if (G[i]){ tot++; if (Din[i] - 0.5 < sp) near++; }
+    g.artNearCut = tot ? near/tot : 0;
+  }
+
+  // narrow parts: pixels of the sticker no disc of THIN_MM diameter can reach
+  g.thinCanvas = null; g.thinCount = 0;
+  const t = THIN_MM/2/mmpp;
+  if (S.shape === 'contour' && t >= 1.5){
+    const C = new Uint8Array(N); for (let i = 0; i < N; i++) C[i] = Din[i] - 0.5 >= t ? 1 : 0;
+    const dc = edt(C, GW, GH, false).dist;
+    const thin = new Uint8Array(N); for (let i = 0; i < N; i++) thin[i] = R[i] && dc[i] > t + 0.5 ? 1 : 0;
+    const { lab, areas, n } = labelComponents(thin, GW, GH);
+    const minArea = 0.8*t*t + 6, keep = new Uint8Array(n + 1);
+    for (let i = 1; i <= n; i++) if (areas[i] >= minArea){ keep[i] = 1; g.thinCount++; }
+    if (g.thinCount){
+      const c = mkCanvas(GW, GH), x = c.getContext('2d'), id = x.createImageData(GW, GH);
+      for (let i = 0; i < N; i++) if (lab[i] && keep[lab[i]]){ id.data[i*4] = 255; id.data[i*4+1] = 140; id.data[i*4+2] = 0; id.data[i*4+3] = 200; }
+      x.putImageData(id, 0, 0); g.thinCanvas = c;
+    }
+  }
+
+  // white ink: the whole cut shape, or the design itself (holes kept, even-odd fill)
+  g.white = null; g.whitePath = null; g.whiteEvenOdd = false;
+  if (S.white){
+    if (S.whiteArea === 'cut') g.white = { subs:g.subs, evenOdd:false };
+    else {
+      const f = new Float32Array(N); for (let i = 0; i < N; i++) f[i] = G[i] ? -0.5 : 0.5;
+      g.white = { subs:tracePaths(f, GW, GH, pad, pad, mmpp, 2, Math.min(0.1, curveTol(S, state.borderPx*g.mmpp)), Math.max(6, S.speck/(mmpp*mmpp)), false).subs, evenOdd:true };
+    }
+    g.whitePath = subsPath(g.white.subs); g.whiteEvenOdd = g.white.evenOdd;
+  }
+}
+
+/* ---------------- main compute ---------------- */
+let timer = 0;
+function schedule(ms = 60){ clearTimeout(timer); $('busy').classList.add('on'); timer = setTimeout(computeAll, ms); }
+function computeAll(){
+  if (!state.img) return;
+  const S = readS(); state.S = S;
+  if (!state.work || state.work.maxSide !== S.quality) makeWork(S.quality);
+  const warns = [];
+  const T = state.target, ar = state.H0 / state.W0;
+  let artW = state.artW || 100;
+  if (T.of === 'art') artW = T.dim === 'w' ? T.mm : T.mm / ar;
+  if (S.sheetArt && state.autoInset && S.bgEff === 'white'){
+    state.autoInset = false;
+    getBaseMask(S);
+    if (state.borderPx){
+      const off = -Math.max(0.3, Math.round(state.borderPx*(artW/state.work.w)/2*10)/10);
+      setVal('offset', off); S.offset = off;
+      // white bleed ends at the sticker's original border edge, so no white halo is added to the sheet
+      setVal('bleed', -off); if (S.fill !== 'none') S.bleed = -off;
+    }
+  }
+  let geo;
+  try {
+    geo = computeGeometry(artW, S);
+    if (T.of === 'die' && geo.ok){
+      // solve artwork size so the cut line hits the requested size (offset is constant, art scales).
+      // The fitted curve's size wobbles slightly with scale, so keep the closest try, then rescale exactly.
+      const dimOf = (g) => T.dim === 'w' ? g.bbox.w : g.bbox.h;
+      let best = { geo, artW, err:Math.abs(dimOf(geo) - T.mm) };
+      for (let it = 0; it < 6 && best.err >= 0.01; it++){
+        const D = dimOf(geo), A = T.dim === 'w' ? artW : artW*ar, K = 2*S.offset;
+        const c = (D - K)/A;
+        if (!(c > 0) || T.mm - K <= 0.5){ warns.push('The requested size is too small for this gap. Reduce the gap or increase the size.'); break; }
+        const An = (T.mm - K)/c;
+        artW = T.dim === 'w' ? An : An/ar;
+        geo = computeGeometry(artW, S);
+        if (!geo.ok) break;
+        const err = Math.abs(dimOf(geo) - T.mm);
+        if (err < best.err) best = { geo, artW, err };
+      }
+      geo = best.geo; artW = best.artW;
+      const k = T.mm / dimOf(geo);
+      if (geo.ok && !S.sheetArt && Math.abs(k - 1) > 1e-5 && Math.abs(k - 1) < 0.02){ scaleGeometry(geo, k, S); artW *= k; }
+    }
+  } catch (err){
+    console.error(err); warns.push('Tracing stopped with an error: ' + err.message + '. Try "Fast" tracing detail or a smaller image.'); geo = { ok:false };
+  }
+  state.artW = artW; state.artH = artW*ar; state.geo = geo;
+  if (geo.ok){
+    try { analyzeGeometry(geo, S); } catch (err){ console.error(err); }
+  }
+  state.vecMM = null;
+  if (geo.ok && S.artVector){
+    try { vectorizeArt(S); state.vecMM = vecLayersMM(); } catch (err){ console.error(err); warns.push('Vectorising failed: ' + err.message); }
+  }
+  if (!geo.ok){
+    warns.push('No design found. Check the background settings: try another detection mode, or pick the background colour from the image.');
+    state.artPrev = null;
+  } else {
+    if (S.sheetArt){ /* sticker count is shown in the stats; page edges are expected on a sheet */ }
+    else if (geo.coverage > 0.985 && S.bgEff !== 'alpha') warns.push('The whole image was treated as the design. If it has a background, use <b>Pick from image</b> in Background removal to select it.');
+    else if (geo.edgeFrac > 0.03) warns.push('The design touches the image edges, so the outline there may be cut off or include background. Check the background settings, or for photos and full-bleed artwork use the <b>Rectangle</b> or <b>Rounded</b> shape.');
+    const ppm = Math.min(1/geo.mmpp, 2400/Math.max(geo.frame.w, geo.frame.h));
+    state.artPrev = renderArt(ppm, false);
+  }
+  const dpi = state.W0 / (state.artW/25.4);
+  if (geo.ok && dpi < 150) warns.push(`Low resolution: the image is only about ${Math.round(dpi)} dpi at this size. Use 300 dpi or more for sharp prints.`);
+  state.lay = geo.ok ? layout() : null;
+  if (state.lay && state.lay.sheet){
+    if (!state.lay.count) warns.push('The sticker doesn\'t fit on this sheet with the current margin.');
+    if (state.lay.gapAdj) warns.push(`The gap between cuts was raised to ${state.lay.gap.toFixed(1)} mm so neighbouring bleeds don't overlap.`);
+    if (state.lay.tcOut) warns.push('The through cut around the sheet runs past the sheet edge. Increase the sheet margin or reduce the through-cut distance.');
+  }
+  if (geo.ok && geo.thinCount) warns.push(`${geo.thinCount} narrow area${geo.thinCount > 1 ? 's' : ''} under ${THIN_MM} mm wide ${geo.thinCount > 1 ? 'are' : 'is'} shown in orange. Narrow parts can tear or cut badly. Increase the gap, <b>Round inside corners</b> or <b>Join nearby pieces</b>.`);
+  if (geo.ok && !S.sheetArt && S.safe > 0 && geo.artNearCut > 0.002 && (S.shape !== 'contour' || S.fill !== 'white')) warns.push(`Part of the artwork is within ${S.safe} mm of the cut line. Keep text and logos inside the dashed green safe-zone line.`);
+  if (geo.ok && S.artVector && S.sheetArt) warns.push('Vector shapes turn shading into flat colour areas. For 3D or photo-style sheets like this, <b>Image</b> usually prints better.');
+  const names = [S.spot, S.tc !== 'none' ? S.tcSpot : null, S.white ? S.whiteSpot : null].filter(Boolean);
+  if (new Set(names).size !== names.length) warns.push('The cut line, the through cut and the white ink layer each need a different spot colour name.');
+  if (names.some(nm => /\s/.test(nm))) warns.push('A spot colour name contains spaces. Check that your RIP expects exactly this name.');
+  renderStats(warns);
+  refreshSizeFields();
+  ['exPdf','exSvg','exEps','exDxf','exPng','exZip'].forEach(id => $(id).disabled = !geo.ok);
+  if (!state.view.user) fitView();
+  draw();
+  // legend follows what is actually drawn
+  $('swCut').style.setProperty('--c', S.lc.hex);
+  $('lgTc').hidden = S.tc === 'none';
+  $('lgThin').hidden = !(geo.ok && geo.thinCount);
+  $('lgWhite').hidden = !S.white;
+  $('busy').classList.remove('on');
+  $('pillName').textContent = state.item ? state.item.name : (state.name + '.png');
+  $('pillSize').textContent = geo.ok ? `${geo.bbox.w.toFixed(1)} × ${geo.bbox.h.toFixed(1)} mm` : '';
+  if (state.item && state.item.status !== 'error' && state.item.status !== 'reading'){
+    state.item.status = 'done';
+    state.item.summary = !geo.ok ? 'No design found' : S.sheetArt ? `${geo.pieces} sticker${geo.pieces > 1 ? 's' : ''} found`
+      : `Cut line ${geo.bbox.w.toFixed(1)} × ${geo.bbox.h.toFixed(1)} mm${state.item.sample ? ' · sample' : ''}`;
+    renderFileItem();
+  }
+}
+
+/* ---------------- vectorise artwork: flat colour shapes ----------------
+   1. reduce the artwork to N colours (k-means on a sample of pixels),
+   2. clean JPEG noise (3×3 majority filter, then merge tiny regions into a neighbour),
+   3. trace the colours as stacked layers, biggest area first: layer r covers every pixel whose
+      colour ranks r or later, so each layer sits inside the one below and no gaps can open,
+   4. fit smooth bezier curves (the same fitter as the cut line).
+   Coordinates are in vector-image pixels; vecLayersMM() converts them to artwork millimetres. */
+function rngMulberry(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function vectorizeArt(S){
+  const key = [state.imgId, state.baseKey, S.keep, S.speck, S.keepBg, S.sheetArt, S.vColors, S.vDetail].join('|');
+  if (state.vec && state.vec.key === key) return state.vec;
+  const src = artSource(false);
+  const maxSide = 500 + 150*S.vDetail, sc = Math.min(1, maxSide/Math.max(src.width, src.height));
+  const vw = Math.max(1, Math.round(src.width*sc)), vh = Math.max(1, Math.round(src.height*sc)), N = vw*vh;
+  const cv0 = mkCanvas(vw, vh), x0 = cv0.getContext('2d', { willReadFrequently:true });
+  x0.imageSmoothingQuality = 'high'; x0.drawImage(src, 0, 0, vw, vh);
+  const d = x0.getImageData(0, 0, vw, vh).data;
+  const opaque = []; for (let i = 0; i < N; i++) if (d[i*4 + 3] >= 128) opaque.push(i);
+  if (!opaque.length){ state.vec = { key, vw, vh, layers:[], nodes:0, colors:0 }; return state.vec; }
+
+  // 1. k-means++ (seeded, so the same image always gives the same result)
+  const step = Math.max(1, Math.floor(opaque.length/40000)), smp = [];
+  for (let k = 0; k < opaque.length; k += step){ const o = opaque[k]*4; smp.push([d[o], d[o+1], d[o+2]]); }
+  const K = Math.max(1, Math.min(S.vColors, smp.length)), rnd = rngMulberry(7);
+  const dist2 = (a, b) => (a[0]-b[0])**2 + (a[1]-b[1])**2 + (a[2]-b[2])**2;
+  const C = [smp[Math.floor(rnd()*smp.length)].slice()], md = smp.map(p => dist2(p, C[0]));
+  while (C.length < K){
+    let sum = 0; for (const v of md) sum += v;
+    let r = rnd()*sum, j = 0; while (j < md.length - 1 && (r -= md[j]) > 0) j++;
+    C.push(smp[j].slice()); for (let i = 0; i < smp.length; i++) md[i] = Math.min(md[i], dist2(smp[i], C[C.length-1]));
+  }
+  const nearest = (r, g, b) => { let bi = 0, bd = Infinity; for (let c = 0; c < K; c++){ const e = (r-C[c][0])**2 + (g-C[c][1])**2 + (b-C[c][2])**2; if (e < bd){ bd = e; bi = c; } } return bi; };
+  for (let it = 0; it < 14; it++){
+    const acc = C.map(() => [0, 0, 0, 0]);
+    for (const p of smp){ const c = nearest(p[0], p[1], p[2]); acc[c][0] += p[0]; acc[c][1] += p[1]; acc[c][2] += p[2]; acc[c][3]++; }
+    for (let c = 0; c < K; c++) if (acc[c][3]) C[c] = [acc[c][0]/acc[c][3], acc[c][1]/acc[c][3], acc[c][2]/acc[c][3]];
+  }
+  // snap near-white and near-black so they print clean
+  for (const c of C){ if (Math.min(...c) > 243) c[0] = c[1] = c[2] = 255; else if (Math.max(...c) < 14) c[0] = c[1] = c[2] = 0; }
+
+  // 2. label every pixel, majority filter, merge tiny regions
+  let lab = new Int16Array(N).fill(-1);
+  for (const i of opaque){ const o = i*4; lab[i] = nearest(d[o], d[o+1], d[o+2]); }
+  // Fold away colours that aren't real design colours:
+  //  - near-duplicates of a bigger colour (two clusters on one flat area),
+  //  - specks (under 0.15% of the artwork),
+  //  - ones that only exist as thin rings along edges (anti-aliasing blends): few of their pixels
+  //    are surrounded by the same colour.
+  { const cnt = new Float64Array(K), inner = new Float64Array(K);
+    for (const i of opaque){
+      const l = lab[i], x = i % vw; cnt[l]++;
+      if (x > 0 && x < vw-1 && i >= vw && i < N-vw && lab[i-1] === l && lab[i+1] === l && lab[i-vw] === l && lab[i+vw] === l) inner[l]++;
+    }
+    const byArea = [...Array(K).keys()].sort((a, b) => cnt[b] - cnt[a]), keepC = [];
+    for (const c of byArea){
+      if (cnt[c] < opaque.length*0.0015 || inner[c] < cnt[c]*0.3) continue;
+      if (keepC.some(k2 => dist2(C[c], C[k2]) < 30*30)) continue;
+      keepC.push(c);
+    }
+    if (!keepC.length) keepC.push(cnt.indexOf(Math.max(...cnt)));
+    if (keepC.length < K){
+      for (const i of opaque){ const o = i*4; let bi = keepC[0], bd = Infinity;
+        for (const k2 of keepC){ const e = (d[o]-C[k2][0])**2 + (d[o+1]-C[k2][1])**2 + (d[o+2]-C[k2][2])**2; if (e < bd){ bd = e; bi = k2; } }
+        lab[i] = bi; }
+    } }
+  { const out = new Int16Array(N).fill(-1), cnt = new Int32Array(K);
+    for (let y = 0; y < vh; y++) for (let x = 0; x < vw; x++){
+      const i = y*vw + x; if (lab[i] < 0) continue;
+      cnt.fill(0); let best = lab[i], bc = 0;
+      for (let dy = -1; dy <= 1; dy++){ const yy = y + dy; if (yy < 0 || yy >= vh) continue;
+        for (let dx = -1; dx <= 1; dx++){ const xx = x + dx; if (xx < 0 || xx >= vw) continue;
+          const l = lab[yy*vw + xx]; if (l >= 0){ const v = ++cnt[l]; if (v > bc || (v === bc && l === lab[i])){ bc = v; best = l; } } } }
+      out[i] = best;
+    }
+    lab = out; }
+  const minA = Math.max(4, Math.round((11 - S.vDetail)**2*0.6));
+  for (let round = 0; round < 2; round++){
+    const seen = new Uint8Array(N), st = new Int32Array(N), comp = [];
+    for (let s0 = 0; s0 < N; s0++){
+      if (seen[s0] || lab[s0] < 0) continue;
+      const l = lab[s0]; let sp = 0, n = 0; st[sp++] = s0; seen[s0] = 1; comp.length = 0;
+      const nb = new Map();
+      while (sp){
+        const i = st[--sp]; comp.push(i); n++;
+        const x = i % vw;
+        for (const j of [x > 0 ? i-1 : -1, x < vw-1 ? i+1 : -1, i >= vw ? i-vw : -1, i < N-vw ? i+vw : -1]){
+          if (j < 0) continue; const lj = lab[j];
+          if (lj === l){ if (!seen[j]){ seen[j] = 1; st[sp++] = j; } }
+          else if (lj >= 0) nb.set(lj, (nb.get(lj) || 0) + 1);
+        }
+      }
+      if (n >= minA) continue;
+      let to = -1, tc = 0; for (const [k2, v] of nb) if (v > tc){ tc = v; to = k2; }
+      for (const i of comp) lab[i] = to;          // no neighbour colour: a lone speck, drop it
+    }
+  }
+
+  // 3. stacked layers, biggest colour first
+  const area = new Float64Array(K); for (let i = 0; i < N; i++) if (lab[i] >= 0) area[lab[i]]++;
+  const order = [...Array(K).keys()].filter(c => area[c] > 0).sort((a, b) => area[b] - area[a]);
+  const rank = new Int16Array(K).fill(-1); order.forEach((c, r) => rank[c] = r);
+  const W = vw + 2, H = vh + 2, B = new Float32Array(W*H), f = new Float32Array(W*H);
+  const tol = 0.35 + (10 - S.vDetail)*0.08, layers = []; let nodes = 0;
+  for (let r = 0; r < order.length; r++){
+    B.fill(0);
+    for (let y = 0; y < vh; y++) for (let x = 0; x < vw; x++){ const l = lab[y*vw + x]; if (l >= 0 && rank[l] >= r) B[(y+1)*W + x + 1] = 1; }
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++){                     // 3×3 box blur → sub-pixel edges
+      let s = 0, c = 0;
+      for (let dy = -1; dy <= 1; dy++){ const yy = y + dy; if (yy < 0 || yy >= H) continue;
+        for (let dx = -1; dx <= 1; dx++){ const xx = x + dx; if (xx < 0 || xx >= W) continue; s += B[yy*W + xx]; c++; } }
+      f[y*W + x] = 0.5 - s/c;
+    }
+    const t = tracePaths(f, W, H, 1, 1, 1, 4, tol, minA, false);
+    if (!t.subs.length) continue;
+    const c = C[order[r]];
+    layers.push({ rgb:[Math.round(c[0]), Math.round(c[1]), Math.round(c[2])], subs:t.subs });
+    nodes += t.nodes;
+  }
+  state.vec = { key, vw, vh, layers, nodes, colors:layers.length };
+  return state.vec;
+}
+// vector layers in artwork millimetres (image coords), with Path2D for drawing
+function vecLayersMM(){
+  const v = state.vec; if (!v || !v.layers.length) return null;
+  const k = state.artW / v.vw, sc = (p) => [p[0]*k, p[1]*k];
+  return v.layers.map(l => {
+    const subs = l.subs.map(s => ({ start:sc(s.start), segs:s.segs.map(g => g.c1 ? { c1:sc(g.c1), c2:sc(g.c2), p:sc(g.p) } : { p:sc(g.p) }) }));
+    return { rgb:l.rgb, hex:rgbToHex(...l.rgb), subs, path:subsPath(subs) };
+  });
+}
+
+/* ---------------- artwork rendering (frame-sized canvas) ---------------- */
+function maskCanvas(){
+  const { w, h } = state.work, c = mkCanvas(w, h), x = c.getContext('2d'), id = x.createImageData(w, h);
+  const M = state.maskWH; for (let i = 0; i < w*h; i++) if (M[i]) id.data[i*4+3] = 255;
+  x.putImageData(id, 0, 0); return c;
+}
+function hiDims(){ const s = Math.min(1, Math.sqrt(24e6/(state.W0*state.H0))); return [Math.round(state.W0*s), Math.round(state.H0*s)]; }
+function artSource(hi){
+  const S = state.S;
+  const useMask = !S.sheetArt && ((S.bgEff !== 'alpha' && !S.keepBg) || (S.bgEff === 'alpha' && S.keep === 'largest'));
+  const key = [state.imgId, hi, useMask, useMask ? state.maskVer : 0].join('|');
+  if (state.artSrc && state.artSrc.key === key) return state.artSrc.c;
+  let c;
+  const [W, H] = hi ? hiDims() : [state.work.w, state.work.h];
+  if (!useMask && !hi) c = state.work.canvas;
+  else {
+    c = mkCanvas(W, H); const x = c.getContext('2d');
+    x.imageSmoothingQuality = 'high'; x.drawImage(state.img, 0, 0, W, H);
+    if (useMask){ x.globalCompositeOperation = 'destination-in'; x.imageSmoothingEnabled = true; x.drawImage(maskCanvas(), 0, 0, W, H); }
+  }
+  state.artSrc = { key, c }; return c;
+}
+function renderArt(ppm, hi){
+  const g = state.geo, S = state.S, F = g.frame;
+  const cw = Math.max(1, Math.round(F.w*ppm)), ch = Math.max(1, Math.round(F.h*ppm));
+  const c = mkCanvas(cw, ch), x = c.getContext('2d');
+  const sx = cw/F.w, sy = ch/F.h;
+  const setT = (ctx) => ctx.setTransform(sx, 0, 0, sy, -F.x*sx, -F.y*sy);
+  const region = (ctx) => {
+    ctx.fillStyle = '#ffffff'; ctx.fill(g.path);
+    if (S.bleed > 0){ ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2*S.bleed; ctx.lineJoin = 'round'; ctx.stroke(g.path); }
+  };
+  setT(x); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high';
+  const vecL = S.artVector ? state.vecMM : null;
+  if (S.fill === 'white') region(x);
+  else if (S.fill === 'bleed' && vecL){                 // vector art: extend with the main (largest) colour
+    region(x); x.globalCompositeOperation = 'source-in'; x.fillStyle = vecL[0].hex;
+    x.setTransform(1, 0, 0, 1, 0, 0); x.fillRect(0, 0, cw, ch); x.globalCompositeOperation = 'source-over'; setT(x);
+  }
+  else if (S.fill === 'bleed' && g.nearCanvas){
+    x.drawImage(g.nearCanvas, -g.pad*g.mmpp, -g.pad*g.mmpp, g.GW*g.mmpp, g.GH*g.mmpp);
+    const m = mkCanvas(cw, ch), mx = m.getContext('2d'); setT(mx); region(mx);
+    x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'destination-in'; x.drawImage(m, 0, 0);
+    x.globalCompositeOperation = 'source-over'; setT(x);
+  }
+  if (vecL) for (const l of vecL){ x.fillStyle = l.hex; x.fill(l.path, 'evenodd'); }
+  else x.drawImage(artSource(hi), 0, 0, state.artW, state.artH);
+  if (S.sheetArt && S.fill === 'white'){
+    // on a printed sheet, paint white where the cut line (plus bleed) reaches past a sticker's own border
+    const m = mkCanvas(cw, ch), mx = m.getContext('2d'); setT(mx); region(mx);
+    mx.globalCompositeOperation = 'destination-out'; mx.imageSmoothingEnabled = true;
+    mx.drawImage(maskCanvas(), 0, 0, state.artW, state.artH);
+    x.setTransform(1, 0, 0, 1, 0, 0); x.drawImage(m, 0, 0); setT(x);
+  }
+  return c;
+}
+function exportPPM(){
+  const F = state.geo.frame, src = hiDims()[0] / state.artW;
+  let ppm = clamp(src, 150/25.4, 600/25.4);
+  ppm = Math.min(ppm, Math.sqrt(20e6/(F.w*F.h)));
+  return ppm;
+}
+
+/* ---------------- sheet layout (content coords, mm, y down) ----------------
+   places[] = where each sticker's artwork frame sits on the page. A through cut
+   "each" is a rounded rectangle around every sticker (image coords, drawn per place);
+   "sheet" is one rectangle around all stickers (page coords). */
+const SHEET_NAMES = { A4:'A4', A3:'A3', 'A3+':'A3+', '12x18':'12×18 in', '13x19':'13×19 in', Letter:'Letter' };
+// How a sheet of SW × SH mm is filled: cells (cut + through-cut margin) in a grid inside the margin
+function sheetGrid(SW, SH){
+  const S = state.S, D = state.geo.bbox;
+  const m = S.tc === 'each' ? S.tcMargin : 0;
+  const cw = D.w + 2*m, ch = D.h + 2*m;                       // one cell = cut (+ through-cut margin)
+  const gap = Math.max(S.gap, 2*Math.max(0, S.bleed - m));    // keep neighbouring bleeds apart
+  const ux = SW - 2*S.margin, uy = SH - 2*S.margin;
+  const cols = ux >= cw ? Math.floor((ux - cw)/(cw + gap)) + 1 : 0;
+  const rows = uy >= ch ? Math.floor((uy - ch)/(ch + gap)) + 1 : 0;
+  return { m, cw, ch, gap, cols, rows, count:cols*rows };
+}
+function sheetDims(key){ return key === 'custom' ? [state.S.sheetW, state.S.sheetH] : SHEETS[key]; }
+function layout(){
+  const g = state.geo, S = state.S, F = g.frame, D = g.bbox;
+  const sheet = S.layout === 'sheet' && !S.sheetArt;          // an uploaded sticker sheet is already laid out
+  const each = S.tc === 'each' || (S.tc === 'sheet' && !sheet);
+  const m = each ? S.tcMargin : 0;
+  // through cut: one rectangle around the sticker, or around every sticker on an uploaded sheet
+  const boxes = S.sheetArt && S.tc === 'each' ? g.subs.map(sub => subsBBox([sub])) : [D];
+  const tcEach = each ? boxes.map(b => rectSub(b.x - m, b.y - m, b.w + 2*m, b.h + 2*m, S.tcRadius)) : null;
+  const tcEachPath = tcEach ? subsPath(tcEach) : null;
+  if (!sheet){
+    const bx0 = Math.min(F.x, D.x - m), by0 = Math.min(F.y, D.y - m);
+    const bx1 = Math.max(F.x + F.w, D.x + D.w + m), by1 = Math.max(F.y + F.h, D.y + D.h + m);
+    return { W:bx1 - bx0, H:by1 - by0, places:[{ x:F.x - bx0, y:F.y - by0 }], sheet:false, count:1, tcEach, tcEachPath, tcSheet:null };
+  }
+  let [SW, SH] = sheetDims(S.sheet);
+  if (S.landscape) [SW, SH] = [SH, SW];
+  const { cw, ch, gap, cols, rows } = sheetGrid(SW, SH);
+  const usedW = cols*cw + Math.max(0, cols-1)*gap, usedH = rows*ch + Math.max(0, rows-1)*gap;
+  const x0 = (SW - usedW)/2, y0 = (SH - usedH)/2, places = [];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
+    const dx = x0 + c*(cw + gap) + m, dy = y0 + r*(ch + gap) + m;     // cut bbox position on the sheet
+    places.push({ x:dx - (D.x - F.x), y:dy - (D.y - F.y) });
+  }
+  let tcSheet = null, tcSheetPath = null, tcOut = false;
+  if (S.tc === 'sheet' && places.length){
+    const tm = S.tcMargin, rx = x0 - tm, ry = y0 - tm, rw = usedW + 2*tm, rh = usedH + 2*tm;
+    tcSheet = rectSub(rx, ry, rw, rh, S.tcRadius); tcSheetPath = subsPath([tcSheet]);
+    tcOut = rx < 0 || ry < 0 || rx + rw > SW || ry + rh > SH;
+  }
+  return { W:SW, H:SH, places, sheet:true, cols, rows, count:places.length, gap, gapAdj: gap > S.gap + 1e-9, margin:S.margin,
+           tcEach, tcEachPath, tcSheet, tcSheetPath, tcOut };
+}
+
+/* ---------------- preview on a cutting mat (grid drawn at true mm scale) ---------------- */
+const cv = $('view'), ctx = cv.getContext('2d');
+let checker = null;
+function getChecker(){
+  if (checker) return checker;
+  const c = mkCanvas(16, 16), x = c.getContext('2d');
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, 16, 16); x.fillStyle = '#e4e4e4'; x.fillRect(0, 0, 8, 8); x.fillRect(8, 8, 8, 8);
+  return (checker = ctx.createPattern(c, 'repeat'));
+}
+function fitView(){
+  const L = state.lay; if (!L) return;
+  const r = cv.getBoundingClientRect(), pad = 28;
+  const s = Math.max(0.01, Math.min((r.width - 2*pad)/L.W, (r.height - 2*pad)/L.H));
+  state.view = { s, ox:(r.width - L.W*s)/2, oy:(r.height - L.H*s)/2, user:false }; state.fitS = s;
+}
+function draw(){
+  const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr);
+  if (!W || !H) return;
+  if (cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; }
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H);
+  const g = state.geo, L = state.lay;
+  const { s, ox, oy } = state.view;
+  const T = (a, b, c, d, e, f) => ctx.setTransform(a*dpr, b*dpr, c*dpr, d*dpr, e*dpr, f*dpr);
+  // mat grid: 10 mm squares, heavier every 50 mm (switches to 50/250 mm when zoomed far out)
+  const cs = getComputedStyle(document.documentElement);
+  let unit = 10; if (s*unit < 7) unit = 50; if (s*unit < 7) unit = 250;
+  $('gridLbl').textContent = `Grid ${unit} mm`;
+  $('zoomPct').textContent = state.fitS ? Math.round(100*s/state.fitS) + '%' : '100%';
+  const step = s*unit; T(1, 0, 0, 1, 0, 0); ctx.lineWidth = 1;
+  for (let axis = 0; axis < 2; axis++){
+    const o = axis ? oy : ox, len = axis ? r.width : r.height, lim = axis ? r.height : r.width;
+    let i = Math.ceil(-o/step);
+    for (let p = o + i*step; p <= lim; p += step, i++){
+      ctx.strokeStyle = (i % 5 === 0) ? cs.getPropertyValue('--grid-major') : cs.getPropertyValue('--grid-line');
+      ctx.beginPath();
+      if (axis){ ctx.moveTo(0, Math.round(p) + .5); ctx.lineTo(len, Math.round(p) + .5); }
+      else { ctx.moveTo(Math.round(p) + .5, 0); ctx.lineTo(Math.round(p) + .5, len); }
+      ctx.stroke();
+    }
+  }
+  if (!g || !g.ok || !L) return;
+  const F = g.frame, S = state.S;
+  const showArt = $('vArt').checked, showDie = $('vDie').checked, showNodes = $('vNodes').checked;
+  const showSafe = $('vSafe').checked, showWhite = $('vWhite').checked;
+  if (L.sheet){
+    ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 16; ctx.fillStyle = '#ffffff';
+    ctx.fillRect(ox, oy, L.W*s, L.H*s); ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(0,0,0,.25)';
+    ctx.strokeRect(ox + L.margin*s, oy + L.margin*s, (L.W - 2*L.margin)*s, (L.H - 2*L.margin)*s); ctx.setLineDash([]);
+  } else {
+    ctx.fillStyle = getChecker(); ctx.fillRect(ox, oy, L.W*s, L.H*s);
+  }
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  for (const p of L.places){
+    if (showArt && state.artPrev){ T(s, 0, 0, s, ox, oy); ctx.drawImage(state.artPrev, p.x, p.y, F.w, F.h); }
+    T(s, 0, 0, s, ox + (p.x - F.x)*s, oy + (p.y - F.y)*s);          // image-mm coords of this sticker
+    if (showWhite && g.whitePath){ ctx.fillStyle = 'rgba(124,58,237,.38)'; ctx.fill(g.whitePath, g.whiteEvenOdd ? 'evenodd' : 'nonzero'); }
+    if (showSafe && g.safePath){ ctx.setLineDash([4/s, 3/s]); ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 1.3/s; ctx.stroke(g.safePath); ctx.setLineDash([]); }
+    if (showDie && g.thinCanvas){
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(g.thinCanvas, -g.pad*g.mmpp, -g.pad*g.mmpp, g.GW*g.mmpp, g.GH*g.mmpp);
+      ctx.imageSmoothingEnabled = true;
+    }
+    if (showDie){
+      ctx.lineJoin = 'round'; ctx.lineWidth = 1.6/s;
+      ctx.strokeStyle = S.lc.hex; ctx.stroke(g.path);
+      if (L.tcEachPath){ ctx.strokeStyle = TC_HEX; ctx.stroke(L.tcEachPath); }
+    }
+    if (showNodes && (!L.sheet || p === L.places[0])){
+      ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#1d4ed8'; ctx.lineWidth = 1/s; const q = 3/s;
+      for (const sub of g.subs) for (const pt of [sub.start, ...sub.segs.map(z => z.p)]){ ctx.fillRect(pt[0]-q, pt[1]-q, 2*q, 2*q); ctx.strokeRect(pt[0]-q, pt[1]-q, 2*q, 2*q); }
+    }
+  }
+  if (showDie && L.tcSheetPath){ T(s, 0, 0, s, ox, oy); ctx.strokeStyle = TC_HEX; ctx.lineWidth = 1.6/s; ctx.stroke(L.tcSheetPath); }
+}
+new ResizeObserver(() => { if (!state.view.user) fitView(); draw(); }).observe($('wrap'));
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', draw);
+window.addEventListener('themechange', draw);
+
+// zoom / pan / pick
+let drag = null;
+cv.addEventListener('wheel', (e) => {
+  if (!state.lay) return; e.preventDefault();
+  const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, v = state.view;
+  const s2 = clamp(v.s*Math.exp(-e.deltaY*0.0016), 0.02, 400);
+  v.ox = mx - (mx - v.ox)*s2/v.s; v.oy = my - (my - v.oy)*s2/v.s; v.s = s2; v.user = true; draw();
+}, { passive:false });
+cv.addEventListener('pointerdown', (e) => { drag = { x:e.clientX, y:e.clientY, ox:state.view.ox, oy:state.view.oy, moved:false }; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener('pointermove', (e) => {
+  if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
+  if (drag.moved && !state.picking){ state.view.ox = drag.ox + dx; state.view.oy = drag.oy + dy; state.view.user = true; draw(); }
+});
+cv.addEventListener('pointerup', (e) => {
+  const d = drag; drag = null; if (!d || d.moved || !state.picking || !state.geo || !state.geo.ok) return;
+  const r = cv.getBoundingClientRect(), v = state.view, g = state.geo;
+  const cx = (e.clientX - r.left - v.ox)/v.s, cy = (e.clientY - r.top - v.oy)/v.s;
+  const p = state.lay.places.find(pl => cx >= pl.x && cy >= pl.y && cx <= pl.x + g.frame.w && cy <= pl.y + g.frame.h) || state.lay.places[0];
+  const ix = Math.floor((cx - p.x + g.frame.x)/g.mmpp), iy = Math.floor((cy - p.y + g.frame.y)/g.mmpp);
+  const { w, h, data } = state.work;
+  if (ix < 0 || iy < 0 || ix >= w || iy >= h){ toast('Click inside the image to pick its background.'); return; }
+  const o = (iy*w + ix)*4;
+  $('bgColor').value = rgbToHex(data[o], data[o+1], data[o+2]); state.bgPicked = true;
+  if ($('bgMode').value === 'auto' || $('bgMode').value === 'alpha') $('bgMode').value = 'flood';
+  setPicking(false); toast('Background colour picked'); schedule(0);
+});
+cv.addEventListener('dblclick', () => { fitView(); draw(); });
+$('fitBtn').onclick = () => { fitView(); draw(); };
+function zoomBy(f){
+  if (!state.lay) return;
+  const r = cv.getBoundingClientRect(), v = state.view, mx = r.width/2, my = r.height/2, s2 = clamp(v.s*f, 0.02, 400);
+  v.ox = mx - (mx - v.ox)*s2/v.s; v.oy = my - (my - v.oy)*s2/v.s; v.s = s2; v.user = true; draw();
+}
+$('zoomIn').onclick = () => zoomBy(1.25);
+$('zoomOut').onclick = () => zoomBy(0.8);
+// icon rail: open a settings section and bring it into view
+document.querySelectorAll('.rail [data-sec]').forEach(b => b.addEventListener('click', () => {
+  const sec = $(b.dataset.sec); if (!sec) return;
+  if (sec.tagName === 'DETAILS') sec.open = true;
+  document.querySelectorAll('.rail .rb').forEach(x => x.classList.toggle('on', x === b));
+  sec.scrollIntoView({ block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  sec.classList.add('flash'); setTimeout(() => sec.classList.remove('flash'), 900);
+}));
+// formats menu closes on outside click or Escape
+document.addEventListener('click', (e) => { const m = $('fmtMenu'); if (m.open && !e.target.closest('#fmtMenu')) m.open = false; });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('fmtMenu').open = false; });
+function setPicking(on){
+  state.picking = on; cv.classList.toggle('picking', on); $('pickBtn').classList.toggle('on', on);
+  $('pickBtn').textContent = on ? 'Click the background…' : 'Pick from image';
+  if (on){ $('vArt').checked = true; draw(); toast('Click the background in the preview'); }
+}
+
+/* ---------------- stats + size fields ---------------- */
+const unitMul = () => $('unit').value === 'in' ? 25.4 : 1;
+const fmtLen = (mm) => $('unit').value === 'in' ? (mm/25.4).toFixed(3) : mm.toFixed(1);
+function renderStats(warns){
+  const g = state.geo, S = state.S, el = $('stats');
+  if (!g || !g.ok){ el.innerHTML = '<div><span>Status</span>No cut line yet</div>'; renderFits(); }
+  else {
+    const dpi = Math.round(state.W0/(state.artW/25.4));
+    const mmIn = (a, b) => `${a.toFixed(1)} × ${b.toFixed(1)} mm <span>(${(a/25.4).toFixed(2)} × ${(b/25.4).toFixed(2)} in)</span>`;
+    let html = `<div><span>Cut line</span>${mmIn(g.bbox.w, g.bbox.h)}</div>`;
+    html += `<div><span>Artwork</span>${state.artW.toFixed(1)} × ${state.artH.toFixed(1)} mm @ ${dpi} dpi</div>`;
+    html += S.sheetArt ? `<div><span>Stickers found</span><b>${g.pieces}</b></div>${state.borderPx ? `<div><span>White border</span>≈ ${(state.borderPx*g.mmpp).toFixed(1)} mm</div>` : ''}<div><span>Nodes</span>${g.nodes} <span>(${Math.round(g.nodes/Math.max(1, g.pieces))} per sticker)</span></div>`
+                       : `<div><span>Paths</span>${g.pieces}</div><div><span>Nodes</span>${g.nodes}</div>`;
+    html += `<div><span>Spot</span><b style="color:${S.lc.hex}">${escapeHtml(S.spot)}</b></div>`;
+    if (S.artVector && state.vec) html += `<div><span>Vector art</span>${state.vec.colors} colours · ${state.vec.nodes} nodes</div>`;
+    if (S.tc !== 'none') html += `<div><span>Through cut</span><b style="color:${TC_HEX}">${escapeHtml(S.tcSpot)}</b></div>`;
+    if (S.white) html += `<div><span>White ink</span><b>${escapeHtml(S.whiteSpot)}</b></div>`;
+    if (state.lay && state.lay.sheet) html += `<div><span>Sheet</span>${state.lay.cols} × ${state.lay.rows} = <b>${state.lay.count}</b> stickers</div>`;
+    const fitsLine = renderFits();
+    if (!S.sheetArt) html += `<div><span>Per sheet</span>${fitsLine} <button type="button" class="linkbtn" id="fitsLink" style="font-size:12.5px">details</button></div>`;
+    el.innerHTML = html;
+  }
+  $('warn').innerHTML = warns.map(w => `<div>${w}</div>`).join('');
+}
+// Stickers per sheet for every preset (and a custom size when chosen), portrait and landscape
+function sheetFits(){
+  const keys = Object.keys(SHEETS).concat(state.S.sheet === 'custom' ? ['custom'] : []);
+  return keys.map(k => {
+    const [w, h] = sheetDims(k), p = sheetGrid(w, h), l = sheetGrid(h, w);
+    return { key:k, name: k === 'custom' ? `Custom ${Math.round(w)}×${Math.round(h)}` : SHEET_NAMES[k], p, l, best: Math.max(p.count, l.count) };
+  });
+}
+function renderFits(){
+  const g = state.geo, el = $('fitTable');
+  if (!g || !g.ok){ el.innerHTML = '<tr><td class="nm">Load an image to see counts</td></tr>'; return ''; }
+  const S = state.S, fits = sheetFits(), sheetOn = S.layout === 'sheet';
+  const cell = (f, land) => {
+    const r = land ? f.l : f.p, cur = sheetOn && S.sheet === f.key && S.landscape === land;
+    const best = r.count > 0 && r.count === f.best && !(land && f.p.count === f.l.count);
+    return `<td><button type="button" class="fitbtn${best ? ' best' : ''}${cur ? ' cur' : ''}" data-sheet="${f.key}" data-land="${land ? 1 : 0}" aria-label="${f.name} ${land ? 'landscape' : 'portrait'}: ${r.count} stickers"><b>${r.count}</b> ${r.count ? `(${r.cols}×${r.rows})` : ''}</button></td>`;
+  };
+  el.innerHTML = '<tr><th>Sheet</th><th>Portrait</th><th>Landscape</th></tr>' +
+    fits.map(f => `<tr><td class="nm">${f.name}</td>${cell(f, false)}${cell(f, true)}</tr>`).join('');
+  return fits.filter(f => f.key !== 'custom').map(f => `${f.name.replace(' in', '')} <b>${f.best}</b>`).join(' · ');
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
+function refreshSizeFields(){
+  const g = state.geo; if (!g || !g.ok) return;
+  const of = $('sizeOf').value, [w, h] = of === 'die' ? [g.bbox.w, g.bbox.h] : [state.artW, state.artH];
+  if (document.activeElement !== $('wIn')) $('wIn').value = fmtLen(w);
+  if (document.activeElement !== $('hIn')) $('hIn').value = fmtLen(h);
+}
+function onSize(dim){
+  const v = parseFloat($(dim === 'w' ? 'wIn' : 'hIn').value);
+  if (!(v > 0)) return;
+  state.target = { of:$('sizeOf').value, dim, mm:v*unitMul() };
+  schedule(120);
+}
+$('wIn').addEventListener('input', () => onSize('w'));
+$('hIn').addEventListener('input', () => onSize('h'));
+$('wIn').addEventListener('blur', refreshSizeFields);
+$('hIn').addEventListener('blur', refreshSizeFields);
+$('sizeOf').addEventListener('change', () => {
+  const g = state.geo, of = $('sizeOf').value;
+  if (g && g.ok) state.target = { of, dim:'w', mm: of === 'die' ? g.bbox.w : state.artW };
+  else state.target.of = of;
+  refreshSizeFields(); schedule(0);
+});
+$('unit').addEventListener('change', () => {
+  document.querySelectorAll('.uLbl').forEach(e => e.textContent = $('unit').value === 'in' ? 'in' : 'mm');
+  $('wIn').step = $('hIn').step = $('unit').value === 'in' ? '0.01' : '0.1';
+  refreshSizeFields();
+});
+
+/* ---------------- saving files ----------------
+   On a normal website this is a regular browser download. Inside a claude.ai
+   artifact the page asks the viewer through the "downloads" capability; that
+   capability only accepts some extensions, so EPS/DXF go inside a .zip there. */
+const CAN_SAVE_EXT = new Set(['pdf','svg','png','zip','txt','json']);
+const inViewer = !!(window.claude && typeof window.claude.use === 'function');
+let dlPromise = inViewer ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null);
+function anchorSave(blob, name){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  return true;
+}
+async function save(blob, name){
+  const dl = await dlPromise;
+  if (!dl) return anchorSave(blob, name);
+  const ext = name.split('.').pop().toLowerCase();
+  if (!CAN_SAVE_EXT.has(ext)){
+    blob = makeZip([{ name, data:new Uint8Array(await blob.arrayBuffer()) }]);
+    name = name.replace(/\.[^.]+$/, '') + '_' + ext + '.zip';
+  }
+  try { await dl.save({ filename:name, data:blob }); return true; }
+  catch (e){
+    const code = e && e.code;
+    if (code === 'declined') toast('Download cancelled.');
+    else if (code === 'rate_limited') toast('A download prompt is already open. Finish that one first.');
+    else if (code === 'too_large') toast('The file is too large to save here. Try a smaller size or turn off "Include artwork".');
+    else toast('Downloads aren\'t available in this view. Open the page in a browser tab to save files.');
+    return false;
+  }
+}
+// Minimal ZIP writer (stored, no compression)
+function makeZip(files){
+  const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+  const now = new Date();
+  const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+  const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+  for (const f of files){
+    const nm = enc.encode(f.name), crc = crc32(f.data), sz = f.data.length;
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, dosTime, true); lh.setUint16(12, dosDate, true); lh.setUint32(14, crc, true);
+    lh.setUint32(18, sz, true); lh.setUint32(22, sz, true); lh.setUint16(26, nm.length, true); lh.setUint16(28, 0, true);
+    parts.push(new Uint8Array(lh.buffer), nm, f.data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+    ch.setUint16(12, dosTime, true); ch.setUint16(14, dosDate, true); ch.setUint32(16, crc, true);
+    ch.setUint32(20, sz, true); ch.setUint32(24, sz, true); ch.setUint16(28, nm.length, true);
+    ch.setUint32(42, off, true);
+    central.push(new Uint8Array(ch.buffer), nm);
+    off += 30 + nm.length + sz;
+  }
+  const cdSize = central.reduce((a, b) => a + b.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...central, new Uint8Array(end.buffer)], { type:'application/zip' });
+}
+
+/* ---------------- exports (each returns {blob, name}) ---------------- */
+const nf = (v) => (Math.round(v*1000)/1000).toString();
+const fileBase = () => `${state.name}_${state.S.spot.replace(/[^\w\-]+/g, '')}${state.lay.sheet ? '_sheet' : ''}`;
+// Map image-mm point to content-mm for a placement
+const placeMap = (p) => { const F = state.geo.frame; return (pt) => [pt[0] - F.x + p.x, pt[1] - F.y + p.y]; };
+function pathString(subs, map, fmt){
+  let s = '';
+  for (const sub of subs){
+    s += fmt.m(map(sub.start));
+    for (const g of sub.segs) s += g.c1 ? fmt.c(map(g.c1), map(g.c2), map(g.p)) : fmt.l(map(g.p));
+    s += fmt.z;
+  }
+  return s;
+}
+function pdfName(n){ return '/' + Array.from(new TextEncoder().encode(n)).map(b => (b > 32 && b < 127 && !'#()<>[]{}/%'.includes(String.fromCharCode(b))) ? String.fromCharCode(b) : '#' + b.toString(16).padStart(2, '0')).join(''); }
+function pdfStr(s){ return '(' + s.replace(/[\\()]/g, '\\$&').replace(/[^\x20-\x7e]/g, '?') + ')'; }
+async function deflate(u8){
+  if (typeof CompressionStream === 'undefined') return null;
+  const st = new Blob([u8]).stream().pipeThrough(new CompressionStream('deflate'));
+  return new Uint8Array(await new Response(st).arrayBuffer());
+}
+
+// Through-cut paths with a mapper from their own coords to page (content) mm
+function throughCuts(L){
+  const out = [];
+  if (L.tcEach) for (const p of L.places) for (const sub of L.tcEach) out.push({ sub, map:placeMap(p) });
+  if (L.tcSheet) out.push({ sub:L.tcSheet, map:(q) => q });
+  return out;
+}
+const sepFn = (name, cmyk) => `[/Separation ${pdfName(name)} /DeviceCMYK << /FunctionType 2 /Domain [0 1] /C0 [0 0 0 0] /C1 [${cmyk.join(' ')}] /N 1 >>]`;
+
+async function buildPDF(){
+  const S = state.S, g = state.geo, L = state.lay, F = g.frame;
+  const enc = new TextEncoder(), parts = [], off = []; let len = 0, n = 0;
+  const w = (x) => { const u = typeof x === 'string' ? enc.encode(x) : x; parts.push(u); len += u.length; };
+  const id = () => ++n;
+  const obj = (i, body) => { off[i] = len; w(`${i} 0 obj\n${body}\nendobj\n`); };
+  const stream = (i, dict, bytes) => { off[i] = len; w(`${i} 0 obj\n<< ${dict} /Length ${bytes.length} >>\nstream\n`); w(bytes); w('\nendstream\nendobj\n'); };
+  const Wpt = L.W*PT, Hpt = L.H*PT;
+  const tcs = throughCuts(L), hasWhite = !!(S.white && g.white && g.white.subs.length);
+  const cat = id(), pages = id(), page = id(), content = id(), ocCut = id(), info = id();
+  const ocArt = S.inclArt ? id() : 0, ocWhite = hasWhite ? id() : 0, ocTc = tcs.length ? id() : 0;
+  let img = 0, smask = 0, imgBytes = null, aBytes = null, iw = 0, ih = 0, form = 0, formBytes = null;
+  const vecL = S.inclArt && S.artVector ? state.vecMM : null;
+  if (vecL){
+    // frame-local points, y up; drawn once and placed per sticker
+    const fp = (q) => [(q[0] - F.x)*PT, (F.h - (q[1] - F.y))*PT];
+    const ffmt = { m:(a) => `${nf(a[0])} ${nf(a[1])} m\n`, l:(a) => `${nf(a[0])} ${nf(a[1])} l\n`, c:(a, b, c) => `${nf(a[0])} ${nf(a[1])} ${nf(b[0])} ${nf(b[1])} ${nf(c[0])} ${nf(c[1])} c\n`, z:'h\n' };
+    const rgbOp = (c) => c.map(v => nf(v/255)).join(' ');
+    let fc = '';
+    if (S.fill !== 'none'){
+      const base = S.fill === 'white' ? [255, 255, 255] : vecL[0].rgb;
+      fc += `${rgbOp(base)} rg ${rgbOp(base)} RG ` + pathString(g.subs, fp, ffmt) + 'f\n';
+      if (S.bleed > 0) fc += `${nf(2*S.bleed*PT)} w 1 j 1 J ` + pathString(g.subs, fp, ffmt) + 'S\n';
+    }
+    for (const l of vecL) fc += `${rgbOp(l.rgb)} rg\n` + pathString(l.subs, fp, ffmt) + 'f*\n';
+    formBytes = enc.encode(fc); form = id();
+  } else if (S.inclArt){
+    const c = renderArt(exportPPM(), true); iw = c.width; ih = c.height;
+    const d = c.getContext('2d').getImageData(0, 0, iw, ih).data;
+    const rgb = new Uint8Array(iw*ih*3), a = new Uint8Array(iw*ih); let anyT = false;
+    for (let i = 0, j = 0; i < iw*ih; i++, j += 3){ rgb[j] = d[i*4]; rgb[j+1] = d[i*4+1]; rgb[j+2] = d[i*4+2]; a[i] = d[i*4+3]; if (a[i] !== 255) anyT = true; }
+    imgBytes = rgb; aBytes = anyT ? a : null; img = id(); if (aBytes) smask = id();
+  }
+  const pg = (q) => [q[0]*PT, Hpt - q[1]*PT];
+  const toPt = (p) => { const m = placeMap(p); return (q) => pg(m(q)); };
+  const fmt = { m:(a) => `${nf(a[0])} ${nf(a[1])} m\n`, l:(a) => `${nf(a[0])} ${nf(a[1])} l\n`, c:(a, b, c) => `${nf(a[0])} ${nf(a[1])} ${nf(b[0])} ${nf(b[1])} ${nf(c[0])} ${nf(c[1])} c\n`, z:'h\n' };
+  // layer order: artwork, white ink (overprint fill, on top so the artwork can't knock it out), cut, through cut
+  let cs = '';
+  if (img){
+    cs += '/OC /OCa BDC\n';
+    for (const p of L.places) cs += `q ${nf(F.w*PT)} 0 0 ${nf(F.h*PT)} ${nf(p.x*PT)} ${nf(Hpt - (p.y + F.h)*PT)} cm /Im0 Do Q\n`;
+    cs += 'EMC\n';
+  }
+  if (form){
+    cs += '/OC /OCa BDC\n';
+    for (const p of L.places) cs += `q 1 0 0 1 ${nf(p.x*PT)} ${nf(Hpt - (p.y + F.h)*PT)} cm /Fm0 Do Q\n`;
+    cs += 'EMC\n';
+  }
+  if (hasWhite){
+    cs += '/OC /OCw BDC\nq /GS0 gs /CS2 cs 1 scn\n';
+    for (const p of L.places) cs += pathString(g.white.subs, toPt(p), fmt);
+    cs += (g.white.evenOdd ? 'f*' : 'f') + '\nQ\nEMC\n';
+  }
+  cs += `/OC /OCc BDC\nq /GS0 gs /CS0 CS 1 SCN ${nf(S.strokePt)} w 1 j 1 J\n`;
+  for (const p of L.places) cs += pathString(g.subs, toPt(p), fmt);
+  cs += 'S\nQ\nEMC\n';
+  if (tcs.length){
+    cs += `/OC /OCt BDC\nq /GS0 gs /CS1 CS 1 SCN ${nf(S.strokePt)} w 1 j 1 J\n`;
+    for (const t of tcs) cs += pathString([t.sub], (q) => pg(t.map(q)), fmt);
+    cs += 'S\nQ\nEMC\n';
+  }
+  const csRaw = enc.encode(cs), csZ = await deflate(csRaw);
+  const colorSpaces = `/CS0 ${sepFn(S.spot, S.lc.cmyk)}${tcs.length ? ` /CS1 ${sepFn(S.tcSpot, TC_CMYK)}` : ''}${hasWhite ? ` /CS2 ${sepFn(S.whiteSpot, WHITE_CMYK)}` : ''}`;
+  const props = `/OCc ${ocCut} 0 R${ocArt ? ` /OCa ${ocArt} 0 R` : ''}${ocWhite ? ` /OCw ${ocWhite} 0 R` : ''}${ocTc ? ` /OCt ${ocTc} 0 R` : ''}`;
+
+  w('%PDF-1.6\n'); w(new Uint8Array([37, 226, 227, 207, 211, 10]));
+  const ocgs = '[' + [ocArt, ocWhite, ocCut, ocTc].filter(Boolean).map(i => `${i} 0 R`).join(' ') + ']';
+  obj(cat, `<< /Type /Catalog /Pages ${pages} 0 R /OCProperties << /OCGs ${ocgs} /D << /Order ${ocgs} /ON ${ocgs} >> >> >>`);
+  obj(pages, `<< /Type /Pages /Kids [${page} 0 R] /Count 1 >>`);
+  obj(page, `<< /Type /Page /Parent ${pages} 0 R /MediaBox [0 0 ${nf(Wpt)} ${nf(Hpt)}] /TrimBox [0 0 ${nf(Wpt)} ${nf(Hpt)}] /Contents ${content} 0 R /Resources << /ColorSpace << ${colorSpaces} >> /ExtGState << /GS0 << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props} >>${img ? ` /XObject << /Im0 ${img} 0 R >>` : ''}${form ? ` /XObject << /Fm0 ${form} 0 R >>` : ''} >> >>`);
+  stream(content, csZ ? '/Filter /FlateDecode' : '', csZ || csRaw);
+  obj(ocCut, `<< /Type /OCG /Name ${pdfStr(S.spot)} >>`);
+  obj(info, `<< /Producer (Die Line Maker) /Title ${pdfStr(state.name + ' die line')} /Subject ${pdfStr('Cut line spot colour: ' + S.spot)} >>`);
+  if (ocArt) obj(ocArt, `<< /Type /OCG /Name (Artwork) >>`);
+  if (ocWhite) obj(ocWhite, `<< /Type /OCG /Name ${pdfStr(S.whiteSpot)} >>`);
+  if (ocTc) obj(ocTc, `<< /Type /OCG /Name ${pdfStr(S.tcSpot)} >>`);
+  if (form){
+    const z = await deflate(formBytes);
+    stream(form, `/Type /XObject /Subtype /Form /BBox [0 0 ${nf(F.w*PT)} ${nf(F.h*PT)}] /Resources << >>${z ? ' /Filter /FlateDecode' : ''}`, z || formBytes);
+  }
+  if (img){
+    const z = await deflate(imgBytes);
+    stream(img, `/Type /XObject /Subtype /Image /Width ${iw} /Height ${ih} /ColorSpace /DeviceRGB /BitsPerComponent 8${z ? ' /Filter /FlateDecode' : ''}${smask ? ` /SMask ${smask} 0 R` : ''}`, z || imgBytes);
+    if (smask){ const za = await deflate(aBytes); stream(smask, `/Type /XObject /Subtype /Image /Width ${iw} /Height ${ih} /ColorSpace /DeviceGray /BitsPerComponent 8${za ? ' /Filter /FlateDecode' : ''}`, za || aBytes); }
+  }
+  const xref = len;
+  let x = `xref\n0 ${n + 1}\n0000000000 65535 f \n`;
+  for (let i = 1; i <= n; i++) x += String(off[i]).padStart(10, '0') + ' 00000 n \n';
+  x += `trailer\n<< /Size ${n + 1} /Root ${cat} 0 R /Info ${info} 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+  w(x);
+  return { blob:new Blob(parts, { type:'application/pdf' }), name:fileBase() + '.pdf' };
+}
+
+async function buildSVG(){
+  const S = state.S, g = state.geo, L = state.lay, F = g.frame;
+  const xid = (s) => s.replace(/[^A-Za-z0-9_\-]/g, '_').replace(/^([^A-Za-z_])/, '_$1');
+  const fmt = { m:(a) => `M${nf(a[0])} ${nf(a[1])}`, l:(a) => `L${nf(a[0])} ${nf(a[1])}`, c:(a, b, c) => `C${nf(a[0])} ${nf(a[1])} ${nf(b[0])} ${nf(b[1])} ${nf(c[0])} ${nf(c[1])}`, z:'Z' };
+  const layer = (name, inner) => `<g id="${xid(name)}" inkscape:groupmode="layer" inkscape:label="${escapeHtml(name)}">\n${inner}\n</g>\n`;
+  let art = '';
+  const vecL = S.inclArt && S.artVector ? state.vecMM : null;
+  if (vecL){
+    const loc = (q) => [q[0] - F.x, q[1] - F.y];
+    let inner = '';
+    if (S.fill !== 'none'){
+      const base = S.fill === 'white' ? '#FFFFFF' : vecL[0].hex, dd = pathString(g.subs, loc, fmt);
+      inner += `<path d="${dd}" fill="${base}"${S.bleed > 0 ? ` stroke="${base}" stroke-width="${nf(2*S.bleed)}" stroke-linejoin="round"` : ''}/>\n`;
+    }
+    for (const l of vecL) inner += `<path d="${pathString(l.subs, loc, fmt)}" fill="${l.hex}" fill-rule="evenodd"/>\n`;
+    art = L.places.length === 1
+      ? layer('Artwork', `<g transform="translate(${nf(L.places[0].x)} ${nf(L.places[0].y)})">\n${inner}</g>`)
+      : `<defs><g id="art">\n${inner}</g></defs>\n` + layer('Artwork', L.places.map(p => `<use xlink:href="#art" x="${nf(p.x)}" y="${nf(p.y)}"/>`).join('\n'));
+  } else if (S.inclArt){
+    const c = renderArt(Math.min(exportPPM(), 300/25.4), true);
+    const url = await new Promise(r => c.toBlob(b => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); }, 'image/png'));
+    if (L.places.length === 1){
+      const p = L.places[0];
+      art = layer('Artwork', `<image x="${nf(p.x)}" y="${nf(p.y)}" width="${nf(F.w)}" height="${nf(F.h)}" preserveAspectRatio="none" xlink:href="${url}"/>`);
+    } else {
+      art = `<defs><image id="art" width="${nf(F.w)}" height="${nf(F.h)}" preserveAspectRatio="none" xlink:href="${url}"/></defs>\n` +
+            layer('Artwork', L.places.map(p => `<use xlink:href="#art" x="${nf(p.x)}" y="${nf(p.y)}"/>`).join('\n'));
+    }
+  }
+  const sw = nf(S.strokePt > 0 ? S.strokePt/PT : 0.0353);
+  let extra = '';
+  if (S.white && g.white && g.white.subs.length){
+    const d = L.places.map(p => pathString(g.white.subs, placeMap(p), fmt)).join('');
+    extra += layer(S.whiteSpot, `<path d="${d}" fill="#FFFFFF" fill-rule="${g.white.evenOdd ? 'evenodd' : 'nonzero'}" stroke="none"/>`);
+  }
+  const d = L.places.map(p => pathString(g.subs, placeMap(p), fmt)).join('');
+  extra += layer(S.spot, `<path id="${xid(S.spot)}_path" d="${d}" fill="none" stroke="${S.lc.hex}" stroke-width="${sw}" stroke-linejoin="round"/>`);
+  const tcs = throughCuts(L);
+  if (tcs.length){
+    const dt = tcs.map(t => pathString([t.sub], t.map, fmt)).join('');
+    extra += layer(S.tcSpot, `<path d="${dt}" fill="none" stroke="${TC_HEX}" stroke-width="${sw}" stroke-linejoin="round"/>`);
+  }
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" width="${nf(L.W)}mm" height="${nf(L.H)}mm" viewBox="0 0 ${nf(L.W)} ${nf(L.H)}">
+<title>${escapeHtml(state.name)} die line (${escapeHtml(S.spot)})</title>
+${art}${extra}</svg>
+`;
+  return { blob:new Blob([svg], { type:'image/svg+xml' }), name:fileBase() + '.svg' };
+}
+
+function buildEPS(){
+  const S = state.S, g = state.geo, L = state.lay;
+  const Wpt = L.W*PT, Hpt = L.H*PT;
+  const psStr = (s) => '(' + s.replace(/[\\()]/g, '\\$&') + ')';
+  const fmt = { m:(a) => `${nf(a[0])} ${nf(a[1])} moveto\n`, l:(a) => `${nf(a[0])} ${nf(a[1])} lineto\n`, c:(a, b, cc) => `${nf(a[0])} ${nf(a[1])} ${nf(b[0])} ${nf(b[1])} ${nf(cc[0])} ${nf(cc[1])} curveto\n`, z:'closepath\n' };
+  const pg = (q) => [q[0]*PT, Hpt - q[1]*PT];
+  const sep = (name, [c, m, y, k]) => `[/Separation ${psStr(name)} cvn /DeviceCMYK {dup ${c} mul exch dup ${m} mul exch dup ${y} mul exch ${k} mul}] setcolorspace 1 setcolor\n`;
+  const tcs = throughCuts(L);
+  const colors = [[S.spot, S.lc.cmyk]]; if (tcs.length) colors.push([S.tcSpot, TC_CMYK]);
+  let s = `%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 ${Math.ceil(Wpt)} ${Math.ceil(Hpt)}
+%%HiResBoundingBox: 0 0 ${nf(Wpt)} ${nf(Hpt)}
+%%Title: ${state.name} die line
+%%Creator: Die Line Maker
+%%DocumentCustomColors: ${colors.map(c => psStr(c[0])).join(' ')}
+${colors.map(([nm, c]) => `%%CMYKCustomColor: ${c.join(' ')} ${psStr(nm)}`).join('\n')}
+%%LanguageLevel: 2
+%%Pages: 1
+%%EndComments
+%%Page: 1 1
+gsave
+true setoverprint
+${nf(S.strokePt)} setlinewidth 1 setlinejoin 1 setlinecap
+`;
+  const vecL = S.inclArt && S.artVector ? state.vecMM : null;
+  if (vecL){
+    s += 'false setoverprint\n';
+    for (const p of L.places){
+      const m = placeMap(p), mp = (q) => pg(m(q));
+      if (S.fill !== 'none'){
+        const b = S.fill === 'white' ? [255, 255, 255] : vecL[0].rgb, rgb = b.map(v => nf(v/255)).join(' ');
+        s += `${rgb} setrgbcolor newpath\n` + pathString(g.subs, mp, fmt) + 'fill\n';
+        if (S.bleed > 0) s += `gsave ${nf(2*S.bleed*PT)} setlinewidth newpath\n` + pathString(g.subs, mp, fmt) + 'stroke grestore\n';
+      }
+      for (const l of vecL) s += `${l.rgb.map(v => nf(v/255)).join(' ')} setrgbcolor newpath\n` + pathString(l.subs, mp, fmt) + 'eofill\n';
+    }
+    s += `true setoverprint ${nf(S.strokePt)} setlinewidth\n`;
+  }
+  s += sep(S.spot, S.lc.cmyk) + 'newpath\n';
+  for (const p of L.places){ const m = placeMap(p); s += pathString(g.subs, (q) => pg(m(q)), fmt); }
+  s += 'stroke\n';
+  if (tcs.length){
+    s += sep(S.tcSpot, TC_CMYK) + 'newpath\n';
+    for (const t of tcs) s += pathString([t.sub], (q) => pg(t.map(q)), fmt);
+    s += 'stroke\n';
+  }
+  s += 'grestore\nshowpage\n%%Trailer\n%%EOF\n';
+  return { blob:new Blob([s], { type:'application/postscript' }), name:fileBase() + '.eps' };
+}
+
+function buildDXF(){
+  const S = state.S, g = state.geo, L = state.lay;
+  const lname = (s, d) => s.replace(/[^A-Za-z0-9_\-$]/g, '_').slice(0, 31) || d;
+  const cut = lname(S.spot, 'CUT'), thru = lname(S.tcSpot, 'THROUGHCUT');
+  const tcs = throughCuts(L);
+  const layers = [[cut, 6]]; if (tcs.length) layers.push([thru, 5]);
+  const out = ['0','SECTION','2','HEADER','9','$ACADVER','1','AC1009','9','$INSUNITS','70','4','0','ENDSEC',
+               '0','SECTION','2','TABLES','0','TABLE','2','LAYER','70',String(layers.length)];
+  for (const [nm, col] of layers) out.push('0','LAYER','2',nm,'70','0','62',String(col),'6','CONTINUOUS');
+  out.push('0','ENDTAB','0','ENDSEC','0','SECTION','2','ENTITIES');
+  const poly = (sub, map, layer, col) => {
+    const pts = flatten(sub, 16).map(map); if (pts.length > 1) pts.pop(); // closed flag joins the last point
+    out.push('0','POLYLINE','8',layer,'62',String(col),'66','1','70','1');
+    for (const q of pts) out.push('0','VERTEX','8',layer,'10',q[0].toFixed(4),'20',(L.H - q[1]).toFixed(4),'30','0');
+    out.push('0','SEQEND','8',layer);
+  };
+  for (const p of L.places){ const map = placeMap(p); for (const sub of g.subs) poly(sub, map, cut, 6); }
+  for (const t of tcs) poly(t.sub, t.map, thru, 5);
+  out.push('0','ENDSEC','0','EOF');
+  return { blob:new Blob([out.join('\r\n') + '\r\n'], { type:'application/dxf' }), name:fileBase() + '.dxf' };
+}
+
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++){ let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u8){ let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+async function pngDpi(blob, dpi){
+  const b = new Uint8Array(await blob.arrayBuffer()), dv = new DataView(b.buffer);
+  const ppm = Math.round(dpi/0.0254), chunk = new Uint8Array(21), cd = new DataView(chunk.buffer);
+  cd.setUint32(0, 9); chunk.set([112, 72, 89, 115], 4); cd.setUint32(8, ppm); cd.setUint32(12, ppm); chunk[16] = 1;
+  cd.setUint32(17, crc32(chunk.subarray(4, 17)));
+  // replace an existing pHYs chunk if present, else insert after IHDR
+  let p = 8;
+  while (p < b.length){
+    const l = dv.getUint32(p), t = String.fromCharCode(b[p+4], b[p+5], b[p+6], b[p+7]);
+    if (t === 'pHYs') return new Blob([b.subarray(0, p), chunk, b.subarray(p + 12 + l)], { type:'image/png' });
+    if (t === 'IDAT') break;
+    p += 12 + l;
+  }
+  return new Blob([b.subarray(0, 33), chunk, b.subarray(33)], { type:'image/png' });
+}
+async function buildPNG(){
+  const L = state.lay, F = state.geo.frame, ppm = 300/25.4;
+  let c;
+  if (!L.sheet) c = renderArt(Math.min(ppm, Math.sqrt(30e6/(F.w*F.h))), true);
+  else {
+    const art = renderArt(ppm, true), sp = Math.min(ppm, Math.sqrt(40e6/(L.W*L.H)));
+    c = mkCanvas(L.W*sp, L.H*sp); const x = c.getContext('2d');
+    x.imageSmoothingQuality = 'high';
+    for (const p of L.places) x.drawImage(art, p.x*sp, p.y*sp, F.w*sp, F.h*sp);
+  }
+  const dpi = c.width / ((L.sheet ? L.W : F.w)/25.4);
+  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  return { blob:await pngDpi(blob, dpi), name:`${state.name}_print${L.sheet ? '_sheet' : ''}.png`, dpi };
+}
+async function buildZIP(){
+  const items = [await buildPDF(), await buildSVG(), buildEPS(), buildDXF(), await buildPNG()];
+  const files = [];
+  for (const it of items) files.push({ name:it.name, data:new Uint8Array(await it.blob.arrayBuffer()) });
+  return { blob:makeZip(files), name:fileBase() + '_all.zip' };
+}
+
+async function runExport(btn, build, okMsg){
+  const t = btn.innerHTML; btn.disabled = true; btn.textContent = 'Preparing…';
+  await new Promise(r => setTimeout(r, 30));
+  try {
+    const out = await build();
+    if (await save(out.blob, out.name)) toast(typeof okMsg === 'function' ? okMsg(out) : okMsg);
+  } catch (e){ console.error(e); toast('Export failed: ' + e.message); }
+  btn.disabled = false; btn.innerHTML = t;
+  const m = btn.closest('details.menu'); if (m) m.open = false;
+}
+$('exPdf').onclick = (e) => runExport(e.currentTarget, buildPDF, 'PDF saved. In CorelDraw use File → Import.');
+$('exSvg').onclick = (e) => runExport(e.currentTarget, buildSVG, 'SVG saved.');
+$('exEps').onclick = (e) => runExport(e.currentTarget, async () => buildEPS(), 'EPS saved (cut line only).');
+$('exDxf').onclick = (e) => runExport(e.currentTarget, async () => buildDXF(), 'DXF saved (cut line only, mm).');
+$('exPng').onclick = (e) => runExport(e.currentTarget, buildPNG, (o) => `PNG saved at ${Math.round(o.dpi)} dpi, without the cut line.`);
+$('exZip').onclick = (e) => runExport(e.currentTarget, buildZIP, 'ZIP saved with PDF, SVG, EPS, DXF and PNG.');
+
+/* ---------------- sample sticker ---------------- */
+function makeSample(){
+  const c = mkCanvas(1200, 900), x = c.getContext('2d');
+  const grd = x.createLinearGradient(200, 120, 1000, 780); grd.addColorStop(0, '#ff8a00'); grd.addColorStop(1, '#e5007e');
+  x.fillStyle = grd; x.beginPath();
+  x.moveTo(600, 110); x.bezierCurveTo(820, 90, 1010, 230, 990, 430); x.bezierCurveTo(975, 620, 830, 790, 600, 780);
+  x.bezierCurveTo(380, 772, 205, 640, 215, 440); x.bezierCurveTo(225, 240, 400, 125, 600, 110); x.fill();
+  x.lineWidth = 18; x.strokeStyle = '#1d1c1a'; x.stroke();
+  x.fillStyle = '#fff'; x.font = '900 150px Archivo, system-ui, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.lineWidth = 16; x.strokeStyle = '#1d1c1a'; x.strokeText('STICK', 600, 380); x.fillText('STICK', 600, 380);
+  x.font = '800 92px Archivo, system-ui, sans-serif'; x.strokeText('IT!', 600, 540); x.fillText('IT!', 600, 540);
+  const star = (cx, cy, r, col) => { x.beginPath(); for (let i = 0; i < 8; i++){ const a = i*Math.PI/4, rr = i % 2 ? r*0.38 : r; x.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr); } x.closePath(); x.fillStyle = col; x.fill(); x.lineWidth = 8; x.strokeStyle = '#1d1c1a'; x.stroke(); };
+  star(1080, 160, 70, '#ffd400'); star(120, 760, 55, '#00c2ff');
+  const img = new Image();
+  img.onload = () => setImage(img, 'sample_sticker', 'sample_sticker.png · 1200 × 900 px · transparent PNG', true);
+  img.src = c.toDataURL('image/png');
+}
+
+/* ---------------- wiring ---------------- */
+function linkRange(id){
+  const n = $(id), r = $(id + 'R'); if (!r) return;
+  r.addEventListener('input', () => { n.value = r.value; schedule(); });
+  n.addEventListener('input', () => { r.value = n.value; schedule(); });
+}
+['offset','radius','smooth','merge','corner','bleed','safe','tol','alphaThr','speck','vColors','vDetail'].forEach(linkRange);
+document.querySelectorAll('input[name="artMode"]').forEach(r => r.addEventListener('change', () => { $('vecRows').hidden = radio('artMode') !== 'vector'; schedule(0); }));
+['stroke','spotCustom','margin','gap','sheetW','sheetH','tcMargin','tcRadius','tcSpot','whiteSpot'].forEach(id => $(id).addEventListener('input', () => schedule()));
+['bgMode','keep','keepBg','quality','lineColor','landscape','inclArt','whiteArea'].forEach(id => $(id).addEventListener('change', () => schedule(0)));
+$('tc').addEventListener('change', () => { $('tcRows').hidden = $('tc').value === 'none'; state.view.user = false; schedule(0); });
+$('white').addEventListener('change', () => { $('whiteRows').hidden = !$('white').checked; schedule(0); });
+$('bgColor').addEventListener('input', () => { state.bgPicked = true; if ($('bgMode').value === 'auto' || $('bgMode').value === 'alpha') $('bgMode').value = 'flood'; schedule(); });
+$('spot').addEventListener('change', () => { $('spotCustomRow').hidden = $('spot').value !== 'custom'; schedule(0); });
+$('sheet').addEventListener('change', () => { $('customSheet').hidden = $('sheet').value !== 'custom'; state.view.user = false; schedule(0); });
+document.querySelectorAll('input[name="layout"]').forEach(r => r.addEventListener('change', () => { state.view.user = false; schedule(0); }));
+document.querySelectorAll('input[name="fill"]').forEach(r => r.addEventListener('change', () => { $('bleedRow').style.opacity = radio('fill') === 'none' ? .45 : 1; schedule(0); }));
+function syncShapeRows(){ const s = radio('shape'); document.querySelectorAll('[data-for]').forEach(el => el.hidden = el.dataset.for !== s); }
+document.querySelectorAll('input[name="shape"]').forEach(r => r.addEventListener('change', () => { syncShapeRows(); schedule(0); }));
+syncShapeRows();
+['vArt','vDie','vNodes','vSafe','vWhite'].forEach(id => $(id).addEventListener('change', draw));
+$('fitTable').addEventListener('click', (e) => {
+  const b = e.target.closest('.fitbtn'); if (!b) return;
+  $('sheet').value = b.dataset.sheet; $('landscape').checked = b.dataset.land === '1';
+  $('customSheet').hidden = b.dataset.sheet !== 'custom';
+  $('ly2').checked = true; state.view.user = false; schedule(0);
+});
+$('stats').addEventListener('click', (e) => {
+  if (!e.target.closest('#fitsLink')) return;
+  const card = $('fitTable').closest('details'); card.open = true;
+  card.scrollIntoView({ block:'nearest', behavior:'smooth' });
+});
+// Paper size from the image's proportions (portrait or landscape), for uploaded sticker sheets
+const PAPERS = [['A4', 210, 297], ['12×18 in', 304.8, 457.2], ['13×19 in', 330.2, 482.6], ['Letter', 215.9, 279.4]];
+function guessPaper(){
+  const { W0, H0 } = state, r = Math.min(W0, H0)/Math.max(W0, H0);
+  const p = PAPERS.find(([, a, b]) => Math.abs(r - a/b) < 0.003);
+  return p ? { name:p[0], width: W0 <= H0 ? p[1] : p[2], height: W0 <= H0 ? p[2] : p[1] } : null;
+}
+function setVal(id, v){ $(id).value = v; const r = $(id + 'R'); if (r) r.value = v; }
+const OUTLINES = { close:{ corner:0.5, smooth:6 }, smooth:{ corner:2, smooth:8 }, smoothest:{ corner:3.5, smooth:10 } };
+$('outline').addEventListener('change', () => { const o = OUTLINES[$('outline').value]; setVal('corner', o.corner); setVal('smooth', o.smooth); schedule(0); });
+function applyUploadMode(fromImage){
+  const sheet = radio('upload') === 'sheet';
+  $('uploadHint').textContent = sheet
+    ? 'Keeps your sheet exactly as designed and adds a cut line around every sticker. Works best when each sticker has a white border.'
+    : 'The tool traces your design and builds the sticker around it: border, bleed and cut line.';
+  $('ly2').disabled = sheet;
+  $('outlineRow').hidden = !sheet;
+  if (sheet){
+    state.autoInset = true;
+    if (!fromImage){
+      if ($('bgMode').value === 'auto') $('bgMode').value = 'white';
+      setVal('offset', -0.5); setVal('corner', 0.5); setVal('merge', 0); setVal('speck', 25); setVal('smooth', 6);
+      $('outline').value = 'close';
+      $('fl1').checked = true; $('keep').value = 'all'; $('quality').value = '2200'; $('ly1').checked = true;
+      $('sizeOf').value = 'art';
+    }
+    if (state.img){
+      const paper = state.paper = guessPaper();
+      state.target = { of:'art', dim:'w', mm: paper ? paper.width : (state.artW || 210) };
+      if (paper) toast(`Sheet size set to ${paper.name} from the image proportions. Change it under Size if needed.`);
+    }
+  } else if (!fromImage){
+    state.paper = null; setVal('smooth', 4);
+    if ($('bgMode').value === 'white') $('bgMode').value = 'auto';
+    setVal('offset', 2); setVal('corner', 1); setVal('speck', 0.3);
+    $('fl1').checked = true; $('quality').value = '1400'; $('sizeOf').value = 'die';
+    state.target = { of:'die', dim:'w', mm:75 };
+  }
+  $('bleedRow').style.opacity = radio('fill') === 'none' ? .45 : 1;
+  state.view.user = false; schedule(0);
+}
+document.querySelectorAll('input[name="upload"]').forEach(r => r.addEventListener('change', () => applyUploadMode(false)));
+$('pickBtn').onclick = () => { if (!state.img){ toast('Load an image first.'); return; } setPicking(!state.picking); };
+
+$('file').addEventListener('change', (e) => { loadFile(e.target.files[0]); e.target.value = ''; });
+$('sampleBtn').onclick = makeSample;
+$('emptySample').onclick = makeSample;
+$('emptyChoose').onclick = () => $('file').click();
+$('fileList').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  if (b.dataset.act === 'retry' && state.file) loadFile(state.file);
+  if (b.dataset.act === 'remove') clearImage();
+});
+// dragging a file over the page: tint the drop zone and show a label next to the cursor
+const drop = $('drop'), chip = $('dragChip');
+const hasFiles = (e) => e.dataTransfer && [...(e.dataTransfer.types || [])].includes('Files');
+const zones = () => document.querySelectorAll('.dropzone');
+const endDrag = () => { zones().forEach(z => z.classList.remove('over')); chip.hidden = true; };
+['dragenter','dragover'].forEach(t => document.addEventListener(t, (e) => {
+  if (!hasFiles(e)) return;
+  e.preventDefault(); zones().forEach(z => z.classList.add('over'));
+  chip.hidden = false; chip.style.transform = `translate(${e.clientX + 16}px, ${e.clientY + 12}px)`;
+}));
+document.addEventListener('dragleave', (e) => { if (!e.relatedTarget || e.relatedTarget === document.documentElement) endDrag(); });
+document.addEventListener('drop', (e) => { e.preventDefault(); endDrag(); });
+document.addEventListener('drop', (e) => {
+  const f = e.dataTransfer && e.dataTransfer.files[0];
+  if (f) loadFile(f);
+});
+document.addEventListener('paste', (e) => {
+  const it = [...(e.clipboardData?.items || [])].find(i => i.type.startsWith('image/'));
+  if (it){ const f = it.getAsFile(); loadFile(new File([f], 'pasted.png', { type:f.type })); }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.picking) setPicking(false); });
+
+// open in a working state: the sample sticker (fonts first, so its lettering matches)
+(document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(() => { if (!state.img){ if (/[?&]sample\b/.test(location.search)) makeSample(); else clearImage(); } });
+</script>
+<script src="assets/site.js?v=b5748bae" defer></script>
+</body>
+</html>

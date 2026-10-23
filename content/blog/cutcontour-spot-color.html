@@ -1,0 +1,124 @@
+<!--meta
+{
+ "slug": "cutcontour-spot-color",
+ "h1": "CutContour Spot Color: What It Is and How to Set It Up",
+ "metaTitle": "CutContour Spot Color Explained (Roland, CorelDraw, PDF)",
+ "metaDesc": "What the CutContour spot color is, why the name matters more than the colour, and how to set it up in CorelDraw so your print and cut job cuts first time.",
+ "type": "Type 3: Informational / Educational",
+ "range": "0.55 to 0.75",
+ "tone": "Curious + Warm + Trustworthy",
+ "tagline": "Explainer",
+ "crumb": "CutContour spot color",
+ "summary": "Why your cutter looks for a colour name, not a colour. How CutContour, PerfCutContour and other cut names work.",
+ "related": [
+  "die-cut-lines-in-coreldraw",
+  "kiss-cut-vs-die-cut-stickers",
+  "white-ink-clear-stickers"
+ ],
+ "sources": [
+  [
+   "Roland DGA: Getting set up for stickers (PerfCutContour)",
+   "https://www.rolanddga.com/blog/getting-set-up-for-stickers"
+  ],
+  [
+   "Roland DG: Registering spot colours in CorelDRAW (VersaWorks 7)",
+   "https://downloadcenter.rolanddg.com/contents/manuals/VW7_STA_EN/eki1758099948807.html"
+  ],
+  [
+   "Signs101 forum: VersaWorks CutContour threads",
+   "https://www.signs101.com/tags/verasworks-cutcontour/"
+  ],
+  [
+   "Paperlust: Die-cut sticker artwork setup",
+   "https://printshop.paperlust.co/blog?p=2246"
+  ],
+  [
+   "Akron-Summit County Public Library: Vinyl printer cut line tutorial (PDF)",
+   "https://Www.Akronlibrary.org/images/pdf/TechZone_Vinyl_Printer_Cut_Line_Tutorial_for_Adobe.pdf"
+  ],
+  [
+   "printing.com shop guide: How to supply a die cut file",
+   "https://shop.athloneprinting.ie/file-supply/5355"
+  ],
+  [
+   "3M: Global packaging dieline requirements (PDF)",
+   "https://multimedia.3m.com/mws/media/2619412O/global-packaging-dieline-requirements.pdf"
+  ]
+ ],
+ "cat": "Guide",
+ "app": "General"
+}
+-->
+<p class="intro">It's one of the most common first print and cut mistakes. You draw a neat magenta outline around every sticker and send the job. The printer does exactly what the file says: it prints a pink line around each sticker and cuts nothing. The fix is understanding what the <strong>CutContour spot color</strong> really is. It isn't a colour at all. It's a name the machine is listening for.</p>
+<p class="intro">Most people are surprised by this. So let me explain what CutContour is, why the name matters so much, and how to set it up once so it works every time.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="what-is-cutcontour">What the CutContour spot color is</h2>
+<p>CutContour is the name of a spot colour used to mark cut lines in print and cut work. When a RIP like Roland VersaWorks opens your file, it looks for paths using a spot colour with that exact name. It sends those paths to the cutter and leaves them out of the print.</p>
+<p>A spot colour is a colour with its own name and its own separation. Think of it as a separate layer of ink, even when no ink is ever used. That separation is what lets the RIP pick the cut line out of everything else.</p>
+<p>The Akron-Summit County Public Library's vinyl cutter tutorial teaches it the same way: draw the path, give the stroke a spot colour named CutContour, and set it to 0.25 pt.</p>
+
+<h2 id="name-not-colour">Why the name matters more than the colour</h2>
+<p>This is genuinely the part most people miss. The RIP doesn't check whether your line is pink. It checks whether the swatch is <em>called</em> CutContour.</p>
+<p>Long-running threads on the Signs101 sign-making forum say it plainly: the name is the link, and capitals count. One member notes that some software makes the swatch grey while others use 100% magenta, and either works.</p>
+<p>Roland's own sticker setup article shows how strict this is. For the perforated version, it spells out the capitals, <code>PerfCutContour</code>, with no spaces, and says the colour type must be set to Spot.</p>
+<div class="note"><b>Here's why this matters to you</b>"Cutcontour", "Cut Contour" and "CUTCONTOUR" are three different names to a RIP. Only one of them cuts.</div>
+
+<h2 id="spot-vs-process">Spot colour vs process colour</h2>
+<p>A process colour is mixed from cyan, magenta, yellow and black (CMYK). A spot colour is a named colour kept on its own channel.</p>
+<p>If your cut line is a process magenta, the RIP treats it as ink. Paperlust's setup guide warns about exactly this: a CMYK process colour gets printed as ink instead of being read as a cut path.</p>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Process colour (CMYK)</th><th>Spot colour (CutContour)</th></tr></thead>
+<tbody>
+<tr><td>What the RIP does</td><td>Prints it</td><td>Cuts along it</td></tr>
+<tr><td>Has its own name</td><td>No</td><td>Yes</td></tr>
+<tr><td>Survives PDF export</td><td>Yes</td><td>Only if spot colours are kept</td></tr>
+<tr><td>Right for cut lines</td><td>No</td><td>Yes</td></tr>
+</tbody></table></div>
+
+<h2 id="stroke-and-overprint">Stroke width, fill and overprint</h2>
+<p>CutContour should be applied to the <strong>outline only</strong>. The fill stays empty.</p>
+<ul>
+<li><strong>Width:</strong> 0.25 pt (0.09 mm) is the common choice. Paperlust asks for 0.25 pt or thinner.</li>
+<li><strong>Fill:</strong> none. A filled shape can confuse some RIPs and hides your artwork on screen.</li>
+<li><strong>Overprint:</strong> on. Overprint means the line doesn't knock a white gap into the print below it.</li>
+</ul>
+<p>Here's something worth knowing. The stroke width is mostly for your eyes. The blade follows the centre of the path, not the thickness of the line.</p>
+
+<h2 id="other-cut-names">PerfCutContour and other cut names</h2>
+<p>CutContour isn't the only name out there. Roland describes <code>PerfCutContour</code> as a perforated cut through the liner, which makes stickers quicker to weed and trim. Its article also notes that the contour cut runs first when both are used.</p>
+<p>Other shops use completely different names. One printing.com shop guide asks for a spot swatch called <code>DIE-CUT FORME</code>, made of 37% cyan and 83% yellow, with a 2 pt stroke set to overprint. 3M's packaging dieline standard goes further and asks for a unique spot colour for each line type (cut, crease, perforation) at 1 pt.</p>
+<p>So the honest answer is: CutContour is the most common name for print and cut, but your printer's spec sheet is the final word.</p>
+
+<h2 id="set-up-in-coreldraw">How to set up CutContour in CorelDraw</h2>
+<p>This is simpler than it sounds. You only do it once.</p>
+<ol>
+<li>Open <strong>Window, then Color Palettes</strong>, and open the Palette Editor.</li>
+<li>Create a new palette for your shop (for example "Print and cut").</li>
+<li>Add a colour, set it to 100% magenta, set its type to <strong>Spot</strong>, and name it <code>CutContour</code>.</li>
+<li>Save the palette. It's now ready in every document.</li>
+</ol>
+<p>If you use Roland VersaWorks 7, Roland's manual explains how to load its own CorelDRAW palette data (the <code>userinks</code> files from the CorelDRAW download) through Window, then Color Palettes, then Palettes. That gives you Roland's named spot colours without typing them.</p>
+<p>When you export, use <strong>Publish to PDF</strong> and make sure spot colours are not converted to CMYK. That single checkbox decides whether your cut line survives.</p>
+
+<h2 id="check-your-pdf">How to check your PDF before sending it</h2>
+<p>Open the PDF in Adobe Acrobat and open <strong>Output Preview</strong>. You'll see a list of separations: Cyan, Magenta, Yellow, Black, and hopefully <code>CutContour</code>.</p>
+<p>Turn CutContour off and on. If only your cut line disappears, the file is right. If nothing disappears, the spot colour was converted somewhere along the way.</p>
+<p>I like doing this check every time. It takes ten seconds and saves a wasted sheet of vinyl.</p>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>Once you understand that CutContour is a <em>name</em>, a lot of mystery disappears. Lines that "don't cut" almost always come down to a misspelt name, a converted colour, or a process colour used by mistake.</p>
+<p>Our <a href="../editor.html">Die Line Maker</a> writes CutContour as a real PDF Separation colour on its own layer, with overprint already set. You can also rename it to PerfCutContour or any custom name your printer uses.</p>
+<p>My take: keep one saved palette with your printer's exact names and never type them by hand again. It's the simplest change with the biggest payoff.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>The CutContour spot color is a label, not a look. Spell it exactly, keep it as a spot colour, apply it to a thin unfilled outline with overprint on, and check the PDF separations before you send. Do that, and your cutter will follow your line like it was made for it.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Is CutContour case sensitive?</summary><p>Yes. RIPs match the spot colour name exactly, so use CutContour with a capital C at the start and in the middle, and no spaces.</p></details>
+<details><summary>What colour values should CutContour have?</summary><p>The values don't affect cutting. Most people use 100% magenta so it's easy to see on screen. The name is what the RIP reads.</p></details>
+<details><summary>Why did my cut line print instead of cut?</summary><p>Usually the spot colour was converted to CMYK during export, or the line used a process colour. Re-export with spot colours kept, and check the separations in Acrobat's Output Preview.</p></details>
+</section>

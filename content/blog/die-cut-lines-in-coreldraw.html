@@ -1,0 +1,140 @@
+<!--meta
+{
+ "slug": "die-cut-lines-in-coreldraw",
+ "h1": "How to Make Die Cut Lines in CorelDraw (Step by Step)",
+ "metaTitle": "How to Make Die Cut Lines in CorelDraw: Step-by-Step Guide",
+ "metaDesc": "Learn how to make die cut lines in CorelDraw the right way: separate layer, CutContour spot colour, 0.25 pt stroke, bleed and a PDF that keeps the cut line.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Step-by-step guide",
+ "crumb": "Die cut lines in CorelDraw",
+ "summary": "Layers, spot colour, stroke, bleed and export. Everything a printer needs from your CorelDraw file, in six steps.",
+ "related": [
+  "cutcontour-spot-color",
+  "sticker-bleed-and-safe-zone",
+  "kiss-cut-vs-die-cut-stickers"
+ ],
+ "sources": [
+  [
+   "freecdr.in: How to make die cut lines in CorelDraw",
+   "https://freecdr.in/blogs/news/how-to-make-die-cut-lines-in-coreldraw-step-by-step-guide"
+  ],
+  [
+   "Paperlust: Die-cut sticker artwork setup",
+   "https://printshop.paperlust.co/blog?p=2246"
+  ],
+  [
+   "PrintKeg: Sticker file setup guide",
+   "https://www.printkeg.com/pages/sticker-file-setup-guide"
+  ],
+  [
+   "Roland DG: Registering spot colours in CorelDRAW (VersaWorks 7)",
+   "https://downloadcenter.rolanddg.com/contents/manuals/VW7_STA_EN/eki1758099948807.html"
+  ],
+  [
+   "Akron-Summit County Public Library: Vinyl printer cut line tutorial (PDF)",
+   "https://Www.Akronlibrary.org/images/pdf/TechZone_Vinyl_Printer_Cut_Line_Tutorial_for_Adobe.pdf"
+  ],
+  [
+   "StickerApp: Custom shapes and cutlines",
+   "https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers"
+  ]
+ ],
+ "cat": "Tutorial",
+ "app": "CorelDraw"
+}
+-->
+<p class="intro">A customer walks in with a logo on their phone. They want 500 stickers, cut to shape, by Friday. You drop the PNG into CorelDraw, and then it hits you: the printer needs a <strong>die cut line</strong>, not just a picture. Here's the good news. Making die cut lines in CorelDraw is simpler than it sounds, and once you've done it a couple of times it becomes second nature.</p>
+<p class="intro">In this guide I'll walk you through the exact setup print shops and cutters expect, step by step. No guesswork, no "it looked fine on my screen" surprises.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="what-is-a-die-cut-line">What a die cut line actually is</h2>
+<p>A die cut line is a thin vector path that tells a machine where to cut. It sits on top of your artwork, but it is never printed. The cutter, the RIP or the die maker reads it as an instruction.</p>
+<p>A RIP is the software that sits between your file and the printer. Roland's VersaWorks is a common one. It looks at your PDF, finds the cut path by its colour <em>name</em>, and sends that path to the blade.</p>
+<p>That's why the details matter. According to the CorelDraw guide on freecdr.in, the cut path must be one closed shape with no stray nodes or overlapping segments. A tiny gap in the path can stop the cutter or send it in a strange direction.</p>
+
+<h2 id="before-you-start">What you need before you start</h2>
+<p>Let me explain the checklist first. It makes every step after this one easier.</p>
+<ul>
+<li><strong>A clean design.</strong> A PNG with a transparent background or a vector logo works best.</li>
+<li><strong>The final size.</strong> Know the sticker size in mm or inches, for example 75 mm (2.95 in) wide.</li>
+<li><strong>Your printer's specs.</strong> Ask for their cut line colour name, line width, bleed and safe zone. They differ between shops.</li>
+<li><strong>Enough resolution.</strong> PrintKeg's setup guide asks for at least 300 DPI at the final print size. That's a good rule for any sticker.</li>
+</ul>
+
+<h2 id="step-1-layer">Step 1: Put the cut line on its own layer</h2>
+<p>Open the Objects docker (Window, then Docker, then Objects). Create a new layer and name it something clear, like <code>CutContour</code> or <code>DieLine</code>.</p>
+<p>Keep this layer above your artwork layers. The freecdr.in guide recommends exactly this: a separate layer for the cut line, sitting on top of the print. It keeps the cut path easy to find, lock and check.</p>
+<div class="note"><b>Tip</b>Lock your artwork layer while you work on the cut line. It stops you from nudging the design by accident.</div>
+
+<h2 id="step-2-path">Step 2: Draw or trace the cut path</h2>
+<p>This is the step most people worry about. There are two good ways to do it.</p>
+<h3>Option A: Trace it inside CorelDraw</h3>
+<ol>
+<li>Select your bitmap and choose <strong>Bitmaps, then Outline Trace, then Logo</strong> (or Line Art). CorelDraw creates vector shapes from the image.</li>
+<li>Select the traced shapes and <strong>Weld</strong> them into one shape (Object, then Shaping, then Weld).</li>
+<li>Open the <strong>Contour</strong> tool (Ctrl + F9 in most versions). Choose <em>Outside</em>, one step, and an offset of about 2 mm (0.08 in).</li>
+<li>Break the contour apart (Ctrl + K), delete the inner shape, and keep the outer outline.</li>
+<li>Use the Shape tool (F10) to remove extra nodes and smooth sharp points.</li>
+</ol>
+<p>Menu names move around a little between CorelDraw versions, so if a command isn't where I say, search for it with the Help search box.</p>
+<h3>Option B: Let a tool trace it for you</h3>
+<p>If tracing feels slow, our free <a href="../editor.html">Die Line Maker</a> does this part automatically. You upload the image, set the gap, and download a PDF with the cut line already on its own layer.</p>
+<p>I tested it with a 1200 × 900 px sticker. It traced the outline, kept a 2 mm gap, and produced a cut line 75 mm (2.95 in) wide in under a second. The whole process runs in your browser, so the image never leaves your computer.</p>
+
+<h2 id="step-3-spot-colour">Step 3: Give it a spot colour and a thin stroke</h2>
+<p>This is where it gets interesting. The cutter doesn't care what colour the line <em>looks</em> like. It cares what the colour is <em>called</em>.</p>
+<p>A spot colour is a named colour that stays separate from your CMYK print. For Roland machines, the standard name is <code>CutContour</code>, spelled exactly like that. Paperlust's setup guide says the same thing: use a 100% magenta spot colour on the top layer and confirm the swatch name with your supplier.</p>
+<ol>
+<li>Open the Palette Editor (Window, then Color Palettes).</li>
+<li>Add a new colour, set its type to <strong>Spot</strong>, and name it <code>CutContour</code>.</li>
+<li>Apply it to the outline of your cut path.</li>
+<li>Set the outline width to <strong>0.25 pt</strong> (0.09 mm), or a hairline if your printer asks for one.</li>
+</ol>
+<p>Roland also offers CorelDRAW palette files for VersaWorks. Their manual explains how to load them from Window, then Color Palettes, then Palettes. That saves you from typing names by hand.</p>
+<p>Why 0.25 pt? Paperlust asks for a hairline of 0.25 pt or thinner, and the Akron-Summit County Public Library's cut line tutorial uses 0.25 pt too. freecdr.in mentions a range of 0.25 pt to 1 pt. When in doubt, ask.</p>
+
+<h2 id="step-4-overprint">Step 4: No fill, and set the outline to overprint</h2>
+<p>This part is actually really easy. Click the cut path and set the fill to <strong>None</strong>. The cut line should only be an outline.</p>
+<p>Then right-click it and tick <strong>Overprint Outline</strong>. Overprint means the line sits on top without punching a white gap into the colours below. Paperlust's guide gives the same advice for the same reason.</p>
+
+<h2 id="step-5-bleed">Step 5: Check bleed and the safe zone</h2>
+<p>Bleed is extra artwork that runs past the cut line. A safe zone is a margin inside the cut where text and logos stay.</p>
+<p>Paperlust uses 3 mm (0.12 in) of bleed and keeps key artwork at least 2 mm (0.08 in) inside the cut. PrintKeg asks for 0.125 in (3.2 mm) for both. Turn on <strong>View, then Bleed</strong> in CorelDraw to see if your artwork really runs past the line.</p>
+<p>I wrote a full guide on this, with a quick reference table: <a href="sticker-bleed-and-safe-zone.html">sticker bleed and safe zone</a>.</p>
+
+<h2 id="step-6-export">Step 6: Export a PDF that keeps the spot colour</h2>
+<p>You're almost there. Choose <strong>File, then Publish to PDF</strong> (or Export, then PDF). Open the settings and go to the <strong>Color</strong> tab.</p>
+<p>Untick <strong>Convert spot colours to CMYK</strong>. The freecdr.in guide flags this as the setting that breaks most files. If the spot colour is converted, the RIP can't find your cut line.</p>
+<p>Finally, reopen the PDF and check that the cut line is still a spot colour. In Acrobat, the Output Preview panel lists every separation. You should see <code>CutContour</code> there.</p>
+
+<h2 id="common-mistakes">Common mistakes and quick fixes</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>What goes wrong</th><th>Why it happens</th><th>Quick fix</th></tr></thead>
+<tbody>
+<tr><td>The cutter ignores the line</td><td>The colour name doesn't match, or it was converted to CMYK</td><td>Rename to the exact spot name and keep spot colours on export</td></tr>
+<tr><td>A magenta line prints on the sticker</td><td>Overprint is off or the line is a process colour</td><td>Use a spot colour and tick Overprint Outline</td></tr>
+<tr><td>White slivers on the edges</td><td>No bleed past the cut</td><td>Extend the artwork 2 to 3 mm (about 0.1 in) past the line</td></tr>
+<tr><td>Thin parts tear or lift</td><td>Narrow necks and sharp points in the path</td><td>Smooth the path and widen narrow areas</td></tr>
+<tr><td>Sticker comes out the wrong size</td><td>The PDF was scaled during import or export</td><td>Place it at 100% and check the size in mm</td></tr>
+</tbody></table></div>
+<p>StickerApp's guide backs up the fourth row. It warns that very narrow sections can tear or lift, and that smooth cutlines give the cleanest result.</p>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>Here's the thing. Most cut line problems aren't about skill. They come from one missed setting: a wrong name, a converted colour, or a missing bleed.</p>
+<p>So build yourself a small habit. Name the layer, name the spot colour, set 0.25 pt, tick overprint, check bleed, keep spot colours on export. Six checks, every file.</p>
+<p>Based on what printers' own setup guides keep repeating, the files that never need a reprint aren't the fanciest ones. They're the ones where those six things were checked every single time.</p>
+
+<h2 id="the-short-version">The short version</h2>
+<p>Making die cut lines in CorelDraw comes down to a clean closed path, a correctly named spot colour, a thin overprinting stroke, and a PDF that keeps that colour intact. Get those right and any printer or cutter will read your file without a phone call.</p>
+<p>You've got this. And if you'd rather skip the tracing, the <a href="../editor.html">Die Line Maker tool</a> will hand you a ready-made CorelDraw PDF in a minute.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Which colour should a die cut line be in CorelDraw?</summary><p>Use a spot colour, not a CMYK colour. For Roland VersaWorks the standard name is CutContour, usually shown as 100% magenta. Other printers may use another name, so ask them and type it exactly.</p></details>
+<details><summary>How thick should a die cut line be?</summary><p>Most sticker printers ask for 0.25 pt (0.09 mm) or a hairline. Some die makers use thicker lines, for example 1 pt or 2 pt for packaging. Your printer's spec always wins.</p></details>
+<details><summary>Can I make a die cut line from a JPG?</summary><p>Yes. Trace the image in CorelDraw with Outline Trace, or upload it to Die Line Maker, which removes a plain background and traces the outline for you. A higher resolution image gives a cleaner path.</p></details>
+</section>

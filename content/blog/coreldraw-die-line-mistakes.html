@@ -1,0 +1,104 @@
+<!--meta
+{
+ "slug": "coreldraw-die-line-mistakes",
+ "cat": "Tips", "app": "CorelDraw",
+ "h1": "10 CorelDraw Die Line Mistakes (and How to Fix Each One)",
+ "metaTitle": "10 CorelDraw Die Line Mistakes and Quick Fixes",
+ "metaDesc": "The 10 most common CorelDraw die line mistakes, from a converted spot colour to open paths and text that was never converted to curves, with a quick fix for each.",
+ "type": "Type 7: Negative / Warning",
+ "range": "0.40 to 0.60",
+ "tone": "Honest + Constructive + Empowering",
+ "tagline": "Tips",
+ "crumb": "Die line mistakes",
+ "summary": "Ten small setup slips that stop a cutter, ruin a sheet or force a reprint, and the quick fix for each.",
+ "related": ["die-cut-lines-in-coreldraw", "cutcontour-spot-color", "print-and-cut-versaworks-coreldraw"],
+ "sources": [
+  ["freecdr.in: How to make die cut lines in CorelDraw", "https://freecdr.in/blogs/news/how-to-make-die-cut-lines-in-coreldraw-step-by-step-guide"],
+  ["Roland DG support: How to create CorelDRAW cutline CutContour data", "https://support.rolanddg.com/hc/en-us/articles/900004829723-How-to-create-CorelDRAW-cutline-CutContour-data"],
+  ["Paperlust: Die-cut sticker artwork setup", "https://printshop.paperlust.co/blog?p=2246"],
+  ["PrintKeg: Sticker file setup guide", "https://www.printkeg.com/pages/sticker-file-setup-guide"],
+  ["StickerApp: Custom shapes and cutlines", "https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers"],
+  ["Sticker Mule: How intricate can inner cuts be", "https://www.stickermule.com/eu/support/how-intricate-can-inner-cuts-be"],
+  ["printing.com shop guide: How to supply a die cut file", "https://shop.athloneprinting.ie/file-supply/5355"]
+ ]
+}
+-->
+<p class="intro">The file looked perfect on screen. Then the printer calls: the cutter skipped half the stickers, or printed a pink line around each one. Most <strong>CorelDraw die line mistakes</strong> are tiny setup slips, and the good news is that every one of them is easy to avoid once you know what to look for.</p>
+<p class="intro">Here's what to watch out for, and exactly how to fix each one.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="1-converted-spot">1. The spot colour got converted to CMYK</h2>
+<p><strong>What happens:</strong> the cutter finds nothing to cut.</p>
+<p><strong>Why:</strong> on PDF export, spot colours were converted to CMYK. The freecdr.in guide flags the "Convert spot colours to CMYK" checkbox as the one to untick.</p>
+<p><strong>Fix:</strong> untick it, re-export, and check the PDF's separations in Acrobat's Output Preview.</p>
+
+<h2 id="2-misspelt-name">2. The spot colour name is misspelt</h2>
+<p><strong>What happens:</strong> same as above. Nothing cuts.</p>
+<p><strong>Why:</strong> Roland's support note says that if you don't type the name CutContour exactly, VersaWorks can't recognise it. "Cutcontour" and "Cut Contour" don't count.</p>
+<p><strong>Fix:</strong> load Roland's palette, or keep one saved palette with the exact names and never type them again.</p>
+
+<h2 id="3-process-magenta">3. The line is process magenta, not a spot colour</h2>
+<p><strong>What happens:</strong> a pink line prints around every sticker.</p>
+<p><strong>Why:</strong> Paperlust's guide explains that a CMYK process colour gets printed as ink instead of being read as a cut path.</p>
+<p><strong>Fix:</strong> change the outline to the CutContour <em>spot</em> colour.</p>
+
+<h2 id="4-fill">4. The cut path has a fill</h2>
+<p><strong>What happens:</strong> a coloured blob hides your artwork on screen, and some RIPs handle it badly.</p>
+<p><strong>Fix:</strong> set the fill to None. freecdr.in says the spot colour belongs on the outline only.</p>
+
+<h2 id="5-open-path">5. The path isn't closed</h2>
+<p><strong>What happens:</strong> the blade stops early or jumps across the sticker.</p>
+<p><strong>Why:</strong> freecdr.in stresses that the cut path must be one fully closed loop with no stray nodes or overlapping segments.</p>
+<p><strong>Fix:</strong> select the path with the Shape tool (<kbd>F10</kbd>), find the open ends, and join them.</p>
+
+<h2 id="6-duplicate-lines">6. Two lines sit on top of each other</h2>
+<p><strong>What happens:</strong> the cutter cuts the same shape twice, which can tear thin material.</p>
+<p><strong>Why:</strong> a leftover copy after a contour, a paste, or a weld that didn't take.</p>
+<p><strong>Fix:</strong> open the Objects docker and look for duplicate curves on the cut layer. Delete the extras.</p>
+
+<h2 id="7-no-bleed">7. No bleed past the cut</h2>
+<p><strong>What happens:</strong> thin white slivers on the sticker edges.</p>
+<p><strong>Why:</strong> cutters are accurate, not perfect. Paperlust quotes plus or minus 0.5 mm.</p>
+<p><strong>Fix:</strong> extend the artwork about 3 mm (1/8 in) past the cut. PrintKeg asks for at least 0.125 in.</p>
+
+<h2 id="8-sharp-details">8. Sharp spikes and thin necks</h2>
+<p><strong>What happens:</strong> parts tear, lift or get cut badly.</p>
+<p><strong>Why:</strong> StickerApp warns that narrow sections can tear or lift. One printing.com shop guide sets a 3 mm minimum corner radius, and Sticker Mule considers areas around a cut narrower than 0.25 in (6.35 mm) too thin and more likely to be damaged.</p>
+<p><strong>Fix:</strong> round corners with the Contour tool's rounded corners, and widen thin bridges.</p>
+
+<h2 id="9-text-not-curves">9. Text in the cut layer is still live text</h2>
+<p><strong>What happens:</strong> the font gets swapped on another computer, or the text isn't treated as a path at all.</p>
+<p><strong>Fix:</strong> convert text to curves (<kbd>Ctrl</kbd> + <kbd>Q</kbd>) before you build the cut line around it. Keep a copy of the editable text on a hidden layer.</p>
+
+<h2 id="10-wrong-scale">10. The file was scaled on export or import</h2>
+<p><strong>What happens:</strong> stickers come out a few percent too big or small, and the cut no longer matches.</p>
+<p><strong>Fix:</strong> work at 100% size in millimetres, import by clicking once (not dragging), and measure one sticker before you send the file.</p>
+
+<h2 id="checklist">A 30-second checklist</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Check</th><th>Good</th></tr></thead>
+<tbody>
+<tr><td>Spot colour name</td><td>Exactly <code>CutContour</code> (or your printer's name)</td></tr>
+<tr><td>Spot colour after export</td><td>Still a spot colour in Output Preview</td></tr>
+<tr><td>Fill / outline</td><td>No fill, 0.25 pt outline, overprint on</td></tr>
+<tr><td>Path</td><td>Closed, one per sticker, no duplicates</td></tr>
+<tr><td>Bleed</td><td>About 3 mm past the cut</td></tr>
+<tr><td>Corners and necks</td><td>Rounded, nothing thinner than about 2 mm</td></tr>
+<tr><td>Size</td><td>100%, measured in mm</td></tr>
+</tbody></table></div>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>None of these mistakes are about talent. They're about a missed checkbox or a leftover line. The good news is that a 30-second check catches all ten.</p>
+<p>And if you'd rather not check by hand, the free <a href="../editor.html">Die Line Maker</a> avoids most of them automatically. It writes a real CutContour spot colour with no fill and overprint on, makes closed paths with rounded inside corners, adds bleed, and flags parts narrower than 2 mm.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>Most CorelDraw die line mistakes come down to the spot colour, the path, or the margins around it. Learn the ten above once, run the checklist before every export, and you'll stop losing sheets to small setup slips.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Why did my cut line print instead of cut?</summary><p>It's probably process magenta instead of a spot colour, or the spot colour was converted to CMYK on export. Use the CutContour spot colour and keep spot colours on export.</p></details>
+<details><summary>How do I check that my cut path is closed in CorelDraw?</summary><p>Select it with the Shape tool (F10). Open ends show as separate end nodes. Join them, then check again.</p></details>
+<details><summary>Should text be converted to curves before cutting?</summary><p>Yes. Convert it with Ctrl + Q so the shape can't change on another computer. Keep an editable copy on a hidden layer.</p></details>
+</section>

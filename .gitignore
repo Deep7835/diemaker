@@ -1,0 +1,8 @@
+.DS_Store
+# local preview settings for the Claude desktop app
+.claude/
+# a customer's real sticker sheet used for testing; kept private (the test runner skips it when missing)
+tests/images/14_real_rio_sheet_9.jpg
+# first prototype, replaced by site/
+/index.html
+__pycache__/

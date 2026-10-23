@@ -1,0 +1,85 @@
+<!--meta
+{
+ "slug": "photoshop-cut-line-stickers",
+ "cat": "Tutorial", "app": "Photoshop",
+ "h1": "How to Make a Sticker Cut Line in Photoshop",
+ "metaTitle": "How to Make a Sticker Cut Line in Photoshop (and Get It to Your Cutter)",
+ "metaDesc": "Make a sticker cut line in Photoshop: select the design, expand the selection, Make Work Path, export Paths to Illustrator, then assign CutContour in CorelDraw. Plus a faster PNG route.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Tutorial",
+ "crumb": "Cut line in Photoshop",
+ "summary": "Photoshop can draw the cut path, but it can't make a CutContour spot line on its own. Here's the full route to a cutter-ready file.",
+ "related": ["photoshop-white-border-sticker", "photoshop-export-stickers-for-print", "cutcontour-spot-color"],
+ "sources": [
+  ["Adobe: Convert between paths and selections (Photoshop help)", "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/convert-paths-and-selections.html"],
+  ["Adobe: Expand or contract a selection (Photoshop help)", "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/expand-or-contract-selection.html"],
+  ["Adobe: Move paths from Photoshop to Illustrator", "https://helpx.adobe.com/ro/illustrator/desktop/add-and-import-files/import-from-other-apps/move-paths-from-photoshop-to-illustrator.html"],
+  ["Signs101 forum: How to add cut lines in Photoshop for VersaWorks", "https://www.signs101.com/threads/how-to-add-cut-lines-in-photoshop-for-versaworks.106203"],
+  ["Signs101 forum: Contour cutting from Photoshop to Flexi", "https://www.signs101.com/threads/contour-cutting-from-photoshop-to-flexi.49936/"],
+  ["Akron-Summit County Public Library: Vinyl printer cut line tutorial (PDF)", "https://Www.Akronlibrary.org/images/pdf/TechZone_Vinyl_Printer_Cut_Line_Tutorial_for_Adobe.pdf"]
+ ]
+}
+-->
+<p class="intro">You designed the sticker in Photoshop. It looks great, the background is transparent, and now the print shop asks for a cut line. Here's the honest truth up front: <strong>Photoshop can draw a sticker cut line as a path, but it can't turn that path into a CutContour spot colour line by itself.</strong> That last step happens in CorelDraw or Illustrator.</p>
+<p class="intro">The good news is that the whole route takes about five minutes, and I'll walk you through every click. There's also a faster shortcut at the end if you'd rather skip it.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="why-photoshop-alone">Why Photoshop can't finish the job alone</h2>
+<p>A cutter needs a <strong>vector</strong> path with a stroke in a named spot colour, usually <code>CutContour</code>. The Akron-Summit County Public Library's cut line tutorial describes exactly that setup: a stroke-only path, 0.25 pt, in a spot colour called CutContour.</p>
+<p>Photoshop is mainly a pixel editor. It can make vector paths, but sign-making forums like Signs101 consistently route the cut line through Illustrator or CorelDraw to apply the spot colour. So the plan is: <strong>make the path in Photoshop, finish it in CorelDraw.</strong></p>
+
+<h2 id="step-1-isolate">Step 1: Put the sticker on a transparent layer</h2>
+<p>Your design needs to sit on its own layer with nothing around it. If it's still on a background, use <strong>Select, then Subject</strong> or the Magic Wand, invert as needed, and delete the background.</p>
+<p>Leave some empty canvas around the design. You'll see why in step 3.</p>
+
+<h2 id="step-2-select">Step 2: Select the design's shape</h2>
+<p><kbd>Ctrl</kbd> + click (Windows) or <kbd>Cmd</kbd> + click (Mac) the layer's thumbnail in the Layers panel. Photoshop selects everything that isn't transparent. That selection is your sticker's outline.</p>
+
+<h2 id="step-3-expand">Step 3: Expand the selection for the gap</h2>
+<p>Choose <strong>Select, then Modify, then Expand</strong>. Adobe's help says you can enter 1 to 100 pixels. Two things to know:</p>
+<ul>
+<li><strong>Convert mm to pixels.</strong> At 300 ppi, 1 mm is about 11.8 px. A 2 mm gap is about 24 px, and 3 mm is about 35 px. The 100 px limit is about 8.5 mm at 300 ppi.</li>
+<li><strong>Edges don't grow.</strong> Adobe notes that any part of the selection running along the canvas edge isn't expanded. That's why you left empty canvas in step 1.</li>
+</ul>
+
+<h2 id="step-4-path">Step 4: Turn the selection into a path</h2>
+<ol>
+<li>Open the Paths panel (<strong>Window, then Paths</strong>).</li>
+<li><kbd>Alt</kbd> + click (Windows) or <kbd>Option</kbd> + click (Mac) the <strong>Make Work Path</strong> button so you can set the tolerance.</li>
+<li>Enter a tolerance. Adobe's help explains the range is 0.5 to 10 pixels: lower values (0.5 to 2) follow the edge closely with more anchor points, higher values (4 to 10) make smoother paths with fewer points. For a cut line, 2 to 3 is a good balance.</li>
+<li>Double-click <strong>Work Path</strong> and give it a name. Adobe notes the work path is temporary until you save it this way.</li>
+</ol>
+
+<h2 id="step-5-export">Step 5: Export the path</h2>
+<p>Choose <strong>File, then Export, then Paths to Illustrator</strong>. Adobe's help describes this as exporting just the vector paths, with no pixels. You get an <code>.ai</code> file.</p>
+<p>Don't worry if it looks empty when you open it. Forum users point out that exported paths have no stroke or fill, so they're invisible until you give them one.</p>
+
+<h2 id="step-6-coreldraw">Step 6: Finish the cut line in CorelDraw</h2>
+<ol>
+<li>Import your sticker artwork (PNG, PSD or PDF) into CorelDraw at its real size.</li>
+<li>Import the <code>.ai</code> path file on top and line it up with the artwork.</li>
+<li>Select the path, set the fill to None, and give the outline the <code>CutContour</code> spot colour at 0.25 pt.</li>
+<li>Right-click and tick Overprint Outline, then export a PDF with spot colours kept.</li>
+</ol>
+<p>The <a href="die-cut-lines-in-coreldraw.html">CorelDraw die line guide</a> covers this part in detail.</p>
+
+<h2 id="faster-route">The faster route: skip the path entirely</h2>
+<p>Here's the shortcut. Export your sticker from Photoshop as a <strong>transparent PNG</strong> and upload it to the free <a href="../editor.html">Die Line Maker</a>. It traces the outline from the transparency, adds the gap and bleed, smooths the curve so it has few nodes, and gives you a PDF where the artwork and a real CutContour spot line sit on separate layers. Then open that PDF in CorelDraw.</p>
+<p>Comparing the two routes honestly: the Photoshop path route gives you full manual control. The PNG route is faster and handles bumpy outlines better, because the curve is smoothed for the cutter.</p>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>You don't need to leave Photoshop to design stickers. You just need one hand-off at the end: the cut line gets its spot colour in CorelDraw or Illustrator. Once you know that, the "why won't my Photoshop cut line work?" mystery disappears.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To make a sticker cut line in Photoshop, select the transparent layer, expand the selection by your gap in pixels, Make Work Path, save it, and export Paths to Illustrator. Then assign CutContour in CorelDraw. Or export a transparent PNG and let Die Line Maker do it in one step.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Can Photoshop make a CutContour line?</summary><p>Not on its own. Photoshop can make the vector path, but the CutContour spot colour stroke is applied in CorelDraw or Illustrator before you send the file.</p></details>
+<details><summary>How many pixels is a 2 mm gap in Photoshop?</summary><p>At 300 ppi, about 24 px. One millimetre is about 11.8 px at 300 ppi.</p></details>
+<details><summary>What tolerance should I use for Make Work Path?</summary><p>Adobe allows 0.5 to 10 px. For a cut line, 2 to 3 balances accuracy and a smooth path with fewer points.</p></details>
+</section>

@@ -1,0 +1,95 @@
+<!--meta
+{
+ "slug": "photoshop-export-stickers-for-print",
+ "cat": "Guide", "app": "Photoshop",
+ "h1": "How to Export Stickers from Photoshop for Print",
+ "metaTitle": "Export Stickers from Photoshop for Print: PNG, PDF, 300 ppi",
+ "metaDesc": "How to export stickers from Photoshop for print: 300 ppi at final size, a transparent PNG for cutting tools, a print-ready PDF, why PNG can't be CMYK, and adding bleed.",
+ "type": "Type 3: Informational / Educational",
+ "range": "0.55 to 0.75",
+ "tone": "Curious + Warm + Trustworthy",
+ "tagline": "Guide",
+ "crumb": "Export from Photoshop",
+ "summary": "Which file to export for which job: transparent PNG for the cut line, PDF for the printer, and the resolution and colour rules behind them.",
+ "related": ["photoshop-cut-line-stickers", "photoshop-white-border-sticker", "photoshop-sticker-design-tips"],
+ "sources": [
+  ["Adobe: Image file formats supported in Photoshop", "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html"],
+  ["Adobe Community: Converting a PNG from RGB to CMYK for print", "https://community.adobe.com/t5/photoshop-ecosystem-discussions/how-do-i-convert-a-png-from-rgb-to-cmyk-for-print/td-p/10619253"],
+  ["4OVER4: How to save a Photoshop file as a print-ready PDF", "https://mapp.4over4.com/guide/how-to-save-a-photoshop-file-as-a-print-ready-pdf"],
+  ["4OVER4: How to create sticker sheets in Adobe Photoshop", "https://mapp.4over4.com/guide/how-to-create-sticker-sheets-in-adobe-photoshop"],
+  ["PrintKeg: Sticker file setup guide", "https://www.printkeg.com/pages/sticker-file-setup-guide"],
+  ["Paperlust: Die-cut sticker artwork setup", "https://printshop.paperlust.co/blog?p=2246"]
+ ]
+}
+-->
+<p class="intro">You hit Export, choose PNG, and send it off. A day later the printer writes back: "low resolution", "needs CMYK", "no bleed". Exporting stickers from Photoshop isn't hard, but the right file depends on what happens next: making the cut line, or printing.</p>
+<p class="intro">What I find genuinely useful is splitting it into two jobs. Once you see it that way, choosing the format becomes obvious.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="two-files">Two jobs, two files</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Job</th><th>Best file</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Making the cut line (a cutting tool, CorelDraw trace)</td><td>Transparent PNG</td><td>The transparency defines the sticker's shape</td></tr>
+<tr><td>Sending to the printer</td><td>Print-ready PDF (or PSD/TIFF)</td><td>Supports CMYK, bleed and spot colours</td></tr>
+</tbody></table></div>
+
+<h2 id="resolution">Step 1: Set the size and resolution</h2>
+<p>PrintKeg's setup guide asks for raster artwork of at least <strong>300 DPI at the final print size</strong>, and that's a good rule for any sticker.</p>
+<ol>
+<li>Choose <strong>Image, then Image Size</strong>.</li>
+<li>Set the width and height in millimetres or inches to the real sticker size.</li>
+<li>Check that Resolution reads 300 pixels/inch. If you have to turn Resample on to get there, the image is being enlarged. That can look soft, so start from a bigger original if you can.</li>
+</ol>
+<p>A quick reality check: a 75 mm (2.95 in) sticker at 300 ppi needs about 886 pixels across.</p>
+
+<h2 id="png">Step 2: Export a transparent PNG for the cut line</h2>
+<ol>
+<li>Hide any background layer so the area around the sticker is transparent.</li>
+<li>Choose <strong>File, then Export, then Export As</strong>, pick PNG, and keep transparency on.</li>
+</ol>
+<p>Here's something most people don't know: <strong>PNG can't be CMYK.</strong> Adobe's file format page describes PNG as preserving transparency in grayscale and RGB images, and an Adobe staff member explains that PNG was designed for the web and doesn't support CMYK. If your document is CMYK, Export As converts it to RGB on the way out, so the PNG is always RGB.</p>
+<p>That's fine for a cut line tool, which only needs the shape. The free <a href="../editor.html">Die Line Maker</a> reads the transparency, traces the outline, and gives you a CorelDraw-ready PDF.</p>
+
+<h2 id="pdf">Step 3: Save a print-ready PDF</h2>
+<p>Printer guides from 4OVER4 describe the standard route:</p>
+<ol class="steps-box">
+<li>Choose <strong>File, then Save As</strong> and pick <strong>Photoshop PDF</strong>.</li>
+<li>Start from the <strong>[Press Quality]</strong> preset.</li>
+<li>Set the standard to <strong>PDF/X-1a</strong> if your printer asks for it.</li>
+<li>Turn on trim marks and bleed if the printer wants them, then save.</li>
+</ol>
+<p>If the printer wants CMYK, convert with <strong>Image, then Mode, then CMYK Color</strong> before saving, and check colours on screen first. Bright RGB oranges and blues can shift in CMYK.</p>
+
+<h2 id="bleed">Step 4: Add bleed (Photoshop has no bleed setting)</h2>
+<p>4OVER4 points out that Photoshop has no built-in bleed setting, so you add it yourself:</p>
+<ul>
+<li>Choose <strong>Image, then Canvas Size</strong> and add twice your bleed to the width and height (for 3 mm bleed, add 6 mm).</li>
+<li>Extend the background or white border into that extra space.</li>
+<li>Drag guides to mark the trim edge.</li>
+</ul>
+<p>Paperlust uses 3 mm of bleed beyond the cut; PrintKeg asks for at least 0.125 in (3.2 mm). Our <a href="sticker-bleed-and-safe-zone.html">bleed and safe zone guide</a> has the full table.</p>
+
+<h2 id="checklist">A quick pre-send checklist</h2>
+<ul>
+<li>300 ppi at the final size</li>
+<li>Transparent PNG for the cut line, RGB</li>
+<li>PDF (or PSD/TIFF) for print, CMYK if asked</li>
+<li>About 3 mm of bleed</li>
+<li>Text and logos at least 2 to 3 mm inside the cut</li>
+</ul>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>The confusion around Photoshop exports usually comes from asking one file to do two jobs. Give the cutting step a transparent PNG and the printer a proper PDF, and the problems disappear.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To export stickers from Photoshop for print, set 300 ppi at the final size, export a transparent RGB PNG for the cut line, and save a Press Quality PDF with bleed for the printer. Two files, two jobs, and no more emails about low resolution.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Can I save a PNG in CMYK from Photoshop?</summary><p>No. PNG supports RGB and grayscale with transparency, not CMYK. Use PDF, PSD or TIFF for CMYK print files.</p></details>
+<details><summary>What resolution should stickers be?</summary><p>300 ppi (DPI) at the final print size. A 75 mm sticker needs about 886 pixels across.</p></details>
+<details><summary>How do I add bleed in Photoshop?</summary><p>Photoshop has no bleed setting. Use Image, then Canvas Size to add twice the bleed, then extend the background into the new space.</p></details>
+</section>

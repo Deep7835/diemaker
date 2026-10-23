@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Detected Article Type: Type 2: How-To / Guide | Sentiment Target Range: 0.70 to 0.90 | Sentiment Tone: Encouraging + Confidence-building -->
+<title>PowerTRACE in CorelDraw: Trace a Sticker into Clean Vectors</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Learn how to use PowerTRACE in CorelDraw to turn a sticker image into clean vectors: the right trace type, Detail, Smoothing and Corner smoothness, and removing the background.">
+<meta property="og:site_name" content="Die Line Maker">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="PowerTRACE in CorelDraw: Trace a Sticker into Clean Vectors">
+<meta property="og:description" content="Learn how to use PowerTRACE in CorelDraw to turn a sticker image into clean vectors: the right trace type, Detail, Smoothing and Corner smoothness, and removing the background.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PowerTRACE in CorelDraw: Trace a Sticker into Clean Vectors">
+<meta name="twitter:description" content="Learn how to use PowerTRACE in CorelDraw to turn a sticker image into clean vectors: the right trace type, Detail, Smoothing and Corner smoothness, and removing the background.">
+<meta name="theme-color" content="#f4f5f8">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f172a'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%234d8dff' stroke-width='2.4' stroke-dasharray='3.4 2.6'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/uncut-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/uncut-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css?v=b5748bae">
+<script>try{var t=localStorage.getItem('dlm-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Trace a Sticker with PowerTRACE in CorelDraw", "description": "Learn how to use PowerTRACE in CorelDraw to turn a sticker image into clean vectors: the right trace type, Detail, Smoothing and Corner smoothness, and removing the background.", "datePublished": "2026-10-20", "dateModified": "2026-10-20", "inLanguage": "en", "articleSection": "Tutorial", "about": "CorelDraw", "author": {"@type": "Organization", "name": "Die Line Maker"}, "publisher": {"@type": "Organization", "name": "Die Line Maker"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which PowerTRACE option is best for stickers?", "acceptedAnswer": {"@type": "Answer", "text": "Outline Trace, then Logo, for flat-colour stickers. Try Detailed logo when the sticker has shading or many colours."}}, {"@type": "Question", "name": "Why does my trace have so many nodes?", "acceptedAnswer": {"@type": "Answer", "text": "Smoothing is too low or the image is small and blurry. Raise Smoothing and trace a larger image. Fewer nodes also cut more smoothly."}}, {"@type": "Question", "name": "Do I need to trace the whole design?", "acceptedAnswer": {"@type": "Answer", "text": "No. For a die cut line you only need the outer shape. The printed artwork can stay as an image."}}]}</script>
+</head>
+<body>
+<a class="skip" href="#article">Skip to the article</a>
+<header class="nav">
+  <div class="in wrapw gut">
+    <a class="logo" href="../index.html" aria-label="Die Line Maker home"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></span><span>Die Line Maker<b>.</b></span></a>
+    <nav aria-label="Main">
+      <a href="../editor.html">Editor</a>
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#coreldraw">CorelDraw guide</a>
+      <a href="index.html" aria-current="page">Guides &amp; blog</a>
+      <a href="../index.html#faq">FAQ</a>
+    </nav>
+    <a class="btn primary" href="../editor.html">Make a die line</a>
+    <button class="themebtn" type="button" aria-label="Switch colour theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7Z"/></svg></button>
+    <button class="menubtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+  <div class="mobilemenu" id="mobileMenu" hidden>
+    <a href="../editor.html">Editor</a>
+    <a href="../index.html#how">How it works</a>
+    <a href="../index.html#coreldraw">CorelDraw guide</a>
+    <a href="index.html">Guides &amp; blog</a>
+    <a href="../index.html#faq">FAQ</a>
+    <a class="btn primary" href="../editor.html">Make a die line</a>
+  </div>
+</header>
+<main id="article" class="gut">
+<article class="article">
+<ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Guides</a></li><li aria-current="page">PowerTRACE a sticker</li></ol>
+<h1>How to Trace a Sticker with PowerTRACE in CorelDraw</h1>
+<p class="meta"><span>Tutorial</span><span>CorelDraw</span><span>5 min read</span><span>Updated 20 October 2026</span></p>
+<p class="intro">A client sends a sticker design as a small JPG and asks for 200 die-cut copies. You can't cut a JPG. The cutter needs vector lines, and the quickest way to get them in CorelDraw is <strong>PowerTRACE</strong>, CorelDraw's built-in bitmap tracing tool.</p>
+<p class="intro">Here's the good news: PowerTRACE does most of the work for you. In this tutorial I'll show you which trace type to pick, which three sliders actually matter, and how to end up with one clean outline ready for a cut line.</p>
+<nav class="toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#what-powertrace-does">What PowerTRACE does</a></li><li><a href="#before-you-trace">Before you trace</a></li><li><a href="#step-1-open">Step 1: Open PowerTRACE</a></li><li><a href="#step-2-sliders">Step 2: Set the three sliders that matter</a></li><li><a href="#step-3-background">Step 3: Remove the background</a></li><li><a href="#step-4-outline">Step 4: Turn the trace into one outline</a></li><li><a href="#step-5-cut-line">Step 5: Make the cut line from it</a></li><li><a href="#common-problems">Common problems and fixes</a></li><li><a href="#what-this-means">What this means for you</a></li><li><a href="#takeaway">The takeaway</a></li></ol></nav>
+<div class="prose">
+
+<h2 id="what-powertrace-does">What PowerTRACE does</h2>
+<p>PowerTRACE looks at the pixels in your image and draws vector shapes over them. Vector shapes are made of curves and nodes, so they stay sharp at any size and a cutter can follow them.</p>
+<p>For die cutting you don't need a perfect copy of every colour. You need the <em>outer shape</em>. That makes the job much easier, because you can trace with less detail and still get a great outline.</p>
+
+<h2 id="before-you-trace">Before you trace</h2>
+<ul>
+<li><strong>Use the biggest image you have.</strong> More pixels give PowerTRACE more to work with.</li>
+<li><strong>Remove clutter.</strong> If the sticker sits on a busy background, crop it first.</li>
+<li><strong>Import at the final size.</strong> Place the bitmap at the size you'll print, so the traced curves match it.</li>
+</ul>
+
+<h2 id="step-1-open">Step 1: Open PowerTRACE</h2>
+<p>Select the bitmap. Corel's own tutorial shows the route: click <strong>Trace Bitmap</strong> on the property bar and choose <strong>Outline Trace, then Logo</strong>. In older versions the same command sits under the Bitmaps menu.</p>
+<p>Why Logo? It's built for images with flat colours and clear edges, which describes most stickers. For a sticker with lots of shading, try <strong>Detailed logo</strong> instead.</p>
+
+<h2 id="step-2-sliders">Step 2: Set the three sliders that matter</h2>
+<p>The PowerTRACE window shows your original and the traced result side by side. Corel's help explains the three main controls:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Slider</th><th>What it does</th><th>For a cut line</th></tr></thead>
+<tbody>
+<tr><td>Detail</td><td>Higher keeps more detail and makes more objects and colours. Lower drops detail.</td><td>Keep it low. You only need the outer shape.</td></tr>
+<tr><td>Smoothing</td><td>Higher gives fewer nodes and softer curves that may drift from the source. Lower adds nodes and follows the edge more closely.</td><td>Medium to high. Fewer nodes cut more smoothly.</td></tr>
+<tr><td>Corner smoothness</td><td>Lower keeps sharp corners. Higher rounds them.</td><td>Medium. Rounded corners are kinder to blades.</td></tr>
+</tbody></table></div>
+<p>This part is actually really easy. Move one slider, watch the preview, and stop as soon as the outline looks clean. StickerApp's sticker guide backs this up: gentle curves cut cleaner than jagged lines.</p>
+
+<h2 id="step-3-background">Step 3: Remove the background</h2>
+<p>Tick <strong>Remove background</strong>. Corel's help says you can also choose a specific colour to remove: pick the Eyedropper and click it in the preview. Hold <kbd>Shift</kbd> and click to add more background colours.</p>
+<p>Corel also suggests turning off <strong>Remove object overlap</strong> and turning on <strong>Group objects by color</strong> when you want cleaner, easier-to-edit results. Click OK when the preview looks right.</p>
+
+<h2 id="step-4-outline">Step 4: Turn the trace into one outline</h2>
+<p>You now have a group of coloured shapes. For a cut line you want one shape that follows the outside edge.</p>
+<ol>
+<li>Select the traced group and ungroup it (<kbd>Ctrl</kbd> + <kbd>U</kbd>).</li>
+<li>Select all the pieces and use <strong>Object, then Shaping, then Weld</strong>. This merges them into one shape.</li>
+<li>Delete any tiny leftover specks. They'd turn into tiny cuts.</li>
+<li>Check the outline with the Shape tool (<kbd>F10</kbd>). The freecdr.in guide reminds us the cut path must be one fully closed loop with no stray nodes.</li>
+</ol>
+
+<h2 id="step-5-cut-line">Step 5: Make the cut line from it</h2>
+<p>Your welded outline is the base for the cut line. Add an outside offset with the Contour tool, give it the CutContour spot colour and a 0.25 pt outline, and you're done. I walk through that part in the <a href="contour-tool-cut-line-coreldraw.html">Contour tool tutorial</a>.</p>
+<div class="note"><b>Shortcut</b>If you'd rather skip tracing, the free <a href="../editor.html">Die Line Maker</a> traces the outline, adds the gap and gives you a CorelDraw-ready PDF in one step.</div>
+
+<h2 id="common-problems">Common problems and fixes</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>Hundreds of tiny shapes</td><td>Detail too high</td><td>Lower Detail and trace again</td></tr>
+<tr><td>Wobbly, bumpy outline</td><td>Smoothing too low, or a small blurry image</td><td>Raise Smoothing or use a bigger image</td></tr>
+<tr><td>Background traced too</td><td>Remove background off</td><td>Tick it, or pick the colour with the Eyedropper</td></tr>
+<tr><td>Weld leaves gaps</td><td>Pieces don't touch</td><td>Add a small outside contour first, then weld</td></tr>
+</tbody></table></div>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>PowerTRACE isn't about getting a perfect vector copy of the artwork. For die cutting, a smooth, simple outer shape beats a detailed one every time. Low Detail, medium-to-high Smoothing, background removed, then weld.</p>
+<p>Based on Corel's own guidance and what sticker printers ask for, that combination gives you an outline with fewer nodes and cleaner cuts. Once you've done it twice, it takes about a minute.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To trace a sticker with PowerTRACE in CorelDraw, choose Outline Trace, then Logo, keep Detail low, raise Smoothing, remove the background, and weld the result into one shape. You'll have a clean outline ready to become a cut line, and you've got this.</p>
+</div>
+<div class="cta">
+  <div><b>Make your die line in a minute</b><p>Upload a sticker image and download a CorelDraw-ready PDF with a CutContour cut line, bleed and safe zone. Free, and your image never leaves your computer.</p></div>
+  <a class="btn primary" href="../editor.html">Open Die Line Maker</a>
+</div>
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Which PowerTRACE option is best for stickers?</summary><p>Outline Trace, then Logo, for flat-colour stickers. Try Detailed logo when the sticker has shading or many colours.</p></details>
+<details><summary>Why does my trace have so many nodes?</summary><p>Smoothing is too low or the image is small and blurry. Raise Smoothing and trace a larger image. Fewer nodes also cut more smoothly.</p></details>
+<details><summary>Do I need to trace the whole design?</summary><p>No. For a die cut line you only need the outer shape. The printed artwork can stay as an image.</p></details>
+</section>
+
+<section class="related keep"><h2>Keep reading</h2><ul><li><a href="contour-tool-cut-line-coreldraw.html">How to Make an Offset Cut Line with the Contour Tool in CorelDraw</a></li><li><a href="die-cut-lines-in-coreldraw.html">How to Make Die Cut Lines in CorelDraw (Step by Step)</a></li><li><a href="coreldraw-die-line-mistakes.html">10 CorelDraw Die Line Mistakes (and How to Fix Each One)</a></li></ul></section>
+<section class="related"><h2>Sources</h2><ul><li><a href="https://product.corel.com/help/CorelDRAW/Documentation-Windows/CorelDRAW-en/CorelDRAW-Finetune-traced-results.html" target="_blank" rel="noopener">Corel: Fine-tune traced results (CorelDRAW help)</a></li><li><a href="https://learn.corel.com/tutorials/convert-jpg-to-vector/" target="_blank" rel="noopener">Corel: Convert JPG to vector (tutorial)</a></li><li><a href="https://freecdr.in/blogs/news/how-to-make-die-cut-lines-in-coreldraw-step-by-step-guide" target="_blank" rel="noopener">freecdr.in: How to make die cut lines in CorelDraw</a></li><li><a href="https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers" target="_blank" rel="noopener">StickerApp: Custom shapes and cutlines</a></li></ul></section>
+</article>
+</main>
+<footer>
+  <div class="in wrapw gut">
+    <div><p><b style="color:var(--ink)">Die Line Maker</b>, a free die cut line tool for printers, sign shops and sticker makers. Everything runs in your browser, so your artwork is never uploaded.</p></div>
+    <div><h3>Tool</h3><ul>
+      <li><a href="../editor.html">Make a die line</a></li>
+      <li><a href="../index.html#coreldraw">CorelDraw guide</a></li>
+      <li><a href="../index.html#faq">FAQ</a></li>
+      <li><a href="index.html">All guides</a></li>
+    </ul></div>
+    <div><h3>Learn</h3><ul>
+      <li><a href="index.html">All tutorials &amp; guides</a></li>
+      <li><a href="index.html#coreldraw">CorelDraw tutorials</a></li>
+      <li><a href="index.html#photoshop">Photoshop tutorials</a></li>
+      <li><a href="index.html#tips">Tips</a></li>
+      <li><a href="die-cut-lines-in-coreldraw.html">Die cut lines in CorelDraw</a></li>
+    </ul></div>
+    <div><h3>About</h3><ul>
+      <li><a href="../privacy.html">Privacy policy</a></li>
+      <li><a href="../terms.html">Terms of use</a></li>
+    </ul></div>
+    <p class="fine">CorelDraw is a trademark of its owner. Roland, VersaWorks and other names belong to their owners. This site isn't affiliated with any of them.</p>
+  </div>
+</footer>
+<script src="../assets/site.js?v=b5748bae" defer></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Make share images</title>
+<link rel="stylesheet" href="../site/assets/site.css">
+<style>body{padding:24px} canvas{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block;margin:12px 0}</style>
+</head>
+<body>
+<h1>Share image and app icon</h1>
+<p class="lede">Draws <code>og.png</code> (1200 × 630) and <code>apple-touch-icon.png</code> (180 × 180) with Uncut Sans. Right-click each image to save it into <code>site/assets/</code>.</p>
+<canvas id="og" width="1200" height="630"></canvas>
+<canvas id="icon" width="180" height="180"></canvas>
+<script>
+'use strict';
+const INK = '#0f172a', MUTED = '#5b6475', ACCENT = '#1f6feb', CUT = '#e0007a', BG = '#f4f5f8', LINE = '#e5e7ec';
+function scissors(x, s, cx, cy){                    // the logo's scissors icon (24-unit grid)
+  x.save(); x.translate(cx, cy); x.scale(s/24, s/24); x.strokeStyle = '#fff'; x.lineWidth = 1.9; x.lineCap = 'round'; x.lineJoin = 'round';
+  x.beginPath(); x.arc(6, 6, 3, 0, 7); x.moveTo(8.12, 8.12); x.lineTo(12, 12); x.moveTo(20, 4); x.lineTo(8.12, 15.88);
+  x.moveTo(9, 18); x.arc(6, 18, 3, 0, 7); x.moveTo(14.8, 14.8); x.lineTo(20, 20); x.stroke(); x.restore();
+}
+function rr(x, X, Y, W, H, r){ x.beginPath(); x.roundRect(X, Y, W, H, r); }
+function blob(x, cx, cy, rx, ry){ x.beginPath(); x.ellipse(cx, cy, rx, ry, 0, 0, 7); }
+async function draw(){
+  await document.fonts.load('600 64px "Uncut Sans"'); await document.fonts.load('500 24px "Uncut Sans"');
+  const c = document.getElementById('og'), x = c.getContext('2d');
+  x.fillStyle = BG; x.fillRect(0, 0, 1200, 630);
+  x.fillStyle = 'rgba(15,23,42,.07)'; for (let gy = 12; gy < 630; gy += 22) for (let gx = 12; gx < 1200; gx += 22){ x.beginPath(); x.arc(gx, gy, 1.2, 0, 7); x.fill(); }
+  // logo
+  rr(x, 72, 66, 52, 52, 14); x.fillStyle = INK; x.fill(); scissors(x, 32, 82, 76);
+  x.fillStyle = INK; x.font = '600 30px "Uncut Sans"'; x.fillText('Die Line Maker', 140, 103); x.fillStyle = ACCENT; x.fillText('.', 140 + x.measureText('Die Line Maker').width, 103);
+  // headline
+  x.fillStyle = INK; x.font = '600 66px "Uncut Sans"';
+  const lines = [['Turn any sticker'], ['into a ', ['cut line', ACCENT]], ['for CorelDraw.']];
+  let y = 236;
+  for (const parts of lines){ let X = 72; for (const p of parts){ const [t, col] = Array.isArray(p) ? p : [p, INK]; x.fillStyle = col; x.fillText(t, X, y); X += x.measureText(t).width; } y += 76; }
+  x.fillStyle = MUTED; x.font = '500 25px "Uncut Sans"'; x.fillText('Free · CutContour PDF · Runs in your browser', 72, 500);
+  // pill button
+  rr(x, 72, 532, 226, 54, 27); x.fillStyle = ACCENT; x.fill(); x.fillStyle = '#fff'; x.font = '600 21px "Uncut Sans"'; x.fillText('Make a die line', 104, 566);
+  // preview card
+  x.save(); x.shadowColor = 'rgba(15,23,42,.18)'; x.shadowBlur = 40; x.shadowOffsetY = 18; rr(x, 690, 96, 440, 438, 26); x.fillStyle = '#fff'; x.fill(); x.restore();
+  rr(x, 690, 96, 440, 438, 26); x.strokeStyle = LINE; x.lineWidth = 1.5; x.stroke();
+  x.save(); rr(x, 691, 150, 438, 383, 0); x.clip(); x.fillStyle = '#eceef2'; x.fillRect(690, 150, 440, 384);
+  x.fillStyle = 'rgba(15,23,42,.09)'; for (let gy = 160; gy < 534; gy += 18) for (let gx = 700; gx < 1130; gx += 18){ x.beginPath(); x.arc(gx, gy, 1.1, 0, 7); x.fill(); }
+  x.restore();
+  x.fillStyle = LINE; [714, 732, 750].forEach(cx => { x.beginPath(); x.arc(cx, 123, 6, 0, 7); x.fill(); });
+  // sticker: white border, art, cut line
+  blob(x, 910, 342, 168, 128); x.fillStyle = '#fff'; x.shadowColor = 'rgba(15,23,42,.12)'; x.shadowBlur = 16; x.fill(); x.shadowBlur = 0;
+  const g = x.createLinearGradient(780, 240, 1040, 450); g.addColorStop(0, '#ff8a00'); g.addColorStop(1, '#e5007e');
+  blob(x, 910, 342, 140, 102); x.fillStyle = g; x.fill(); x.lineWidth = 6; x.strokeStyle = '#14201b'; x.stroke();
+  x.textAlign = 'center'; x.font = '700 50px "Uncut Sans"'; x.lineWidth = 7; x.strokeStyle = '#14201b'; x.strokeText('STICK', 910, 340); x.fillStyle = '#fff'; x.fillText('STICK', 910, 340);
+  x.font = '700 32px "Uncut Sans"'; x.strokeText('IT!', 910, 386); x.fillText('IT!', 910, 386); x.textAlign = 'start';
+  blob(x, 910, 342, 168, 128); x.strokeStyle = CUT; x.lineWidth = 3; x.stroke();
+  rr(x, 1006, 176, 108, 50, 12); x.fillStyle = '#fff'; x.fill(); x.strokeStyle = LINE; x.lineWidth = 1.5; x.stroke();
+  x.fillStyle = CUT; x.font = '600 16px "Uncut Sans"'; x.fillText('CutContour', 1018, 198); x.fillStyle = MUTED; x.font = '500 14px "Uncut Sans"'; x.fillText('0.25 pt spot', 1018, 216);
+
+  // app icon
+  const ic = document.getElementById('icon'), y2 = ic.getContext('2d');
+  y2.fillStyle = INK; y2.fillRect(0, 0, 180, 180);
+  y2.setLineDash([16, 12]); y2.lineWidth = 9; y2.strokeStyle = '#4d8dff'; y2.beginPath(); y2.arc(90, 90, 46, 0, 7); y2.stroke(); y2.setLineDash([]);
+  window.READY = true;
+}
+async function upload(){
+  for (const [id, name] of [['og', 'og.png'], ['icon', 'apple-touch-icon.png']]){
+    const b = await new Promise(r => document.getElementById(id).toBlob(r, 'image/png'));
+    await fetch('http://127.0.0.1:8765/' + name, { method:'POST', body:b });
+  }
+  return 'uploaded';
+}
+draw();
+</script>
+</body>
+</html>

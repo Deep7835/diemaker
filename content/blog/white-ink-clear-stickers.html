@@ -1,0 +1,109 @@
+<!--meta
+{
+ "slug": "white-ink-clear-stickers",
+ "h1": "White Ink for Clear Stickers: How to Set Up RDG_WHITE",
+ "metaTitle": "White Ink for Clear Stickers: RDG_WHITE Setup in CorelDraw",
+ "metaDesc": "How white ink for clear stickers works, when to use a full or design-only white layer, and how to set up the RDG_WHITE spot colour for Roland VersaWorks.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Step-by-step guide",
+ "crumb": "White ink for clear stickers",
+ "summary": "Why colours fade on clear vinyl, when to use a full or design-only white layer, and how RDG_WHITE tells VersaWorks where to print white.",
+ "related": [
+  "cutcontour-spot-color",
+  "sticker-bleed-and-safe-zone",
+  "die-cut-lines-in-coreldraw"
+ ],
+ "sources": [
+  [
+   "Roland DG: Creating printing data for white ink (UV printing guide)",
+   "https://downloadcenter.rolanddg.com/contents/manuals/UV-Guide_USE_EN/tft1604304370571.html"
+  ],
+  [
+   "Roland DG: Generating a white ink spot colour plate in VersaWorks",
+   "https://downloadcenter.rolanddg.com/contents/manuals/UV-Guide_USE_EN/gkn1661130651299.html"
+  ],
+  [
+   "Roland DG: Registering spot colours in CorelDRAW (VersaWorks 7)",
+   "https://downloadcenter.rolanddg.com/contents/manuals/VW7_STA_EN/eki1758099948807.html"
+  ],
+  [
+   "Roland DGA: VersaWorks custom settings",
+   "https://www.rolanddga.com/blog/versaworks-installation-info-2"
+  ],
+  [
+   "Sticker artwork setup guide (PDF)",
+   "https://a-us.storyblok.com/f/1003833/x/71f9631207/artworksetupguide_stickers.pdf"
+  ],
+  [
+   "PrintKeg: Sticker file setup guide",
+   "https://www.printkeg.com/pages/sticker-file-setup-guide"
+  ]
+ ],
+ "cat": "Tutorial",
+ "app": "CorelDraw"
+}
+-->
+<p class="intro">Clear stickers look amazing on a laptop or a glass door. Then the first test print comes out and the colours look pale, almost ghostly, because the light passes straight through the ink. The fix is <strong>white ink for clear stickers</strong>: a layer of white printed under your colours so they stay bright.</p>
+<p class="intro">Here's the good news. Setting this up is mostly about one named spot colour. Once your file has it, the printer knows exactly where to lay down white. Let me walk you through it.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="why-white-ink">Why clear stickers need white ink</h2>
+<p>Normal printing relies on white paper. Cyan, magenta, yellow and black inks are slightly see-through, and the white paper behind them makes the colours glow. Take away the white paper and the colours lose their punch.</p>
+<p>That's why printers add a white layer on clear and metallic material. One sticker printer's artwork setup guide puts it simply: a white vector layer should back up the colour areas, and on silver stock the white is printed first, with CMYK on top.</p>
+
+<h2 id="what-is-rdg-white">What RDG_WHITE is</h2>
+<p>RDG_WHITE is the spot colour name Roland's VersaWorks RIP uses for white ink. Roland's UV printing guide explains that the parts of your file set to RDG_WHITE are the parts VersaWorks prints with white ink.</p>
+<p>It works just like CutContour. The RIP doesn't care what RDG_WHITE looks like on screen. It cares that the swatch has that exact name.</p>
+<div class="note"><b>Check your printer model</b>Roland's VersaWorks settings article notes that this white ink feature applies to specific white-ink printers. Check that your machine supports white ink before you plan a job around it.</div>
+
+<h2 id="full-or-design-only">Full white or design-only white?</h2>
+<p>You have two good choices, and each one suits a different look.</p>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Full white (whole sticker)</th><th>Design-only white</th></tr></thead>
+<tbody>
+<tr><td>What gets white</td><td>Everything inside the cut line</td><td>Only the printed design</td></tr>
+<tr><td>Clear areas</td><td>None, the sticker looks solid</td><td>Stay see-through</td></tr>
+<tr><td>Best for</td><td>Bright, opaque stickers on clear vinyl</td><td>Logos that "float" on glass or a laptop</td></tr>
+<tr><td>Holes in the design</td><td>Filled with white</td><td>Stay clear</td></tr>
+</tbody></table></div>
+<p>Full white is the safer start. Design-only white is where clear stickers really shine, because the gaps in the design show the surface behind it.</p>
+
+<h2 id="set-up-in-coreldraw">How to set up RDG_WHITE in CorelDraw</h2>
+<ol>
+<li><strong>Load Roland's palette.</strong> Roland's VersaWorks 7 manual explains how to download the CorelDRAW palette data and load it through Window, then Color Palettes, then Palettes. The RDG spot colours, including RDG_White, live in the <code>userinks.xml</code> file.</li>
+<li><strong>Make the white shape.</strong> Duplicate your design outline (or the cut shape for full white) onto a new layer named <code>RDG_WHITE</code>.</li>
+<li><strong>Fill it with RDG_WHITE.</strong> Apply the spot colour as a fill, with no outline.</li>
+<li><strong>Set it to overprint.</strong> Right-click and tick Overprint Fill, so the white sits under your colours instead of knocking them out.</li>
+<li><strong>Export with spot colours kept.</strong> Publish to PDF and make sure spot colours are not converted to CMYK.</li>
+</ol>
+<p>Roland's guide for Illustrator does the same thing a slightly different way: it duplicates the colour layer, renames the copy "White" and fills it with RDG_WHITE. The idea is identical in CorelDraw.</p>
+
+<h2 id="no-white-layer">What if your file has no white layer?</h2>
+<p>This is genuinely useful to know. Roland's UV guide says VersaWorks can generate a white ink plate from data that doesn't include RDG_WHITE. The catch, according to the same guide, is that it can't make a white plate for just one specific object.</p>
+<p>So the automatic option is handy for simple jobs. For design-only white, or anything precise, a real RDG_WHITE layer in your file gives you control.</p>
+
+<h2 id="tips">Tips for clean results</h2>
+<ul>
+<li><strong>Keep the cut line separate.</strong> White ink is a fill on its own layer. CutContour stays a thin outline on its own layer.</li>
+<li><strong>Use good resolution.</strong> PrintKeg asks for 300 DPI at the final size, and a white layer traced from a sharp image has cleaner edges.</li>
+<li><strong>Mind the edges.</strong> Ask your printer whether they want the white shrunk very slightly so it never peeks out past the colour (sometimes called a choke). Machines and shops handle this differently.</li>
+<li><strong>Print a test.</strong> White ink density and order vary by machine. One test sticker answers most questions.</li>
+</ul>
+
+<h2 id="faster-way">The faster way</h2>
+<p>Our free <a href="../editor.html">Die Line Maker</a> can add the white layer for you. Turn on <strong>White ink layer</strong> and choose "the whole sticker" or "the design only". The PDF gets a separate <code>RDG_WHITE</code> layer, filled and set to overprint, alongside the CutContour cut line.</p>
+<p>I tested the design-only option on a sticker with separate shapes. Each shape got its own white fill, and the gaps between them stayed clear. You can rename the spot colour if your printer uses something other than RDG_WHITE.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>White ink for clear stickers comes down to one named layer under your colours. Use full white for bold, solid stickers and design-only white for that floating look. Name it RDG_WHITE for Roland, set it to overprint, keep spot colours on export, and print one test. You'll get bright colours on clear vinyl, and you'll know exactly why it works.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>What is RDG_WHITE?</summary><p>It's the spot colour name Roland VersaWorks uses for white ink. Areas of your file set to RDG_WHITE are printed with white ink.</p></details>
+<details><summary>Should white ink go under the whole sticker?</summary><p>For solid, bright stickers, yes. For a logo that floats on glass, put white only under the design so the gaps stay clear.</p></details>
+<details><summary>Do all printers support white ink?</summary><p>No. Only printers with white ink can print it, and the spot colour name can differ between brands. Check with your printer before you design the file.</p></details>
+</section>

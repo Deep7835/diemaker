@@ -1,0 +1,94 @@
+<!--meta
+{
+ "slug": "print-and-cut-versaworks-coreldraw",
+ "cat": "Guide", "app": "CorelDraw",
+ "h1": "Print and Cut from CorelDraw to Roland VersaWorks",
+ "metaTitle": "Print and Cut from CorelDraw to Roland VersaWorks: Setup Guide",
+ "metaDesc": "How print and cut from CorelDraw to Roland VersaWorks works: the VersaWorks palette, CutContour and PerfCutContour, exporting vector PDF or EPS, crop marks and common errors.",
+ "type": "Type 3: Informational / Educational",
+ "range": "0.55 to 0.75",
+ "tone": "Curious + Warm + Trustworthy",
+ "tagline": "Guide",
+ "crumb": "Print and cut with VersaWorks",
+ "summary": "From a CorelDraw file to a printed and cut sticker: palettes, spot names, export format and what to check in VersaWorks.",
+ "related": ["cutcontour-spot-color", "die-cut-lines-in-coreldraw", "coreldraw-die-line-mistakes"],
+ "sources": [
+  ["Roland DG: Creating the cutting data (VersaWorks 7 manual)", "https://downloadcenter.rolanddg.com/contents/manuals/VW7_STA_EN/yfm1778726416139.html"],
+  ["Roland DG: Registering spot colours in CorelDRAW (VersaWorks 7)", "https://downloadcenter.rolanddg.com/contents/manuals/VW7_STA_EN/eki1758099948807.html"],
+  ["Roland DG support: How to create CorelDRAW cutline CutContour data", "https://support.rolanddg.com/hc/en-us/articles/900004829723-How-to-create-CorelDRAW-cutline-CutContour-data"],
+  ["Roland DG support: Performing cutting", "https://support.rolanddg.com/hc/en-us/sections/4406821164313-Performing-Cutting"],
+  ["Roland DGA: Getting set up for stickers (PerfCutContour)", "https://www.rolanddga.com/blog/getting-set-up-for-stickers"],
+  ["Roland DG: Setting crop marks with the AAS plug-in (CorelDRAW)", "https://downloadcenter.rolanddg.com/contents/manuals/GR2-640_USE-H_EN/mak1611029294131.html"],
+  ["Signs101 forum: VersaWorks CutContour threads", "https://www.signs101.com/tags/verasworks-cutcontour/"]
+ ]
+}
+-->
+<p class="intro">A Roland printer-cutter can print a sheet of stickers and then cut around each one, all in one job. When it works, it feels like magic. When the cut lines don't show up in VersaWorks, it feels like the machine is ignoring you. Almost always, the difference is in how the CorelDraw file was set up for <strong>print and cut</strong>.</p>
+<p class="intro">Here's something most people don't realise: VersaWorks never "sees" your cut line as a line. It sees a named spot colour. Once you understand that, the whole workflow makes sense.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="how-it-works">How print and cut works</h2>
+<p>VersaWorks is Roland's RIP, the software that turns your file into ink and blade movements. It reads your PDF or EPS and splits it in two: everything in normal colours gets printed, and every path in the cut spot colour becomes a cut.</p>
+<p>The printer prints the artwork along with registration marks, then the cutter uses those marks to line the blade up with the print. That's why the cut line must be a vector path with the right spot colour name, and why the file must keep that spot colour all the way to VersaWorks.</p>
+
+<h2 id="spot-names">The spot colour names VersaWorks understands</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Spot colour</th><th>What it does</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td><code>CutContour</code></td><td>Contour cut along the path</td><td>Roland VersaWorks 7 manual</td></tr>
+<tr><td><code>PerfCutContour</code></td><td>Perforated cut through the liner, for quicker weeding and trimming</td><td>Roland VersaWorks 7 manual, Roland DGA</td></tr>
+<tr><td><code>RDG_WHITE</code></td><td>Prints white ink (on white-ink models)</td><td>Roland UV printing guide</td></tr>
+</tbody></table></div>
+<p>Roland's own support note is blunt about the name: if you don't type CutContour exactly, VersaWorks can't recognise it. Capitals included.</p>
+
+<h2 id="setup-coreldraw">Setting up the cut line in CorelDraw</h2>
+<p>Roland's VersaWorks 7 manual describes the current route:</p>
+<ol class="steps-box">
+<li>Draw the cut path around your design. One closed path per sticker.</li>
+<li>Load Roland's palette data for CorelDRAW (downloaded from the VersaWorks section of Roland's download centre) through Window, then Color Palettes, then Palettes. The manual uses the <strong>Roland VersaWorks Dual.xml</strong> palette.</li>
+<li>Apply <strong>CutContour</strong> (or <strong>PerfCutContour</strong>) to the path's outline. Leave the fill empty.</li>
+<li>Export with <strong>File, then Export</strong> as vector data in <strong>PDF, EPS or PS</strong> format.</li>
+</ol>
+<p>Older CorelDraw versions work too. Roland's older tech note for CorelDRAW 11, 12 and X3 has you create a spot colour named exactly "CutContour" in the Palette Editor and apply it to the path.</p>
+<div class="note"><b>Tip</b>Our free <a href="../editor.html">Die Line Maker</a> writes the cut line as a real CutContour (or PerfCutContour) spot colour in the PDF, on its own layer with overprint on, so it's ready for VersaWorks.</div>
+
+<h2 id="export">Exporting so the cut line survives</h2>
+<p>This is where most jobs fail. When you export a PDF from CorelDraw, open the Color settings and make sure spot colours are <strong>not</strong> converted to CMYK. The freecdr.in CorelDraw guide calls out this exact checkbox. If the spot colour turns into CMYK, VersaWorks has nothing to cut.</p>
+<p>A quick check: open the exported PDF in Adobe Acrobat, look at Output Preview, and confirm <code>CutContour</code> appears as its own separation.</p>
+
+<h2 id="in-versaworks">In VersaWorks</h2>
+<ul>
+<li><strong>Add the job</strong> to a queue and open its settings.</li>
+<li><strong>Choose print and cut</strong> rather than print only. Menu names vary by VersaWorks version, so check your manual.</li>
+<li><strong>Crop marks:</strong> users on the Signs101 forum report that VersaWorks adds registration marks with a checkbox. For some Roland cutters, Roland's manual describes setting crop marks in CorelDRAW with its AAS plug-in instead, for example for section cutting.</li>
+<li><strong>Very small pieces:</strong> Roland's support section on cutting lists a note that print areas of 25.4 × 25.4 mm (1 × 1 in) or smaller cannot be cut. Check the limit for your model, and keep tiny stickers above it.</li>
+</ul>
+
+<h2 id="perfcut">Kiss cut plus perforation</h2>
+<p>Roland DGA's sticker article describes a neat combo: a CutContour line around the artwork and a PerfCutContour line where you want a perforation through the liner. VersaWorks runs the contour cut first, then the perforation. It's a great way to make sticker sheets that are easy to tear apart. The <a href="kiss-cut-vs-die-cut-stickers.html">kiss cut vs die cut guide</a> explains when to use each.</p>
+
+<h2 id="troubleshooting">When the cut line doesn't appear</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Most likely cause</th></tr></thead>
+<tbody>
+<tr><td>VersaWorks shows no cut path</td><td>Spot colour misspelt, or converted to CMYK on export</td></tr>
+<tr><td>A pink line prints on the sticker</td><td>The line is process magenta, not a spot colour</td></tr>
+<tr><td>The cut misses the print</td><td>Crop marks not used, or the media moved after printing</td></tr>
+<tr><td>Tiny stickers don't cut</td><td>Smaller than your model's minimum cut area (Roland lists 25.4 × 25.4 mm)</td></tr>
+</tbody></table></div>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>Print and cut with VersaWorks comes down to three things: a closed vector path, the exact spot colour name, and an export that keeps that spot colour. Get those right in CorelDraw and the RIP does the rest.</p>
+<p>What I find genuinely reassuring is how predictable it is. When something goes wrong, it's almost always one of the four causes in the table above, and each one takes seconds to check.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>For print and cut from CorelDraw to Roland VersaWorks, apply CutContour from Roland's palette to a closed, unfilled path, export a vector PDF or EPS with spot colours kept, and choose print and cut in VersaWorks. That's the whole recipe, and it works the same way every time.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>What file format does VersaWorks need for cutting?</summary><p>Roland's VersaWorks 7 manual says to export vector data as PDF, EPS or PS. The cut line must stay a spot colour named CutContour.</p></details>
+<details><summary>What is PerfCutContour?</summary><p>A spot colour that tells VersaWorks to make a perforated cut through the liner. It's useful for sticker sheets that tear apart easily.</p></details>
+<details><summary>What is the smallest sticker a Roland can cut?</summary><p>Roland's support section lists 25.4 × 25.4 mm (1 × 1 in) or smaller as too small to cut. Check your model's manual, as limits can differ.</p></details>
+</section>

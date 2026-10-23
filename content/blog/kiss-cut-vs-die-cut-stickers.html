@@ -1,0 +1,127 @@
+<!--meta
+{
+ "slug": "kiss-cut-vs-die-cut-stickers",
+ "h1": "Kiss Cut vs Die Cut Stickers: Which One Should You Choose?",
+ "metaTitle": "Kiss Cut vs Die Cut Stickers: Differences and When to Use Each",
+ "metaDesc": "Kiss cut vs die cut stickers explained simply: how each cut works, how to set up the file, design limits like corner radius and inner cuts, and which one fits your job.",
+ "type": "Type 1: Comparison",
+ "range": "0.65 to 0.85",
+ "tone": "Positive + Empowering",
+ "tagline": "Comparison",
+ "crumb": "Kiss cut vs die cut",
+ "summary": "How the two cuts differ, how to set up a file with both, and which one fits your sticker job.",
+ "related": [
+  "die-cut-lines-in-coreldraw",
+  "cutcontour-spot-color",
+  "sticker-bleed-and-safe-zone"
+ ],
+ "sources": [
+  [
+   "StickerApp: Custom shapes and cutlines for die-cut stickers",
+   "https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers"
+  ],
+  [
+   "Sticker Mule: How intricate can inner cuts be",
+   "https://www.stickermule.com/eu/support/how-intricate-can-inner-cuts-be"
+  ],
+  [
+   "Roland DGA: Getting set up for stickers (PerfCutContour)",
+   "https://www.rolanddga.com/blog/getting-set-up-for-stickers"
+  ],
+  [
+   "printing.com shop guide: How to supply a die cut file",
+   "https://shop.athloneprinting.ie/file-supply/5355"
+  ],
+  [
+   "freecdr.in: How to make die cut lines in CorelDraw",
+   "https://freecdr.in/blogs/news/how-to-make-die-cut-lines-in-coreldraw-step-by-step-guide"
+  ],
+  [
+   "3M: Global packaging dieline requirements (PDF)",
+   "https://multimedia.3m.com/mws/media/2619412O/global-packaging-dieline-requirements.pdf"
+  ]
+ ],
+ "cat": "Blog",
+ "app": "General"
+}
+-->
+<p class="intro">A customer asks for "die cut stickers". Another asks for "kiss cut". A third just says "cut to shape, please". They might all want the same thing, or three different things. Choosing between <strong>kiss cut vs die cut stickers</strong> sounds technical, but it really comes down to one question: should the backing paper stay on, or come off?</p>
+<p class="intro">Here's the good news. Both are excellent choices. Each one shines in a different situation, and once you see the difference, you'll pick the right one in seconds.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="the-difference">The difference in one sentence each</h2>
+<p><strong>Kiss cut:</strong> the blade cuts through the sticker layer only. The backing paper (also called the liner) stays whole, so stickers peel off a sheet or a larger backing.</p>
+<p><strong>Die cut (through cut):</strong> the blade goes through the sticker <em>and</em> the backing. StickerApp describes it as a cut that goes through every layer, so each sticker is a separate piece in the shape of your design.</p>
+<p>A quick word on names. In offset printing, "die cutting" also means cutting with a steel rule die, which is a metal blade shaped on a wooden board. In the sticker world, "die cut" usually just means "cut all the way through, in the shape of the design".</p>
+
+<h2 id="kiss-cut-strengths">Where kiss cut shines</h2>
+<p>Kiss cuts are brilliant when you want stickers that are easy to handle and easy to peel.</p>
+<ul>
+<li><strong>Sticker sheets.</strong> Many small stickers on one sheet, all peeling off the same backing.</li>
+<li><strong>Delicate shapes.</strong> The backing protects thin parts. Sticker Mule's support guide actually recommends kiss cut for designs whose borders are too thin, because the backing keeps them safe.</li>
+<li><strong>Easy peeling.</strong> A larger backing gives fingers something to grip.</li>
+<li><strong>Labels on rolls.</strong> Product labels are kiss cut so they peel off the roll one by one.</li>
+</ul>
+
+<h2 id="die-cut-strengths">Where die cut shines</h2>
+<p>Die cut stickers are the ones people love to hand out. They feel finished and premium.</p>
+<ul>
+<li><strong>Clean custom shape.</strong> The backing matches the sticker, so the whole piece is in your design's shape.</li>
+<li><strong>Giveaways and packaging inserts.</strong> No extra paper around the edge.</li>
+<li><strong>Bold, chunky designs.</strong> Shapes with a solid border cut beautifully.</li>
+</ul>
+<p>The trade-off is that very thin details have nothing to protect them. StickerApp's guide warns that very narrow sections can tear or lift, and that tiny parts are hard to cut accurately. So die cut loves smooth, solid outlines.</p>
+
+<h2 id="side-by-side">Side by side</h2>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Kiss cut</th><th>Die cut (through cut)</th></tr></thead>
+<tbody>
+<tr><td>Cuts through</td><td>Sticker layer only</td><td>Sticker and backing</td></tr>
+<tr><td>Backing</td><td>Stays whole (sheet or square)</td><td>Same shape as the sticker</td></tr>
+<tr><td>Best for</td><td>Sheets, rolls, thin or detailed shapes</td><td>Single shaped stickers, handouts</td></tr>
+<tr><td>Thin details</td><td>Protected by the backing</td><td>Need a thicker border</td></tr>
+<tr><td>File setup</td><td>One cut line</td><td>One cut line (cut deeper)</td></tr>
+</tbody></table></div>
+
+<h2 id="file-setup">How the file differs (it's simpler than you think)</h2>
+<p>This is where it gets interesting. For a plain kiss cut or a plain die cut, your file is the same: one closed cut path in a spot colour, usually <code>CutContour</code>. The freecdr.in CorelDraw guide makes the same point: both use the same vector path, and the difference is a cutting depth instruction you give the printer.</p>
+<p>So you don't need two different designs. You need one clean cut line and a clear note to your printer: "kiss cut" or "through cut".</p>
+<h3>When you want both on one job</h3>
+<p>Sometimes you want the best of both. A popular combo is a kiss cut around the design and a through cut around each sticker's backing, often as a rounded rectangle. Another is a kiss cut sheet with one through cut around the whole sheet.</p>
+<p>For that, each line needs its own spot colour and layer. 3M's packaging dieline standard follows the same logic for cut, crease and perforation lines: each line type gets a unique spot colour. Roland uses <code>PerfCutContour</code> for a perforated cut through the liner and notes that the contour cut runs first.</p>
+<div class="note"><b>Ask first</b>Names for a second cut line vary between shops and cutters. Ask your printer which name they expect before you send the file.</div>
+
+<h2 id="design-rules">Design rules that apply to both</h2>
+<p>Whichever cut you choose, these limits keep blades happy and stickers in one piece.</p>
+<ul>
+<li><strong>Round the corners.</strong> One printing.com shop guide sets a minimum corner radius of 3 mm (0.12 in) and a minimum point angle of 5 degrees. StickerApp also rounds corners for durability.</li>
+<li><strong>Keep inner cuts big enough.</strong> Sticker Mule asks for inner cuts of at least 0.25 × 0.25 in (6.35 × 6.35 mm).</li>
+<li><strong>Avoid skinny borders.</strong> Sticker Mule considers areas around a cut narrower than 0.25 in (6.35 mm) too thin and more likely to be damaged.</li>
+<li><strong>Use smooth curves.</strong> StickerApp says gentle curves cut cleaner than jagged lines.</li>
+</ul>
+
+<h2 id="which-to-choose">Which one should you choose?</h2>
+<p>The best one is the one that fits your situation. Here's a simple way to decide.</p>
+<ul>
+<li>Choose <strong>kiss cut</strong> if you're making sheets or rolls, or your design has thin parts.</li>
+<li>Choose <strong>die cut</strong> if you want single, fully shaped stickers with a solid border.</li>
+<li>Choose <strong>both</strong> if you want shaped stickers that still peel easily from a slightly larger backing.</li>
+</ul>
+<p>You genuinely can't go wrong with either, as long as the cut line is clean.</p>
+
+<h2 id="set-up-fast">How to set either one up in a minute</h2>
+<p>Our free <a href="../editor.html">Die Line Maker</a> creates the kiss cut line around your design as a <code>CutContour</code> spot colour. Under <strong>Cut lines</strong>, you can add a through cut as a rounded rectangle around each sticker, or one rectangle around the whole sheet. Each gets its own spot colour and layer in the PDF.</p>
+<p>I tested a sheet layout with a 75 mm (2.95 in) sticker: 25 fit on a 12 × 18 in (304.8 × 457.2 mm) sheet in landscape, with a 10 mm margin and a 4 mm gap. The tool shows these counts for every common sheet size, so you can plan the job before you print.</p>
+
+<h2 id="my-take">My take</h2>
+<p>If you're unsure, start with kiss cut on a sheet. It's forgiving, it protects thin details, and customers find it easy to use. Move to die cut when you have a bold design with a solid border, because that's where the shaped backing really shows off.</p>
+<p>Kiss cut vs die cut stickers isn't about better or worse. It's about matching the cut to how the sticker will be used. Pick the one that fits, keep the cut line clean, and both will look great.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Is a die cut sticker the same as a through cut?</summary><p>In sticker printing, usually yes. Both mean the blade cuts through the sticker and the backing, so each sticker is a separate piece in its own shape.</p></details>
+<details><summary>Do kiss cut and die cut need different files?</summary><p>For a single cut, no. Use one closed CutContour line and tell your printer the cut depth. If you want both a kiss cut and a through cut, use two lines with different spot colour names.</p></details>
+<details><summary>Which is better for small, detailed designs?</summary><p>Kiss cut. The backing protects thin parts, and Sticker Mule recommends kiss cut when borders are too thin for die cut.</p></details>
+</section>

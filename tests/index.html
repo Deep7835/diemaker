@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Die Line Maker Tests</title>
+<link rel="stylesheet" href="../site/assets/site.css">
+<style>
+  body{padding:28px 20px 60px}
+  main{max-width:1200px;margin:0 auto;display:grid;gap:18px}
+  h1{font-size:28px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .sum{font-size:15px;color:var(--muted)}
+  .sum b.pass{color:var(--ok)} .sum b.fail{color:var(--err)}
+  .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:1000px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-2);vertical-align:top;font-variant-numeric:tabular-nums}
+  th{font-size:12px;color:var(--muted);background:var(--surface-2);font-weight:600}
+  td.st{font-weight:600} td.st.pass{color:var(--ok)} td.st.fail{color:var(--err)} td.st.run{color:var(--accent)}
+  td small{display:block;color:var(--muted)}
+  iframe{width:1280px;height:900px;border:1px solid var(--line);border-radius:12px;background:#fff}
+  .frame{overflow:auto;max-height:520px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Die Line Maker test suite</h1>
+  <p class="sum">Loads <code>site/editor.html</code> in a frame, feeds it each test image, and checks the cut it makes: found or not, number of pieces, closed paths, no self-crossing, distance from the artwork compared with the gap setting, artwork left outside the cut, nodes, time and warnings.</p>
+  <div class="bar"><button class="btn primary" id="runAll" type="button">Run all tests</button><span class="sum" id="summary">Not run yet.</span></div>
+  <div class="tw"><table><thead><tr><th>#</th><th>Case</th><th>Expected</th><th>Result</th><th>Pieces</th><th>Nodes</th><th>Gap from art (mm)<small>min / mean · target</small></th><th>Art outside cut</th><th>Time</th><th>Warnings</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <details><summary class="sum">Show the tool frame</summary><div class="frame"><iframe id="tool" title="Tool under test"></iframe></div></details>
+  <details><summary class="sum">Raw results (JSON)</summary><pre id="json" style="white-space:pre-wrap;font-size:12px"></pre></details>
+</main>
+<script>
+'use strict';
+// expect.pieces: exact number or [min, max]; expect.warn: text that must appear; expect.ok: false when no design should be found
+const CASES = [
+  { id:'01', file:'01_transparent_circle.png', name:'Transparent PNG, one shape', expect:{ pieces:1 } },
+  { id:'01b', file:'01_transparent_circle.png', name:'Same, circle shape', set:{ shape:'circle' }, expect:{ pieces:1 } },
+  { id:'01c', file:'01_transparent_circle.png', name:'Same, rounded rectangle', set:{ shape:'round' }, expect:{ pieces:1 } },
+  { id:'02', file:'02_transparent_separate_letters.png', name:'Separate letters, gap 0.5 mm', set:{ offset:0.5 }, expect:{ pieces:4 } },
+  { id:'02b', file:'02_transparent_separate_letters.png', name:'Separate letters, join 10 mm', set:{ offset:0.5, merge:10 }, expect:{ pieces:1 } },
+  { id:'03', file:'03_white_bg_logo_with_holes.jpg', name:'White-background JPG with holes', expect:{ pieces:1 } },
+  { id:'04', file:'04_green_bg_hexagon.jpg', name:'Solid green background', expect:{ pieces:1 } },
+  { id:'05', file:'05_dark_bg_star.png', name:'Dark background, no transparency', expect:{ pieces:1 } },
+  { id:'06', file:'06_thin_lines_and_text.png', name:'Thin lines and thin text', expect:{ pieces:1 } },
+  { id:'07', file:'07_confetti_40_pieces.png', name:'40 separate dots, gap 0.5 mm', set:{ offset:0.5 }, expect:{ pieces:40 } },
+  { id:'08', file:'08_soft_drop_shadow.png', name:'Soft drop shadow, default threshold', expect:{ pieces:1 } },
+  { id:'08b', file:'08_soft_drop_shadow.png', name:'Soft drop shadow, threshold 150', set:{ alphaThr:150 }, expect:{ pieces:1, tighterThan:'08' } },
+  { id:'09', file:'09_design_touches_edges.jpg', name:'Design touches the image edges', expect:{ pieces:1, warn:'touches the image edges' } },
+  { id:'10', file:'10_photo_like_no_background.jpg', name:'Photo with no clear background', expect:{ pieces:1, warn:'Rectangle' } },
+  { id:'11', file:'11_tiny_low_res.png', name:'Tiny image (120 px)', expect:{ pieces:1, warn:'Low resolution' } },
+  { id:'12', file:'12_very_large_6000x4000.png', name:'Very large image (6000 × 4000)', expect:{ pieces:1, maxMs:8000 } },
+  { id:'13', file:'13_sticker_sheet_6_with_glow.jpg', name:'Synthetic A4 sheet, 6 stickers, white glow', mode:'sheet', expect:{ pieces:6 } },
+  { id:'14', file:'14_real_rio_sheet_9.jpg', name:'Real sheet (Rio the Explorer)', mode:'sheet', expect:{ pieces:9 } },
+];
+
+const frame = document.getElementById('tool');
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+async function freshTool(){
+  frame.src = '../site/editor.html?sample&test=' + Date.now();
+  await new Promise(r => frame.onload = r);
+  const T = frame.contentWindow;
+  for (let i = 0; i < 100; i++){ await sleep(100); try { if (T.eval('state.geo && state.geo.ok')) break; } catch {} }
+  return T;
+}
+function setControl(D, id, v){
+  const el = D.getElementById(id);
+  el.value = v; el.dispatchEvent(new Event('input', { bubbles:true })); el.dispatchEvent(new Event('change', { bubbles:true }));
+  const r = D.getElementById(id + 'R'); if (r) r.value = v;
+}
+
+// signed distance (mm) from each cut sample to the design edge: + outside, - inside
+function measure(T, c){
+  const st = T.eval('state'), edt = T.eval('edt'), flatten = T.eval('flatten'), mk = T.eval('mkCanvas');
+  const g = st.geo, M = st.maskWH, { w, h } = st.work, N = w*h;
+  const inv = new Uint8Array(N); for (let i = 0; i < N; i++) inv[i] = M[i] ? 0 : 1;
+  const dOut = edt(M, w, h, false).dist, dIn = edt(inv, w, h, false).dist;
+  const sd = (x, y) => {
+    const px = Math.min(w-1, Math.max(0, Math.floor(x/g.mmpp))), py = Math.min(h-1, Math.max(0, Math.floor(y/g.mmpp))), i = py*w + px;
+    return (M[i] ? -(dIn[i] - 0.5) : (dOut[i] - 0.5)) * g.mmpp;
+  };
+  let closed = true, crossings = 0, dmin = Infinity, dsum = 0, dn = 0;
+  for (const s of g.subs){
+    const last = s.segs[s.segs.length - 1].p;
+    if (Math.hypot(last[0] - s.start[0], last[1] - s.start[1]) > 1e-6) closed = false;
+    const P0 = flatten(s, 8), P = [P0[0]];                       // resample every 0.5 mm so straight sides are measured too
+    for (let k = 1; k < P0.length; k++){
+      const a = P0[k-1], b = P0[k], n = Math.max(1, Math.ceil(Math.hypot(b[0]-a[0], b[1]-a[1])/0.5));
+      for (let j = 1; j <= n; j++) P.push([a[0] + (b[0]-a[0])*j/n, a[1] + (b[1]-a[1])*j/n]);
+    }
+    for (const p of P){
+      if (p[0] < 0 || p[1] < 0 || p[0] > st.artW || p[1] > st.artH) continue;     // outside the image: no data
+      const v = sd(p[0], p[1]); dmin = Math.min(dmin, v); dsum += v; dn++;
+    }
+    // self-crossing test on the flattened outline
+    const n = P.length - 1;
+    const cr = (a, b, c2) => (b[0]-a[0])*(c2[1]-a[1]) - (b[1]-a[1])*(c2[0]-a[0]);
+    for (let i = 0; i < n; i++) for (let j = i + 2; j < n; j++){
+      if (i === 0 && j === n - 1) continue;
+      const a = P[i], b = P[i+1], c2 = P[j], d = P[j+1];
+      if (Math.sign(cr(a, b, c2)) !== Math.sign(cr(a, b, d)) && Math.sign(cr(c2, d, a)) !== Math.sign(cr(c2, d, b))) crossings++;
+    }
+  }
+  // design pixels deeper than the inset that fall outside the cut
+  const cv = mk(w, h), x = cv.getContext('2d', { willReadFrequently:true });
+  x.setTransform(1/g.mmpp, 0, 0, 1/g.mmpp, 0, 0); x.fill(g.path);
+  const r = x.getImageData(0, 0, w, h).data;
+  const tolMm = T.eval('curveTol')(st.S, st.borderPx*g.mmpp);
+  const inset = (Math.max(0, -st.S.offset) + tolMm)/g.mmpp + 1.5;     // the curve may sit up to its tolerance inside the target
+  let outside = 0, art = 0;
+  for (let i = 0; i < N; i++) if (M[i] && dIn[i] > inset){ art++; if (r[i*4 + 3] < 128) outside++; }
+  const tol = T.eval('curveTol')(st.S, st.borderPx*g.mmpp);
+  return { closed, crossings, gapMin:dmin, gapMean:dn ? dsum/dn : NaN, target:st.S.offset, tol, artOutsidePct: art ? 100*outside/art : 0,
+           bbox:[g.bbox.w, g.bbox.h], artW:st.artW };
+}
+
+async function runCase(c, row){
+  // private images (like a customer's real sheet) aren't in the public repo: skip those cases instead of failing
+  const img = await fetch('images/' + c.file);
+  if (!img.ok){
+    row.innerHTML = `<td>${c.id}</td><td>${c.name}<small>${c.file}</small></td><td></td><td class="st run">Skipped<small>image not in this copy</small></td><td colspan="6"></td>`;
+    return { id:c.id, name:c.name, skip:true, pass:false, fails:['image not found'] };
+  }
+  const T = await freshTool(), D = T.document;
+  if (c.mode === 'sheet') D.getElementById('up2').click();
+  for (const [k, v] of Object.entries(c.set || {})){
+    if (k === 'shape') D.querySelector(`input[name="shape"][value="${v}"]`).click();
+    else setControl(D, k, v);
+  }
+  await sleep(300);
+  const blob = await img.blob();
+  const t0 = performance.now();
+  T.eval('loadFile')(new T.File([blob], c.file, { type:blob.type || 'image/png' }));
+  let item;
+  for (let i = 0; i < 600; i++){ await sleep(50); item = T.eval('state.item'); if (item && (item.status === 'done' || item.status === 'error')) break; }
+  const ms = Math.round(performance.now() - t0);
+  const st = T.eval('state'), g = st.geo;
+  const warns = [...D.querySelectorAll('#warn div')].map(d => d.textContent);
+  const res = { id:c.id, name:c.name, ms, ok:!!(g && g.ok), pieces:g && g.pieces, nodes:g && g.nodes, warns };
+  if (res.ok) Object.assign(res, measure(T, c));
+  if (res.ok){ try { const pdf = await T.eval('buildPDF')(); const head = await pdf.blob.text(); res.pdfOk = head.startsWith('%PDF') && head.includes('/Separation /CutContour'); } catch (e){ res.pdfOk = false; res.pdfErr = String(e); } }
+  // verdict
+  const fails = [], E = c.expect || {};
+  if (E.ok === false){ if (res.ok) fails.push('found a design, expected none'); }
+  else {
+    if (!res.ok) fails.push('no design found');
+    if (E.pieces != null && res.ok){ const [a, b] = Array.isArray(E.pieces) ? E.pieces : [E.pieces, E.pieces]; if (res.pieces < a || res.pieces > b) fails.push(`pieces ${res.pieces}, expected ${a === b ? a : a + '–' + b}`); }
+    if (res.ok && !res.closed) fails.push('open path');
+    if (res.ok && res.crossings) fails.push(`${res.crossings} self-crossings`);
+    if (res.ok && res.gapMin < res.target - res.tol - 0.12) fails.push(`cut comes within ${res.gapMin.toFixed(2)} mm (target ${res.target})`);
+    if (res.ok && res.artOutsidePct > 0.05) fails.push(`${res.artOutsidePct.toFixed(2)}% of the design is outside the cut`);
+    if (res.ok && !res.pdfOk) fails.push('PDF export failed');
+    if (E.warn && !warns.some(w => w.includes(E.warn))) fails.push(`missing warning “${E.warn}”`);
+    if (E.maxMs && ms > E.maxMs) fails.push(`took ${ms} ms (limit ${E.maxMs})`);
+    if (E.tighterThan){ const o = window.RESULTS.find(r => r.id === E.tighterThan); if (o && o.artW && !(res.artW > o.artW + 1)) fails.push('threshold did not tighten the cut'); }   // cut size is fixed, so a tighter cut shows as larger artwork
+  }
+  res.pass = !fails.length; res.fails = fails;
+  const exp = E.ok === false ? 'no design' : `${Array.isArray(E.pieces) ? E.pieces.join('–') : E.pieces} piece(s)${E.warn ? ' + warning' : ''}`;
+  row.innerHTML = `<td>${c.id}</td><td>${c.name}<small>${c.file}${c.mode === 'sheet' ? ' · sheet mode' : ''}${c.set ? ' · ' + Object.entries(c.set).map(([k, v]) => k + '=' + v).join(', ') : ''}</small></td>
+    <td>${exp}</td><td class="st ${res.pass ? 'pass' : 'fail'}">${res.pass ? 'Pass' : 'Fail'}<small>${fails.join('; ')}</small></td>
+    <td>${res.pieces ?? '–'}</td><td>${res.nodes ?? '–'}</td>
+    <td>${res.ok ? `${res.gapMin.toFixed(2)} / ${res.gapMean.toFixed(2)} · ${res.target}` : '–'}</td>
+    <td>${res.ok ? res.artOutsidePct.toFixed(3) + '%' : '–'}</td><td>${ms} ms</td><td><small>${warns.map(w => w.slice(0, 90)).join('<br>') || '–'}</small></td>`;
+  return res;
+}
+
+async function runAll(){
+  const rows = document.getElementById('rows'); rows.innerHTML = ''; window.RESULTS = [];
+  for (const c of CASES){
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${c.id}</td><td>${c.name}</td><td colspan="8" class="st run">Running…</td>`; rows.appendChild(tr);
+    let res; try { res = await runCase(c, tr); } catch (e){ res = { id:c.id, name:c.name, pass:false, fails:[String(e)] }; tr.innerHTML = `<td>${c.id}</td><td>${c.name}</td><td></td><td class="st fail">Error<small>${e}</small></td><td colspan="6"></td>`; }
+    window.RESULTS.push(res);
+    const p = window.RESULTS.filter(r => r.pass).length, s = window.RESULTS.filter(r => r.skip).length;
+    document.getElementById('summary').innerHTML = `<b class="pass">${p} passed</b> · <b class="fail">${window.RESULTS.length - p - s} failed</b>${s ? ` · ${s} skipped` : ''} · ${window.RESULTS.length}/${CASES.length} run`;
+  }
+  document.getElementById('json').textContent = JSON.stringify(window.RESULTS, null, 1);
+  window.DONE = true;
+}
+document.getElementById('runAll').onclick = runAll;
+</script>
+</body>
+</html>

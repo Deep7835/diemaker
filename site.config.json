@@ -1,0 +1,9 @@
+{
+  "site_url": "",
+  "site_name": "Die Line Maker",
+  "locale": "en_IN",
+  "note": "Set site_url to your live address (for example https://dielinemaker.com). contact_email shows on the privacy and terms pages and adds a floating contact button; whatsapp (digits with country code, e.g. 919812345678) makes that button open WhatsApp instead. cf_analytics_token turns on cookie-free Cloudflare Web Analytics. Then run: python3 tools/build_blog.py",
+  "contact_email": "",
+  "whatsapp": "",
+  "cf_analytics_token": ""
+}

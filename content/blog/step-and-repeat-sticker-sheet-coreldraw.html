@@ -1,0 +1,97 @@
+<!--meta
+{
+ "slug": "step-and-repeat-sticker-sheet-coreldraw",
+ "cat": "Tutorial", "app": "CorelDraw",
+ "h1": "How to Make a Sticker Sheet with Step and Repeat in CorelDraw",
+ "metaTitle": "Step and Repeat in CorelDraw: Fill a Sticker Sheet Fast",
+ "metaDesc": "Fill an A4, A3 or 12×18 in sheet with stickers using Step and Repeat in CorelDraw: spacing between objects, rows and columns, gaps for bleed, and keeping cut lines on top.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Tutorial",
+ "crumb": "Step and Repeat sticker sheet",
+ "summary": "Copy one finished sticker into neat rows and columns, with the right gap for bleed, in under a minute.",
+ "related": ["print-and-cut-versaworks-coreldraw", "sticker-bleed-and-safe-zone", "coreldraw-die-line-mistakes"],
+ "sources": [
+  ["Corel: Copy, duplicate and delete objects (CorelDRAW help)", "https://product.corel.com/help/CorelDRAW/540111148/CorelDRAW-en/CorelDRAW-Copy-duplicate-and-delete-objects.html"],
+  ["Corel: Fast ways to copy and position objects", "https://www.coreldraw.com/br/pages/items/6500149.html"],
+  ["Paperlust: Die-cut sticker artwork setup", "https://printshop.paperlust.co/blog?p=2246"],
+  ["Roland DG: Step 1, set the printing conditions (crop mark margins)", "https://downloadcenter.rolanddg.com/contents/manuals/GS2-24_USE-EN/oip1628141000639.html"]
+ ]
+}
+-->
+<p class="intro">One sticker on an A3 sheet is a waste of vinyl. Twenty-five stickers in tidy rows is a profitable print run. The fastest way to get there in CorelDraw is <strong>Step and Repeat</strong>, a command that copies an object a set number of times with exact spacing.</p>
+<p class="intro">Here's the good news: once your first sticker is finished, filling the sheet takes less than a minute. Let me show you how to set it up so the gaps, bleed and cut lines all line up.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="before-you-start">Before you start: finish one sticker</h2>
+<p>Step and Repeat copies exactly what you select, so set up one sticker completely first:</p>
+<ul>
+<li>The artwork, with bleed running past the cut line.</li>
+<li>The cut line in the <code>CutContour</code> spot colour, 0.25 pt, no fill.</li>
+<li>Group the artwork and its cut line (<kbd>Ctrl</kbd> + <kbd>G</kbd>) so they move together.</li>
+</ul>
+<p>Not sure about bleed? The <a href="sticker-bleed-and-safe-zone.html">bleed and safe zone guide</a> has the numbers.</p>
+
+<h2 id="plan">Plan the sheet first</h2>
+<p>Decide three numbers before you copy anything:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Number</th><th>Typical value</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Sheet margin</td><td>10 mm (0.4 in) or more</td><td>Room for the cutter's registration marks</td></tr>
+<tr><td>Gap between cut lines</td><td>At least twice the bleed, e.g. 4 to 6 mm</td><td>So neighbouring bleeds don't overlap</td></tr>
+<tr><td>Rows × columns</td><td>Whatever fits</td><td>Work it out from sheet size and sticker size</td></tr>
+</tbody></table></div>
+<p>Roland's GS2-24 manual, for example, recommends side margins of about 25 mm (0.98 in) when the material feeds a long way, so check your cutter's guide for its margins.</p>
+<div class="note"><b>Shortcut</b>The free <a href="../editor.html">Die Line Maker</a> shows how many stickers fit on A4, A3, A3+, 12×18 and 13×19 in, portrait and landscape, and builds the whole sheet for you.</div>
+
+<h2 id="step-1-row">Step 1: Make the first row</h2>
+<ol>
+<li>Select your grouped sticker.</li>
+<li>Open <strong>Edit, then Step and Repeat</strong> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> in most versions).</li>
+<li>Under <strong>Horizontal settings</strong>, choose <strong>Spacing between objects</strong> as the mode and type your gap in the Distance box.</li>
+<li>Under <strong>Vertical settings</strong>, choose <strong>No offset</strong>.</li>
+<li>Type the number of copies and click <strong>Apply</strong>.</li>
+</ol>
+<p>Corel's help describes exactly this combination for distributing copies horizontally. One thing to watch: the number of copies doesn't include the original. A forum user notes that for 5 stickers in a row you enter 4. That's easy to verify on your first try.</p>
+
+<h2 id="step-2-rows">Step 2: Make the rows</h2>
+<ol>
+<li>Select the whole first row.</li>
+<li>In Step and Repeat, set Horizontal to <strong>No offset</strong>.</li>
+<li>Set Vertical to <strong>Spacing between objects</strong>, type the same gap, and choose the direction (down).</li>
+<li>Enter the number of extra rows and click Apply.</li>
+</ol>
+
+<h2 id="spacing-vs-offset">Spacing between objects vs offset</h2>
+<p>This is where it gets interesting. Step and Repeat has two ways to space copies:</p>
+<ul>
+<li><strong>Spacing between objects</strong> measures the gap between the edges of the copies. This is the one you want for stickers, because the gap stays the same no matter how big the sticker is.</li>
+<li><strong>Offset</strong> measures from one copy's position to the next, so it includes the sticker's own width. Corel's tutorial notes positive values move right or up and negative values move left or down.</li>
+</ul>
+
+<h2 id="step-3-centre">Step 3: Centre the grid on the page</h2>
+<ol>
+<li>Select everything (<kbd>Ctrl</kbd> + <kbd>A</kbd>) and group it.</li>
+<li>Press <kbd>P</kbd> to centre it on the page.</li>
+<li>Check that every sticker sits inside your margin.</li>
+</ol>
+
+<h2 id="step-4-layers">Step 4: Keep cut lines on top</h2>
+<p>Before you export, make sure all cut lines sit above the artwork, ideally on their own layer. The cut line should be the top object, set to overprint, so it never knocks a gap into the print. Paperlust's setup guide asks for the cut line on the top layer, set to overprint.</p>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>Step and Repeat turns one careful sticker into a full sheet without any of the copies drifting out of line. The gap you type is the gap you get, which keeps bleeds apart and cuts clean.</p>
+<p>In my view, the habit worth building is this: finish and group one sticker, plan the margin and gap, then repeat. Once you've done it this way, you'll never drag copies around by eye again.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To make a sticker sheet with Step and Repeat in CorelDraw, group one finished sticker, use Spacing between objects for the row, repeat the row downwards, centre the grid, and keep cut lines on top. A full, evenly spaced sheet in under a minute.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>What is the shortcut for Step and Repeat in CorelDraw?</summary><p>Ctrl + Shift + D opens Step and Repeat in most versions. You'll also find it under the Edit menu.</p></details>
+<details><summary>How much gap should I leave between stickers?</summary><p>At least twice your bleed, so neighbouring bleeds don't overlap. With 2 mm bleed, a 4 to 6 mm gap is a safe start.</p></details>
+<details><summary>Should I use Offset or Spacing between objects?</summary><p>Spacing between objects. It keeps the gap between stickers the same no matter how big each sticker is.</p></details>
+</section>

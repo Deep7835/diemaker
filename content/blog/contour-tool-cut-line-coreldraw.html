@@ -1,0 +1,94 @@
+<!--meta
+{
+ "slug": "contour-tool-cut-line-coreldraw",
+ "cat": "Tutorial", "app": "CorelDraw",
+ "h1": "How to Make an Offset Cut Line with the Contour Tool in CorelDraw",
+ "metaTitle": "CorelDraw Contour Tool: Make an Offset Cut Line (Step by Step)",
+ "metaDesc": "Use the CorelDraw Contour tool to make an offset cut line around a sticker: outside contour, one step, the right offset in mm, rounded corners, and Break contour group apart.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Tutorial",
+ "crumb": "Contour tool cut line",
+ "summary": "One outside contour, one step, rounded corners: the fastest way to put a gap between your artwork and the cut.",
+ "related": ["powertrace-sticker-coreldraw", "die-cut-lines-in-coreldraw", "sticker-bleed-and-safe-zone"],
+ "sources": [
+  ["Corel: Contouring objects (CorelDRAW help)", "https://product.corel.com/help/CorelDRAW/540229932/Main/EN/Documentation/CorelDRAW-Contouring-objects.html"],
+  ["Corel: Using contours in CorelDRAW (tutorial)", "https://learn.corel.com/tutorials/using-contours-in-coreldraw/"],
+  ["Paperlust: Die-cut sticker artwork setup", "https://printshop.paperlust.co/blog?p=2246"],
+  ["printing.com shop guide: How to supply a die cut file", "https://shop.athloneprinting.ie/file-supply/5355"]
+ ]
+}
+-->
+<p class="intro">You've got a clean sticker outline in CorelDraw. Now you need the cut to sit 2 mm outside it, all the way around, with no sharp spikes. Drawing that by hand would take ages. The <strong>Contour tool in CorelDraw</strong> does it in seconds.</p>
+<p class="intro">This is simpler than it sounds. One outside contour, one step, the right offset, rounded corners, and you have an offset cut line. Let me walk you through it.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="what-contour-does">What the Contour tool does</h2>
+<p>A contour is a copy of a shape's outline drawn at a set distance from it. Corel's help describes outside contours, inside contours and contours to the centre. For a cut line you want an <strong>outside contour</strong> with <strong>one step</strong>: a single new outline, a fixed distance outside your shape.</p>
+<p>That fixed distance is the gap between the artwork and the cut. For a white-border sticker, 1.5 to 3 mm (about 0.06 to 0.12 in) is a common choice.</p>
+
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li>Have <strong>one closed outline</strong> of your design. If you traced a bitmap, weld the pieces first. The <a href="powertrace-sticker-coreldraw.html">PowerTRACE tutorial</a> covers that.</li>
+<li>Set your document units to <strong>millimetres</strong>, so the offset box reads in mm.</li>
+</ul>
+
+<h2 id="step-1-apply">Step 1: Apply an outside contour</h2>
+<ol>
+<li>Pick the <strong>Contour</strong> tool. It shares a flyout with the Blend tool.</li>
+<li>Click your outline, then drag the start handle <strong>away from the centre</strong>. Corel's help says this creates an outside contour.</li>
+<li>Or use the docker instead: Corel's help also describes <strong>Effects, then Contour</strong>, where you type the settings into the Contour docker. In many versions <kbd>Ctrl</kbd> + <kbd>F9</kbd> opens it.</li>
+</ol>
+
+<h2 id="step-2-settings">Step 2: Set steps, offset and corners</h2>
+<p>All three settings live on the property bar (or in the docker):</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Value for a cut line</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Outside contour</td><td>On</td><td>The cut goes around the design, not into it</td></tr>
+<tr><td>Contour steps</td><td>1</td><td>You only want one cut line</td></tr>
+<tr><td>Contour offset</td><td>2 mm (0.08 in)</td><td>The gap between artwork and cut; change it to your printer's spec</td></tr>
+<tr><td>Contour corners</td><td>Rounded</td><td>No sharp spikes for the blade</td></tr>
+</tbody></table></div>
+<p>Corel's help lists three corner buttons: pointed (mitered), rounded and beveled, and notes the corner setting matters most on outside contours. Pick rounded. One printing.com shop guide sets a 3 mm minimum corner radius for die cuts, so rounded corners keep you on the safe side.</p>
+
+<h2 id="step-3-separate">Step 3: Separate the contour from the original</h2>
+<p>Right now the new outline is live-linked to your shape. To edit it as a normal curve:</p>
+<ol>
+<li>Select the contoured object with the Pick tool.</li>
+<li>Choose <strong>Object, then Break contour group apart</strong> (the command name comes straight from Corel's help).</li>
+<li>Ungroup if needed, then select only the new outer outline. Delete or hide the inner original if you don't need it.</li>
+</ol>
+
+<h2 id="step-4-spot">Step 4: Make it a real cut line</h2>
+<ol>
+<li>Set the fill to <strong>None</strong>.</li>
+<li>Give the outline the spot colour <code>CutContour</code> (or your printer's name) at <strong>0.25 pt</strong>. Paperlust asks for a hairline of 0.25 pt or thinner.</li>
+<li>Right-click and tick <strong>Overprint Outline</strong>.</li>
+<li>Move it to its own layer, above the artwork.</li>
+</ol>
+<p>The <a href="cutcontour-spot-color.html">CutContour guide</a> explains why the name matters more than the colour.</p>
+
+<h2 id="tips">Tips for a cleaner contour</h2>
+<ul>
+<li><strong>Too many nodes?</strong> A contour copies every wiggle of the original. Simplify the original first, or use Smoothing in PowerTRACE.</li>
+<li><strong>Separate pieces?</strong> Each piece gets its own contour. Weld the contours together if you want one sticker.</li>
+<li><strong>Need bleed too?</strong> Make a second contour 1.5 to 3 mm further out for the bleed area, filled with your background or white.</li>
+</ul>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>Once you know the four settings (outside, one step, your offset, rounded corners), the Contour tool becomes the fastest cut-line maker in CorelDraw. It's precise, the gap is exactly what you type, and the line is a real editable curve.</p>
+<p>My honest opinion: for clean logos and flat designs it's hard to beat. For busy, bumpy outlines, a tool that smooths the shape first, like <a href="../editor.html">Die Line Maker</a>, saves you the clean-up.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To make an offset cut line with the Contour tool in CorelDraw, apply an outside contour with one step, type your gap in mm, choose rounded corners, then Break contour group apart and give the new line the CutContour spot colour. Two minutes, and the cutter knows exactly where to go.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>What offset should I use for a sticker cut line?</summary><p>1.5 to 3 mm (about 0.06 to 0.12 in) is common for white-border stickers. Ask your printer for their spec.</p></details>
+<details><summary>How do I separate a contour from the original shape?</summary><p>Select it with the Pick tool and choose Object, then Break contour group apart. The new outline becomes a normal curve you can edit.</p></details>
+<details><summary>Why choose rounded contour corners?</summary><p>Sharp corners are hard on blades and can tear. Printers often ask for a minimum corner radius, sometimes 3 mm.</p></details>
+</section>

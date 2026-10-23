@@ -1,0 +1,94 @@
+<!--meta
+{
+ "slug": "powertrace-sticker-coreldraw",
+ "cat": "Tutorial", "app": "CorelDraw",
+ "h1": "How to Trace a Sticker with PowerTRACE in CorelDraw",
+ "metaTitle": "PowerTRACE in CorelDraw: Trace a Sticker into Clean Vectors",
+ "metaDesc": "Learn how to use PowerTRACE in CorelDraw to turn a sticker image into clean vectors: the right trace type, Detail, Smoothing and Corner smoothness, and removing the background.",
+ "type": "Type 2: How-To / Guide",
+ "range": "0.70 to 0.90",
+ "tone": "Encouraging + Confidence-building",
+ "tagline": "Tutorial",
+ "crumb": "PowerTRACE a sticker",
+ "summary": "Turn a PNG or JPG sticker into editable vectors with PowerTRACE, then get a clean outline you can turn into a cut line.",
+ "related": ["contour-tool-cut-line-coreldraw", "die-cut-lines-in-coreldraw", "coreldraw-die-line-mistakes"],
+ "sources": [
+  ["Corel: Fine-tune traced results (CorelDRAW help)", "https://product.corel.com/help/CorelDRAW/Documentation-Windows/CorelDRAW-en/CorelDRAW-Finetune-traced-results.html"],
+  ["Corel: Convert JPG to vector (tutorial)", "https://learn.corel.com/tutorials/convert-jpg-to-vector/"],
+  ["freecdr.in: How to make die cut lines in CorelDraw", "https://freecdr.in/blogs/news/how-to-make-die-cut-lines-in-coreldraw-step-by-step-guide"],
+  ["StickerApp: Custom shapes and cutlines", "https://stickerapp.com/support/stickers/products/die-cut/custom-shapes-and-cutlines-for-die-cut-stickers"]
+ ]
+}
+-->
+<p class="intro">A client sends a sticker design as a small JPG and asks for 200 die-cut copies. You can't cut a JPG. The cutter needs vector lines, and the quickest way to get them in CorelDraw is <strong>PowerTRACE</strong>, CorelDraw's built-in bitmap tracing tool.</p>
+<p class="intro">Here's the good news: PowerTRACE does most of the work for you. In this tutorial I'll show you which trace type to pick, which three sliders actually matter, and how to end up with one clean outline ready for a cut line.</p>
+<!--toc-->
+<div class="prose">
+
+<h2 id="what-powertrace-does">What PowerTRACE does</h2>
+<p>PowerTRACE looks at the pixels in your image and draws vector shapes over them. Vector shapes are made of curves and nodes, so they stay sharp at any size and a cutter can follow them.</p>
+<p>For die cutting you don't need a perfect copy of every colour. You need the <em>outer shape</em>. That makes the job much easier, because you can trace with less detail and still get a great outline.</p>
+
+<h2 id="before-you-trace">Before you trace</h2>
+<ul>
+<li><strong>Use the biggest image you have.</strong> More pixels give PowerTRACE more to work with.</li>
+<li><strong>Remove clutter.</strong> If the sticker sits on a busy background, crop it first.</li>
+<li><strong>Import at the final size.</strong> Place the bitmap at the size you'll print, so the traced curves match it.</li>
+</ul>
+
+<h2 id="step-1-open">Step 1: Open PowerTRACE</h2>
+<p>Select the bitmap. Corel's own tutorial shows the route: click <strong>Trace Bitmap</strong> on the property bar and choose <strong>Outline Trace, then Logo</strong>. In older versions the same command sits under the Bitmaps menu.</p>
+<p>Why Logo? It's built for images with flat colours and clear edges, which describes most stickers. For a sticker with lots of shading, try <strong>Detailed logo</strong> instead.</p>
+
+<h2 id="step-2-sliders">Step 2: Set the three sliders that matter</h2>
+<p>The PowerTRACE window shows your original and the traced result side by side. Corel's help explains the three main controls:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Slider</th><th>What it does</th><th>For a cut line</th></tr></thead>
+<tbody>
+<tr><td>Detail</td><td>Higher keeps more detail and makes more objects and colours. Lower drops detail.</td><td>Keep it low. You only need the outer shape.</td></tr>
+<tr><td>Smoothing</td><td>Higher gives fewer nodes and softer curves that may drift from the source. Lower adds nodes and follows the edge more closely.</td><td>Medium to high. Fewer nodes cut more smoothly.</td></tr>
+<tr><td>Corner smoothness</td><td>Lower keeps sharp corners. Higher rounds them.</td><td>Medium. Rounded corners are kinder to blades.</td></tr>
+</tbody></table></div>
+<p>This part is actually really easy. Move one slider, watch the preview, and stop as soon as the outline looks clean. StickerApp's sticker guide backs this up: gentle curves cut cleaner than jagged lines.</p>
+
+<h2 id="step-3-background">Step 3: Remove the background</h2>
+<p>Tick <strong>Remove background</strong>. Corel's help says you can also choose a specific colour to remove: pick the Eyedropper and click it in the preview. Hold <kbd>Shift</kbd> and click to add more background colours.</p>
+<p>Corel also suggests turning off <strong>Remove object overlap</strong> and turning on <strong>Group objects by color</strong> when you want cleaner, easier-to-edit results. Click OK when the preview looks right.</p>
+
+<h2 id="step-4-outline">Step 4: Turn the trace into one outline</h2>
+<p>You now have a group of coloured shapes. For a cut line you want one shape that follows the outside edge.</p>
+<ol>
+<li>Select the traced group and ungroup it (<kbd>Ctrl</kbd> + <kbd>U</kbd>).</li>
+<li>Select all the pieces and use <strong>Object, then Shaping, then Weld</strong>. This merges them into one shape.</li>
+<li>Delete any tiny leftover specks. They'd turn into tiny cuts.</li>
+<li>Check the outline with the Shape tool (<kbd>F10</kbd>). The freecdr.in guide reminds us the cut path must be one fully closed loop with no stray nodes.</li>
+</ol>
+
+<h2 id="step-5-cut-line">Step 5: Make the cut line from it</h2>
+<p>Your welded outline is the base for the cut line. Add an outside offset with the Contour tool, give it the CutContour spot colour and a 0.25 pt outline, and you're done. I walk through that part in the <a href="contour-tool-cut-line-coreldraw.html">Contour tool tutorial</a>.</p>
+<div class="note"><b>Shortcut</b>If you'd rather skip tracing, the free <a href="../editor.html">Die Line Maker</a> traces the outline, adds the gap and gives you a CorelDraw-ready PDF in one step.</div>
+
+<h2 id="common-problems">Common problems and fixes</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>Hundreds of tiny shapes</td><td>Detail too high</td><td>Lower Detail and trace again</td></tr>
+<tr><td>Wobbly, bumpy outline</td><td>Smoothing too low, or a small blurry image</td><td>Raise Smoothing or use a bigger image</td></tr>
+<tr><td>Background traced too</td><td>Remove background off</td><td>Tick it, or pick the colour with the Eyedropper</td></tr>
+<tr><td>Weld leaves gaps</td><td>Pieces don't touch</td><td>Add a small outside contour first, then weld</td></tr>
+</tbody></table></div>
+
+<h2 id="what-this-means">What this means for you</h2>
+<p>PowerTRACE isn't about getting a perfect vector copy of the artwork. For die cutting, a smooth, simple outer shape beats a detailed one every time. Low Detail, medium-to-high Smoothing, background removed, then weld.</p>
+<p>Based on Corel's own guidance and what sticker printers ask for, that combination gives you an outline with fewer nodes and cleaner cuts. Once you've done it twice, it takes about a minute.</p>
+
+<h2 id="takeaway">The takeaway</h2>
+<p>To trace a sticker with PowerTRACE in CorelDraw, choose Outline Trace, then Logo, keep Detail low, raise Smoothing, remove the background, and weld the result into one shape. You'll have a clean outline ready to become a cut line, and you've got this.</p>
+</div>
+<!--cta-->
+<section class="faqs" aria-labelledby="faq">
+<h2 id="faq">Questions people ask</h2>
+<details><summary>Which PowerTRACE option is best for stickers?</summary><p>Outline Trace, then Logo, for flat-colour stickers. Try Detailed logo when the sticker has shading or many colours.</p></details>
+<details><summary>Why does my trace have so many nodes?</summary><p>Smoothing is too low or the image is small and blurry. Raise Smoothing and trace a larger image. Fewer nodes also cut more smoothly.</p></details>
+<details><summary>Do I need to trace the whole design?</summary><p>No. For a die cut line you only need the outer shape. The printed artwork can stay as an image.</p></details>
+</section>
