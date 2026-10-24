@@ -24,7 +24,7 @@ CONTACT_EMAIL = (CONFIG.get("contact_email") or "").strip()
 WHATSAPP = re.sub(r"\D", "", CONFIG.get("whatsapp") or "")           # digits with country code, e.g. 919812345678
 # cache-busting version for the shared CSS and JS: changes whenever either file changes
 ASSET_V = hashlib.sha1(b"".join((ROOT / "site" / "assets" / f).read_bytes() for f in ("site.css", "site.js"))).hexdigest()[:8]
-LEGAL_DATE = date(2026, 10, 21)                                      # "Effective" date on the privacy and terms pages
+LEGAL_DATE = date(2026, 10, 24)                                      # "Effective" date on the privacy and terms pages
 def absu(path):
     """Absolute URL for a site path like 'blog/x.html', or None while no domain is set."""
     return f"{SITE_URL}/{path}" if SITE_URL else None
@@ -123,7 +123,9 @@ def head(title, desc, canonical_note, extra="", path="", kind="website", P="../"
 {social(title, desc, path, kind)}<meta name="theme-color" content="#f4f5f8">
 <link rel="apple-touch-icon" href="{P}assets/apple-touch-icon.png">
 <link rel="icon" href="{ICON}">
-<link rel="preload" href="{P}assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@1&amp;display=swap">
 <link rel="stylesheet" href="{P}assets/site.css?v={ASSET_V}">
 {THEME_HEAD}{extra}{analytics()}</head>"""
 
@@ -379,7 +381,7 @@ def privacy_body():
 
 <h2 id="hosting">Hosting</h2>
 <p>Like every website, our hosting provider receives basic technical information when your browser asks for a page: your IP address, browser type, the page requested and the time. The host uses this to deliver the site and protect it from abuse, and keeps it only for a short time under its own privacy policy. We don't use it to identify you.</p>
-<p>Fonts, styles and scripts are served from our own website, not from third-party services.</p>
+<p>Styles and scripts are served from our own website. The General Sans font comes from <a href="https://www.fontshare.com/" target="_blank" rel="noopener">Fontshare</a>, run by Indian Type Foundry, so your browser downloads it from their servers. Like any web server, they receive your IP address and browser type when it does. We don't send them anything else.</p>
 
 <h2 id="links">Links to other websites</h2>
 <p>Our guides link to other websites, such as software makers' manuals. Those sites have their own privacy policies, which apply once you leave {SITE_NAME}.</p>
@@ -465,6 +467,7 @@ def write_site_files(arts):
 <title>Page not found · {html.escape(SITE_NAME)}</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="{ICON}">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@1&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
 {THEME_HEAD}</head>
 <body class="skin">

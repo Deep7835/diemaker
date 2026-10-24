@@ -10,7 +10,6 @@ site/
   terms.html            terms of use (generated)
   404.html, robots.txt  generated
   assets/site.css       shared styles (design tokens, header, footer, articles)
-  assets/fonts/         Inter (SIL Open Font License, see OFL-LICENSE.txt)
   assets/site.js        shared behaviour (mobile menu, theme toggle, guides search and filters,
                         copy buttons, back to top, reading progress)
   blog/index.html       guides & blog listing

@@ -17,8 +17,10 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#f4f5f8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f172a'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%234d8dff' stroke-width='2.4' stroke-dasharray='3.4 2.6'/%3E%3C/svg%3E">
-<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=de46a4a9">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@1&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css?v=4cf0335b">
 <style>
 /* Layout: product site. Sticky header, split hero with a live preview card, then the tool as an
    editor (icon rail · canvas · properties panel), then steps, features, guide and FAQ. */
@@ -415,7 +417,7 @@ body.editor{height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
 .ed .fitbtn.cur{border-radius:6px}
 .ed .fitem{background:var(--field);border-color:transparent;border-radius:12px}
 
-/* type: Inter, tuned for small UI text. Labels lead, hints step back, numbers line up. */
+/* type: tuned for small UI text. Labels lead, hints step back, numbers line up. */
 body.editor{font-size:14px;line-height:1.5;letter-spacing:-.006em}
 .ed .logo{font-weight:600;letter-spacing:-.02em}
 .ed .ptitle{font-weight:600;letter-spacing:-.015em}
@@ -2652,6 +2654,6 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.pi
 // open in a working state: the sample sticker (fonts first, so its lettering matches)
 (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(() => { if (!state.img){ if (/[?&]sample\b/.test(location.search)) makeSample(); else clearImage(); } });
 </script>
-<script src="assets/site.js?v=de46a4a9" defer></script>
+<script src="assets/site.js?v=4cf0335b" defer></script>
 </body>
 </html>

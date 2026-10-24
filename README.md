@@ -35,4 +35,4 @@ Then open http://127.0.0.1:8090. To run the tests, serve the project folder (`py
 
 ## Licence notes
 
-Inter is used under the SIL Open Font License (see `site/assets/fonts/OFL-LICENSE.txt`). CorelDraw, Photoshop, Roland and VersaWorks are trademarks of their owners; this project isn't affiliated with them.
+General Sans by Indian Type Foundry is loaded from Fontshare under the ITF Free Font License. Its licence forbids redistributing the font files, so they are not in this repository. CorelDraw, Photoshop, Roland and VersaWorks are trademarks of their owners; this project isn't affiliated with them.
