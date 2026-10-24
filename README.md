@@ -35,4 +35,4 @@ Then open http://127.0.0.1:8090. To run the tests, serve the project folder (`py
 
 ## Licence notes
 
-Uncut Sans is used under the SIL Open Font License (see `site/assets/fonts/OFL-LICENSE.txt`). CorelDraw, Photoshop, Roland and VersaWorks are trademarks of their owners; this project isn't affiliated with them.
+Inter is used under the SIL Open Font License (see `site/assets/fonts/OFL-LICENSE.txt`). CorelDraw, Photoshop, Roland and VersaWorks are trademarks of their owners; this project isn't affiliated with them.

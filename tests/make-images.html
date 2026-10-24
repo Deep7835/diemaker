@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Share image and app icon</h1>
-<p class="lede">Draws <code>og.png</code> (1200 × 630) and <code>apple-touch-icon.png</code> (180 × 180) with Uncut Sans. Right-click each image to save it into <code>site/assets/</code>.</p>
+<p class="lede">Draws <code>og.png</code> (1200 × 630) and <code>apple-touch-icon.png</code> (180 × 180) with Inter. Right-click each image to save it into <code>site/assets/</code>.</p>
 <canvas id="og" width="1200" height="630"></canvas>
 <canvas id="icon" width="180" height="180"></canvas>
 <script>
@@ -22,21 +22,21 @@ function scissors(x, s, cx, cy){                    // the logo's scissors icon 
 function rr(x, X, Y, W, H, r){ x.beginPath(); x.roundRect(X, Y, W, H, r); }
 function blob(x, cx, cy, rx, ry){ x.beginPath(); x.ellipse(cx, cy, rx, ry, 0, 0, 7); }
 async function draw(){
-  await document.fonts.load('600 64px "Uncut Sans"'); await document.fonts.load('500 24px "Uncut Sans"');
+  await document.fonts.load('600 64px "Inter"'); await document.fonts.load('500 24px "Inter"');
   const c = document.getElementById('og'), x = c.getContext('2d');
   x.fillStyle = BG; x.fillRect(0, 0, 1200, 630);
   x.fillStyle = 'rgba(15,23,42,.07)'; for (let gy = 12; gy < 630; gy += 22) for (let gx = 12; gx < 1200; gx += 22){ x.beginPath(); x.arc(gx, gy, 1.2, 0, 7); x.fill(); }
   // logo
   rr(x, 72, 66, 52, 52, 14); x.fillStyle = INK; x.fill(); scissors(x, 32, 82, 76);
-  x.fillStyle = INK; x.font = '600 30px "Uncut Sans"'; x.fillText('Die Line Maker', 140, 103); x.fillStyle = ACCENT; x.fillText('.', 140 + x.measureText('Die Line Maker').width, 103);
+  x.fillStyle = INK; x.font = '600 30px "Inter"'; x.fillText('Die Line Maker', 140, 103); x.fillStyle = ACCENT; x.fillText('.', 140 + x.measureText('Die Line Maker').width, 103);
   // headline
-  x.fillStyle = INK; x.font = '600 66px "Uncut Sans"';
+  x.fillStyle = INK; x.font = '600 66px "Inter"';
   const lines = [['Turn any sticker'], ['into a ', ['cut line', ACCENT]], ['for CorelDraw.']];
   let y = 236;
   for (const parts of lines){ let X = 72; for (const p of parts){ const [t, col] = Array.isArray(p) ? p : [p, INK]; x.fillStyle = col; x.fillText(t, X, y); X += x.measureText(t).width; } y += 76; }
-  x.fillStyle = MUTED; x.font = '500 25px "Uncut Sans"'; x.fillText('Free · CutContour PDF · Runs in your browser', 72, 500);
+  x.fillStyle = MUTED; x.font = '500 25px "Inter"'; x.fillText('Free · CutContour PDF · Runs in your browser', 72, 500);
   // pill button
-  rr(x, 72, 532, 226, 54, 27); x.fillStyle = ACCENT; x.fill(); x.fillStyle = '#fff'; x.font = '600 21px "Uncut Sans"'; x.fillText('Make a die line', 104, 566);
+  rr(x, 72, 532, 226, 54, 27); x.fillStyle = ACCENT; x.fill(); x.fillStyle = '#fff'; x.font = '600 21px "Inter"'; x.fillText('Make a die line', 104, 566);
   // preview card
   x.save(); x.shadowColor = 'rgba(15,23,42,.18)'; x.shadowBlur = 40; x.shadowOffsetY = 18; rr(x, 690, 96, 440, 438, 26); x.fillStyle = '#fff'; x.fill(); x.restore();
   rr(x, 690, 96, 440, 438, 26); x.strokeStyle = LINE; x.lineWidth = 1.5; x.stroke();
@@ -48,11 +48,11 @@ async function draw(){
   blob(x, 910, 342, 168, 128); x.fillStyle = '#fff'; x.shadowColor = 'rgba(15,23,42,.12)'; x.shadowBlur = 16; x.fill(); x.shadowBlur = 0;
   const g = x.createLinearGradient(780, 240, 1040, 450); g.addColorStop(0, '#ff8a00'); g.addColorStop(1, '#e5007e');
   blob(x, 910, 342, 140, 102); x.fillStyle = g; x.fill(); x.lineWidth = 6; x.strokeStyle = '#14201b'; x.stroke();
-  x.textAlign = 'center'; x.font = '700 50px "Uncut Sans"'; x.lineWidth = 7; x.strokeStyle = '#14201b'; x.strokeText('STICK', 910, 340); x.fillStyle = '#fff'; x.fillText('STICK', 910, 340);
-  x.font = '700 32px "Uncut Sans"'; x.strokeText('IT!', 910, 386); x.fillText('IT!', 910, 386); x.textAlign = 'start';
+  x.textAlign = 'center'; x.font = '700 50px "Inter"'; x.lineWidth = 7; x.strokeStyle = '#14201b'; x.strokeText('STICK', 910, 340); x.fillStyle = '#fff'; x.fillText('STICK', 910, 340);
+  x.font = '700 32px "Inter"'; x.strokeText('IT!', 910, 386); x.fillText('IT!', 910, 386); x.textAlign = 'start';
   blob(x, 910, 342, 168, 128); x.strokeStyle = CUT; x.lineWidth = 3; x.stroke();
   rr(x, 1006, 176, 108, 50, 12); x.fillStyle = '#fff'; x.fill(); x.strokeStyle = LINE; x.lineWidth = 1.5; x.stroke();
-  x.fillStyle = CUT; x.font = '600 16px "Uncut Sans"'; x.fillText('CutContour', 1018, 198); x.fillStyle = MUTED; x.font = '500 14px "Uncut Sans"'; x.fillText('0.25 pt spot', 1018, 216);
+  x.fillStyle = CUT; x.font = '600 16px "Inter"'; x.fillText('CutContour', 1018, 198); x.fillStyle = MUTED; x.font = '500 14px "Inter"'; x.fillText('0.25 pt spot', 1018, 216);
 
   // app icon
   const ic = document.getElementById('icon'), y2 = ic.getContext('2d');

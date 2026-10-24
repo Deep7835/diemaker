@@ -20,30 +20,79 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#f4f5f8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f172a'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%234d8dff' stroke-width='2.4' stroke-dasharray='3.4 2.6'/%3E%3C/svg%3E">
-<link rel="preload" href="assets/fonts/uncut-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/uncut-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=b5748bae">
+<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=de46a4a9">
 <style>
 /* Layout: product site. Sticky header, split hero with a live preview card, then the tool as an
    editor (icon rail · canvas · properties panel), then steps, features, guide and FAQ. */
 
-/* ---------- hero ---------- */
-.hero{padding-block:64px 48px}
-.hero .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
-.hero h1{font-size:clamp(38px,5.2vw,62px);font-weight:600;line-height:1.03;letter-spacing:-.045em;margin-top:18px}
-.hero h1 span{color:var(--accent)}
-.hero p.sub{font-size:17.5px;color:var(--muted);max-width:52ch;margin:20px 0 0;line-height:1.6}
-.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin:26px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+/* ---------- hero: centred headline over a picture of the editor ---------- */
+.hero{position:relative;padding-top:80px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0 0 auto;height:760px;pointer-events:none;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 70% 65% at 50% 0%,#000 35%,transparent 75%);mask-image:radial-gradient(ellipse 70% 65% at 50% 0%,#000 35%,transparent 75%)}
+.hero-copy{position:relative;display:grid;justify-items:center;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:5px 10px 5px 5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);box-shadow:var(--hl);font-size:13px;font-weight:500;color:var(--ink-2);text-decoration:none;transition:border-color .15s ease}
+.badge:hover{border-color:var(--accent-line)}
+.badge b{padding:2px 9px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:600}
+.badge svg{width:14px;height:14px;color:var(--faint)}
+.hero h1{max-width:15ch;margin-top:24px;font-size:clamp(40px,6.6vw,78px);font-weight:650;line-height:1.02;letter-spacing:-.045em}
+.hero h1 span{color:var(--accent-fg)}
+.hero p.sub{max-width:60ch;margin:22px 0 0;font-size:clamp(16px,1.5vw,18px);line-height:1.6;color:var(--muted)}
+.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:32px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin:24px 0 0;padding:0;list-style:none;font-size:13.5px;color:var(--muted)}
+.hero .trust{justify-content:center}
 .trust li{display:inline-flex;align-items:center;gap:7px}
-.trust svg{width:16px;height:16px;color:var(--ok)}
-.preview-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;max-width:100%}
-.pc-bar{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line)}
-.pc-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
-.pc-bar span{margin-left:8px;font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:4px 10px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pc-bar b{white-space:nowrap;margin-left:auto;font-size:12px;font-weight:600;color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:5px 10px}
-.pc-canvas{background-color:var(--canvas);background-image:radial-gradient(var(--grid-major) 1px, transparent 1px);background-size:16px 16px;aspect-ratio:16/11}
-.pc-canvas svg{display:block;width:100%;height:100%}
+.trust svg{width:16px;height:16px;color:var(--accent-fg)}
+
+/* the editor picture: plain HTML in the same cards, sizes and colours as the real editor */
+.shotwrap{position:relative;margin-top:64px;-webkit-mask-image:linear-gradient(#000 84%,transparent);mask-image:linear-gradient(#000 84%,transparent)}
+.shotwrap::before{content:"";position:absolute;inset:-6% 12% auto;height:70%;background:radial-gradient(closest-side,var(--accent-soft),transparent);filter:blur(30px);pointer-events:none}
+.shot{position:relative;display:grid;gap:10px;padding:10px;border:1px solid var(--line);border-radius:24px;background:var(--bg);box-shadow:var(--hl),0 50px 90px -50px rgba(0,0,0,.7);font-size:12.5px;user-select:none}
+.shot svg.i{width:16px;height:16px}
+.s-top,.s-rail,.s-panel{background:var(--surface);border:1px solid var(--line);box-shadow:var(--hl)}
+.s-top{display:flex;align-items:center;gap:10px;height:48px;padding:0 8px 0 10px;border-radius:14px}
+.s-logo{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px;letter-spacing:-.02em;color:var(--ink)}
+.s-logo i{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--accent);color:var(--accent-ink)}
+.s-top > span{white-space:nowrap}
+.s-file{min-width:0;overflow:hidden;text-overflow:ellipsis;padding:6px 10px;border-radius:10px;background:var(--field);font-weight:500;color:var(--ink)}
+.s-file em{font-style:normal;font-weight:400;color:var(--muted);margin-left:4px}
+.s-sp{flex:1}
+.s-ghost,.s-btn{padding:8px 12px;border-radius:10px;font-weight:500;background:var(--field);color:var(--ink)}
+.s-btn{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.s-body{display:grid;grid-template-columns:46px minmax(0,1fr) 270px;gap:10px;height:clamp(320px,44vw,540px)}
+.s-rail{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;border-radius:14px;align-self:start}
+.s-rail i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;color:var(--muted)}
+.s-rail i.on{background:var(--accent);color:var(--accent-ink)}
+.s-canvas{position:relative;display:grid;place-items:center;min-width:0;border:1px solid var(--line);border-radius:18px;background-color:var(--canvas);background-image:radial-gradient(var(--grid-major) 1px,transparent 1px);background-size:18px 18px;overflow:hidden}
+.s-canvas > svg{width:min(88%,560px);height:auto;max-height:88%}
+.s-float{position:absolute;left:10px;bottom:10px;display:flex;gap:2px;padding:4px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--surface) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.s-float.r{left:auto;right:10px;align-items:center}
+.s-float span{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:8px;color:var(--muted);font-weight:500}
+.s-float span.on{background:var(--soft);color:var(--ink)}
+.s-float i{width:12px;border-top:2px solid var(--c,#16a34a)}
+.s-float i.dash{border-top-style:dashed}
+.s-float b{padding:0 6px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.s-panel{display:grid;align-content:start;gap:10px;padding:14px;border-radius:18px;min-width:0;overflow:hidden}
+.s-ptitle{font-weight:600;font-size:13.5px;color:var(--ink);margin-bottom:2px}
+.s-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:6px}
+.s-tiles span{padding:9px 2px;border-radius:10px;background:var(--field);text-align:center;font-size:11px;font-weight:500;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-tiles span.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.s-row{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--ink-2);font-weight:500}
+.s-row b{min-width:52px;padding:5px 8px;border-radius:8px;background:var(--field);text-align:right;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.s-bar{height:22px;margin:-2px 0 6px;border-radius:8px;background:linear-gradient(to right,var(--accent) calc(var(--v) * 100%),var(--field) 0)}
+.s-sw{position:relative;width:34px;height:20px;border-radius:99px;background:var(--field)}
+.s-sw::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--ink-2)}
+.s-sw.on{background:var(--accent)}
+.s-sw.on::after{left:17px;background:var(--accent-ink)}
+@media (max-width: 900px){
+  .s-body{grid-template-columns:minmax(0,1fr);height:clamp(260px,62vw,420px)}
+  .s-rail,.s-panel,.s-ghost{display:none}
+}
+@media (max-width: 520px){
+  .hero{padding-top:48px}
+  .shotwrap{margin-top:40px}
+  .s-file em,.s-float.r{display:none}
+  .s-logo{font-size:0;gap:0}
+}
 
 /* ---------- tool ---------- */
 .toolsec{padding-block:24px 64px}
@@ -206,44 +255,74 @@ table.fit td.nm{padding:7px 10px;font-weight:500;white-space:nowrap}
 .fitbtn.best b{color:var(--accent)}
 .fitbtn.cur{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
 
-/* ---------- sections ---------- */
-.sec{padding-block:72px;border-top:1px solid var(--line)}
-.sech{max-width:640px}
-.sech h2{margin-top:12px}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:32px 0 0;padding:0;list-style:none;counter-reset:s}
-.steps li{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;counter-increment:s;min-width:0;box-shadow:var(--shadow-sm)}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:14px;margin-bottom:16px}
-.steps h3{font-size:18px;margin-bottom:6px;letter-spacing:-.01em}
-.steps p{margin:0;color:var(--muted)}
-.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
-.feats > div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0;box-shadow:var(--shadow-sm)}
-.feats .fi{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent);margin-bottom:14px}
+/* ---------- sections: one width (the 1200px wrap), one header pattern, one card style ---------- */
+.sec{padding-block:120px 0}
+main > .sec:last-child{padding-bottom:120px}
+.sech{display:grid;justify-items:start;gap:16px;max-width:680px;margin-bottom:48px}
+.sech h2{font-size:clamp(30px,3.8vw,46px);font-weight:650;line-height:1.06;letter-spacing:-.04em}
+.sech .lede{margin:0;font-size:17px;line-height:1.6}
+.steps li,.feats > div,.gcard,.fmt,.pcard,.tablewrap,.faq details{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--hl)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{padding:28px;counter-increment:s;min-width:0}
+.steps li::before{content:"Step " counter(s);display:inline-flex;margin-bottom:28px;padding:4px 10px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:600}
+.steps h3{font-size:19px;margin-bottom:8px;letter-spacing:-.02em}
+.steps p{margin:0;color:var(--muted);font-size:15px}
+.feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.feats > div{padding:24px;min-width:0}
+.feats .fi{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--field);color:var(--ink);margin-bottom:18px}
 .feats .fi svg{width:20px;height:20px}
-.feats h3{font-size:16px;margin-bottom:6px;letter-spacing:-.01em}
-.feats p{margin:0;color:var(--muted);font-size:14.5px}
-.guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
-.gcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0;box-shadow:var(--shadow-sm)}
-.gcard h3{font-size:17px;margin-bottom:12px;letter-spacing:-.01em}
-.gcard ol,.gcard ul{margin:0;padding-left:20px;display:grid;gap:9px;font-size:14.5px;color:var(--ink-2)}
-.gcard li::marker{color:var(--accent)}
-kbd{font-size:12px;background:var(--surface);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 5px;color:var(--ink)}
+.feats h3{font-size:16px;margin-bottom:6px;letter-spacing:-.015em}
+.feats p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gcard{padding:26px 28px;min-width:0}
+.gcard h3{font-size:17px;margin-bottom:14px;letter-spacing:-.015em}
+.gcard ol,.gcard ul{margin:0;padding-left:20px;display:grid;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.gcard li::marker{color:var(--accent-fg)}
+kbd{font-size:12px;background:var(--field);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 5px;color:var(--ink)}
 code{font-size:13px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:0 5px}
-.tablewrap{overflow-x:auto;margin-top:28px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.tablewrap{overflow-x:auto;margin-top:12px}
 .tablewrap table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
-.tablewrap th,.tablewrap td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+.tablewrap th,.tablewrap td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--line-2);vertical-align:top}
 .tablewrap tr:last-child td{border-bottom:0}
-.tablewrap th{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--surface-2)}
+.tablewrap th{font-size:12px;font-weight:600;color:var(--faint);background:var(--surface-2);letter-spacing:.04em;text-transform:uppercase}
 td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
-.formats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}
-.fmt{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
-.fmt b{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
-.fmt.best{border-color:var(--accent-line);background:linear-gradient(var(--accent-soft), var(--accent-soft)), var(--surface)}
-.fmt.best b{color:var(--accent)}
+.formats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:12px}
+.fmt{padding:22px;min-width:0}
+.fmt b{display:block;font-size:22px;font-weight:650;letter-spacing:-.03em;margin-bottom:6px}
+.fmt.best{border-color:var(--accent-line);background:linear-gradient(var(--accent-soft),var(--accent-soft)),var(--surface)}
+.fmt.best b{color:var(--accent-fg)}
 .fmt p{margin:0;font-size:13.5px;color:var(--muted)}
-.faq{max-width:820px;margin-top:28px}
+.home .cards{gap:12px;margin:0 0 28px}
+.home .pcard{padding:26px;border-radius:20px}
+.faqgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:48px;align-items:start}
+.faqgrid .sech{position:sticky;top:calc(var(--nav-h) + 32px);margin-bottom:0}
+.faq details{border-radius:16px;margin-bottom:8px}
+.faq summary{padding:18px 20px;font-weight:600;letter-spacing:-.01em}
+.faq details p{padding:0 20px 18px;line-height:1.65}
+
+/* closing call to action */
+.opencard{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;padding:clamp(28px,5vw,64px);border:1px solid var(--line);border-radius:28px;background:radial-gradient(120% 160% at 100% 0%,var(--accent-soft),transparent 55%),var(--surface);box-shadow:var(--hl),var(--shadow)}
+.opencard h2{margin-top:16px;font-size:clamp(30px,3.8vw,46px);font-weight:650;line-height:1.06;letter-spacing:-.04em}
+.opencard .lede{margin-top:14px;max-width:56ch}
+.opencard .trust{margin-top:20px}
+.opencta{display:flex;flex-direction:column;gap:10px}
 
 @media (max-width: 1080px){
-  .hero .in{grid-template-columns:1fr;gap:36px}
+  .feats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .formats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .guide{grid-template-columns:1fr}
+}
+@media (max-width: 760px){
+  .sec{padding-top:80px}
+  main > .sec:last-child{padding-bottom:80px}
+  .sech{margin-bottom:32px}
+  .steps,.feats,.faqgrid,.opencard{grid-template-columns:1fr}
+  .faqgrid{gap:0}
+  .faqgrid .sech{position:static;margin-bottom:28px}
+  .opencta{flex-direction:row;flex-wrap:wrap}
+}
+
+@media (max-width: 1080px){
   .formats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .guide{grid-template-columns:1fr}
   .app{grid-template-columns:60px minmax(0,1fr) 320px}
@@ -253,8 +332,6 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
   .rail{display:none}
   .side{border-top:1px solid var(--line);order:2}
   .stage{order:1;position:static;height:auto;min-height:0;max-height:none;grid-template-rows:auto 60vh auto;border-right:0}
-  .steps,.feats{grid-template-columns:1fr}
-  .hero{padding-block:40px 32px}
   .topbar{flex-wrap:wrap}
   .topbar .sp,.busy{display:none}
   .filepill{max-width:none;flex:1 1 100%}
@@ -268,17 +345,12 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 }
 @media (pointer: coarse){ .chk{min-height:44px} .seg label{min-height:44px} .zb,.tgl span{min-height:40px;min-width:40px} }
 @media (prefers-reduced-motion: reduce){ .blade{display:none} .fbar.busy i{animation:none;width:100%;opacity:.5} }
-.opencard{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:clamp(22px,4vw,40px)}
-.opencard .lede{margin-top:10px;max-width:58ch}
-.opencard .trust{margin-top:16px}
-.opencta{display:flex;flex-direction:column;gap:10px}
-@media (max-width: 760px){.opencard{grid-template-columns:1fr}.opencta{flex-direction:row;flex-wrap:wrap}}
 </style>
 <!--head:start-->
 <script>try{var t=localStorage.getItem('dlm-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
 <!--head:end-->
 </head>
-<body>
+<body class="skin home">
 <a class="skip" href="#how">Skip to content</a>
 
 <header class="nav">
@@ -300,35 +372,39 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 <main id="main">
 
 <section class="hero" id="top">
-  <div class="in wrapw gut">
-    <div>
-      <div class="eyebrow">Free die line tool for CorelDraw</div>
-      <h1>Turn any sticker into a <span>cut line</span> your cutter understands.</h1>
-      <p class="sub">Upload a PNG or JPG. Die Line Maker traces the outline, adds the gap and bleed you choose, and gives you a PDF with the artwork and a CutContour spot colour cut line on separate layers.</p>
-      <div class="ctas">
-        <a class="btn primary pill" href="editor.html">Make a die line</a>
-        <a class="btn pill" href="blog/index.html">Read the guides</a>
-      </div>
-      <ul class="trust">
-        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free, no sign-up</li>
-        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Images stay on your computer</li>
-        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>PDF, SVG, EPS, DXF</li>
-      </ul>
+  <div class="wrapw gut hero-copy">
+    <a class="badge" href="blog/index.html"><b>Free</b>Die line tool for CorelDraw<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    <h1>Turn any sticker into a <span>cut line</span> your cutter understands.</h1>
+    <p class="sub">Upload a PNG or JPG. Die Line Maker traces the outline, adds the gap and bleed you choose, and gives you a PDF with the artwork and a CutContour spot colour cut line on separate layers.</p>
+    <div class="ctas">
+      <a class="btn primary pill" href="editor.html">Make a die line<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn pill" href="editor.html?sample">Try it with a sample</a>
     </div>
-    <div class="preview-card">
-      <div class="pc-bar"><i></i><i></i><i></i><span>sample_sticker.png · 75 × 52 mm</span><b>Download PDF</b></div>
-      <div class="pc-canvas"><svg viewBox="0 0 440 300" role="img" aria-label="A sticker with a magenta CutContour cut line 2 mm outside the artwork">
+    <ul class="trust">
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free, no sign-up</li>
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Images stay on your computer</li>
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>PDF, SVG, EPS, DXF</li>
+    </ul>
+  </div>
+  <div class="wrapw gut">
+    <div class="shotwrap">
+      <div class="shot" aria-hidden="true">
+        <div class="s-top"><span class="s-logo"><i><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></i>Die Line Maker</span><span class="s-file">sample_sticker.png <em>75 × 52 mm</em></span><span class="s-sp"></span><span class="s-ghost">Other formats</span><span class="s-btn">Download PDF</span></div>
+        <div class="s-body">
+          <div class="s-rail"><i class="on"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></i><i><svg class="i" viewBox="0 0 24 24"><path d="M14 3.5H7.5a2.5 2.5 0 0 0-2.5 2.5v12a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V8.5"/><path d="M12 15V8M9 11l3-3 3 3"/></svg></i><i><svg class="i" viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2"/></svg></i><i><svg class="i" viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2M19 3a2 2 0 0 1 2 2M21 19a2 2 0 0 1-2 2M5 21a2 2 0 0 1-2-2M9 3h1M9 21h1M14 3h1M14 21h1M3 9v1M21 9v1M3 14v1M21 14v1"/></svg></i><i><svg class="i" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></i><i><svg class="i" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/></svg></i></div>
+          <div class="s-canvas">
+            <svg viewBox="0 0 440 300" role="img" aria-label="A sticker with a magenta CutContour cut line 2 mm outside the artwork">
   <defs>
     <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a00"/><stop offset="1" stop-color="#e5007e"/></linearGradient>
     <path id="die" d="M220 40C300 36 362 86 360 152C358 214 300 262 218 262C140 262 80 216 82 152C84 88 142 44 220 40Z"/>
   </defs>
   <use href="#die" fill="#ffffff" style="filter:drop-shadow(0 6px 14px rgba(15,23,42,.12))"/>
   <path d="M220 60C288 57 338 98 336 152C334 204 286 242 218 242C153 242 104 205 106 152C108 100 156 63 220 60Z" fill="url(#sg)" stroke="#14201b" stroke-width="5"/>
-  <text x="220" y="150" text-anchor="middle" font-family="Uncut Sans, system-ui, sans-serif" font-weight="700" font-size="44" fill="#fff" stroke="#14201b" stroke-width="5" paint-order="stroke">STICK</text>
-  <text x="220" y="196" text-anchor="middle" font-family="Uncut Sans, system-ui, sans-serif" font-weight="700" font-size="30" fill="#fff" stroke="#14201b" stroke-width="5" paint-order="stroke">IT!</text>
+  <text x="220" y="150" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="44" fill="#fff" stroke="#14201b" stroke-width="5" paint-order="stroke">STICK</text>
+  <text x="220" y="196" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="30" fill="#fff" stroke="#14201b" stroke-width="5" paint-order="stroke">IT!</text>
   <use href="#die" fill="none" style="stroke:var(--cut)" stroke-width="2"/>
   <circle class="blade" r="5.5" fill="#ffffff" style="stroke:var(--cut)" stroke-width="2.5"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#die"/></animateMotion></circle>
-  <g font-family="Uncut Sans, system-ui, sans-serif" font-size="12">
+  <g font-family="Inter, system-ui, sans-serif" font-size="12">
     <path d="M82 282V272M360 282V272M82 277H360" style="stroke:var(--faint)" stroke-width="1.2"/>
     <rect x="186" y="268" width="68" height="18" rx="6" style="fill:var(--canvas)"/>
     <text x="220" y="281" text-anchor="middle" style="fill:var(--ink-2)">75.0 mm</text>
@@ -336,27 +412,20 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
     <text x="350" y="39" style="fill:var(--cut)" font-weight="600">CutContour</text>
     <text x="350" y="54" style="fill:var(--muted)">0.25 pt spot</text>
   </g>
-</svg></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec opensec" id="tool">
-  <div class="wrapw gut">
-    <div class="opencard">
-      <div>
-        <div class="eyebrow">The tool</div>
-        <h2 style="margin-top:10px">Make your die line in the editor</h2>
-        <p class="lede">The editor opens full screen: your sticker in the middle, settings on the right. Upload an image and download a CorelDraw-ready PDF in about a minute.</p>
-        <ul class="trust">
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>One sticker or a whole sheet</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Bleed, white border and safe zone</li>
-          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Smooth cut lines with few nodes</li>
-        </ul>
-      </div>
-      <div class="opencta">
-        <a class="btn primary pill" href="editor.html">Open the editor</a>
-        <a class="btn pill" href="editor.html?sample">Try it with a sample</a>
+</svg>
+            <div class="s-float"><span class="on">Artwork</span><span class="on"><i style="--c:var(--cut)"></i>Cut line</span><span><i class="dash"></i>Safe zone</span></div>
+            <div class="s-float r"><span>−</span><b>100%</b><span>+</span></div>
+          </div>
+          <div class="s-panel">
+            <div class="s-ptitle">Cut line shape</div>
+            <div class="s-tiles"><span class="on">Contour</span><span>Rectangle</span><span>Rounded</span><span>Circle</span></div>
+            <div class="s-row"><span>Gap from artwork</span><b>2 mm</b></div><div class="s-bar" style="--v:.28"></div>
+            <div class="s-row"><span>Smoothness</span><b>4</b></div><div class="s-bar" style="--v:.4"></div>
+            <div class="s-row"><span>Bleed past the cut</span><b>2 mm</b></div><div class="s-bar" style="--v:.4"></div>
+            <div class="s-row"><span>White ink layer</span><i class="s-sw"></i></div>
+            <div class="s-row"><span>Through cut</span><i class="s-sw on"></i></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -364,8 +433,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="sec" id="how">
   <div class="wrapw gut">
-    <div class="eyebrow">How it works</div>
-    <h2 style="margin-top:12px">From image to cutter in three steps</h2>
+    <div class="sech"><div class="eyebrow">How it works</div><h2>From image to cutter in three steps</h2></div>
     <ol class="steps">
       <li><h3>Upload your design</h3><p>Use a PNG with a transparent background, or a JPG on a plain background. Got a full sheet of white-bordered stickers? Choose <b>A sheet of stickers</b> and every sticker is found for you.</p></li>
       <li><h3>Set gap, shape and bleed</h3><p>Choose a contour, rectangle, rounded, circle or oval cut. Set the final size in mm or inches, a white border or extended colours, and fill a whole sheet if you need one.</p></li>
@@ -387,9 +455,8 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="sec" id="coreldraw">
   <div class="wrapw gut">
-    <div class="eyebrow">CorelDraw guide</div>
-    <h2 style="margin-top:12px">Using the file in CorelDraw</h2>
-    <p class="lede">The PDF has two layers: <b>Artwork</b> for the CMYK print, and the cut line in its own spot colour. That's the setup print-and-cut RIPs and die makers expect.</p>
+    <div class="sech"><div class="eyebrow">CorelDraw guide</div><h2>Using the file in CorelDraw</h2>
+      <p class="lede">The PDF has two layers: <b>Artwork</b> for the CMYK print, and the cut line in its own spot colour. That's the setup print-and-cut RIPs and die makers expect.</p></div>
     <div class="guide">
       <div class="gcard">
         <h3>1 · Import</h3>
@@ -497,9 +564,9 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 <!--learn:end-->
 
 <section class="sec" id="faq">
-  <div class="wrapw gut">
-    <div class="eyebrow">Questions</div>
-    <h2 style="margin-top:12px">Frequently asked</h2>
+  <div class="wrapw gut faqgrid">
+    <div class="sech"><div class="eyebrow">Questions</div><h2>Frequently asked</h2>
+      <p class="lede">Still stuck? The <a href="blog/index.html">guides</a> walk through every step in CorelDraw and Photoshop.</p></div>
     <div class="faq">
       <details id="faq-cdr"><summary>Can I download a CorelDraw .cdr file?</summary><p>Not directly. CDR is CorelDraw's own closed format: there's no public specification, and even open-source tools like Inkscape and LibreOffice can only read it, not write it. The PDF is the reliable route. In CorelDraw choose <b>File → Open</b>, pick the PDF, then <b>File → Save As → CorelDRAW (.cdr)</b>. The artwork and the cut line come in as separate objects, and the cut line is a vector path in the CutContour spot colour. Check it in Object Properties before you save. SVG, EPS and DXF also open in CorelDraw as editable vectors.</p></details>
       <details><summary>Can the artwork be vector too?</summary><p>Yes, for flat-colour designs. Under <b>Artwork style</b>, choose <b>Vector shapes</b>. The tool reduces the artwork to its main colours, ignores blends along edges, and traces each colour as smooth filled curves. The PDF, SVG and EPS then contain no picture at all: every shape is editable in CorelDraw. It works best on logos, text and solid-colour cartoons. Photos and 3D-shaded artwork come out blotchy, so keep those as an image (the printer prints images perfectly; only the cut line needs to be a vector).</p></details>
@@ -516,6 +583,27 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
       <details><summary>Should the line be 0.25 pt or a hairline?</summary><p>Most RIPs read the colour name, not the width, so 0.25 pt is a safe default that's easy to see. Some die makers ask for a hairline; set the width to 0 for that.</p></details>
       <details><summary>Can I make folding box or carton dielines with this?</summary><p>This tool makes outline cuts for stickers, labels, tags and badges. For folding cartons, start from the box manufacturer's dieline template, which includes the fold lines.</p></details>
       <details><summary>Does the PDF also work in Illustrator or with my cutter's software?</summary><p>Yes. The cut line is a standard PDF Separation colour on its own layer (optional content group), so Illustrator, Acrobat and most RIPs see it as a named spot colour.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec opensec" id="tool">
+  <div class="wrapw gut">
+    <div class="opencard">
+      <div>
+        <div class="eyebrow">The tool</div>
+        <h2>Make your die line in the editor</h2>
+        <p class="lede">The editor opens full screen: your sticker in the middle, settings on the right. Upload an image and download a CorelDraw-ready PDF in about a minute.</p>
+        <ul class="trust">
+          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>One sticker or a whole sheet</li>
+          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Bleed, white border and safe zone</li>
+          <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Smooth cut lines with few nodes</li>
+        </ul>
+      </div>
+      <div class="opencta">
+        <a class="btn primary pill" href="editor.html">Open the editor</a>
+        <a class="btn pill" href="editor.html?sample">Try it with a sample</a>
+      </div>
     </div>
   </div>
 </section>
@@ -549,6 +637,6 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <!--fab:start-->
 <!--fab:end-->
-<script src="assets/site.js?v=b5748bae" defer></script>
+<script src="assets/site.js?v=de46a4a9" defer></script>
 </body>
 </html>

@@ -17,9 +17,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#f4f5f8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f172a'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%234d8dff' stroke-width='2.4' stroke-dasharray='3.4 2.6'/%3E%3C/svg%3E">
-<link rel="preload" href="assets/fonts/uncut-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/uncut-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=b5748bae">
+<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=de46a4a9">
 <style>
 /* Layout: product site. Sticky header, split hero with a live preview card, then the tool as an
    editor (icon rail · canvas · properties panel), then steps, features, guide and FAQ. */
@@ -318,12 +317,142 @@ body.editor{height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
   .upcard{padding:18px}
   .dropzone.big{padding:28px 14px}
 }
+
+/* ---------- editor layout on the product skin (tokens, buttons and theme live in site.css, body.skin) ---------- */
+
+/* layout: four floating cards on a flat page */
+.ed{grid-template-columns:56px minmax(0,1fr) 352px;grid-template-rows:56px minmax(0,1fr);gap:12px;padding:12px}
+.ed-top{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:0 10px 0 14px;box-shadow:var(--hl),var(--shadow)}
+.ed-top .vr{background:var(--line)}
+.ed .logo b{color:var(--accent-fg)}
+.ed .rail{align-self:start;max-height:100%;overflow:visible;gap:2px;padding:8px 0;border:1px solid var(--line);border-radius:16px;box-shadow:var(--hl),var(--shadow)}
+.ed .rail .rb{width:38px;height:38px;border-radius:12px;transition:background .15s ease,color .15s ease,transform .16s var(--ease-out)}
+.ed .rail .rb:active{transform:scale(.95)}
+.ed .rail .rb.on{background:var(--accent);color:var(--accent-ink)}
+.ed .rail .sep{background:var(--line)}
+.ed .stage{background:var(--canvas);border:1px solid var(--line);border-radius:20px}
+.ed .side{border:1px solid var(--line);border-radius:20px;box-shadow:var(--hl),var(--shadow);padding:0 10px 10px}
+.ed .side,.ed .status,.ed .rail{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
+
+/* top bar controls */
+.ed .filepill{background:var(--field);border-color:transparent;border-radius:12px}
+.ed .tag{color:var(--accent-fg)}
+.ed .busy{color:var(--accent-fg)}
+.ed .themebtn{width:38px;height:38px}
+.ed .btn{min-height:38px;border-radius:12px}
+.ed .menu-pop{background:var(--surface-2);border-radius:16px;padding:6px}
+.ed .menu[open] .menu-pop{transform-origin:top right;animation:popin .16s var(--ease-out)}
+@keyframes popin{from{opacity:0;transform:scale(.96) translateY(-4px)}}
+.ed .menu-pop .mi{border-radius:10px;transition:background .12s ease}
+.ed .menu-pop .mi:hover:not(:disabled){background:var(--soft)}
+
+/* canvas overlays */
+.ed .floatbar{background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-radius:14px}
+/* the two floating bars share the bottom edge; on a narrow canvas the view toggles drop their words (titles stay) */
+.ed .wrap{container-type:size}
+@container (max-width: 760px){ .ed .floatbar.left .tgl em{display:none} }
+.ed .tgl span,.ed .zb{border-radius:10px;transition:background .15s ease,color .15s ease}
+.ed .zb:active{background:var(--soft)}
+.ed .status{background:transparent;border-top:1px solid var(--line);padding:10px 16px}
+.ed .stats{font-size:12.5px}
+.ed .emptystate{background:color-mix(in srgb,var(--canvas) 55%,transparent)}
+.ed .upcard{border-radius:22px;padding:26px;background:var(--surface-2)}
+.ed .dropzone{border-radius:16px;background:var(--field);border-color:color-mix(in srgb,var(--faint) 55%,transparent)}
+.ed .dropzone.over{background:var(--accent-soft)}
+.ed .helplink:hover{color:var(--ink)}
+
+/* settings panel: sticky title, each group is a card */
+.ed .ptitle{margin:0 -10px;padding:16px 20px 10px;border-bottom:0;font-size:15px}
+.ed .ptitle span{font-size:12px;color:var(--faint)}
+.ed .psec{margin-top:8px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2);box-shadow:var(--hl)}
+.ed .psec:last-of-type{border-bottom:1px solid var(--line)}
+.ed .psec > summary,.ed .psec > .hd{padding:12px 14px;font-size:14px;font-weight:500;border-radius:16px}
+.ed .psec > summary:hover{background:transparent}
+.ed .psec > summary svg,.ed .psec > .hd svg{width:28px;height:28px;padding:6px;border-radius:9px;background:var(--field);color:var(--ink-2)}
+.ed .psec[open] > summary svg,.ed .psec > .hd svg{background:var(--accent-soft);color:var(--accent-fg)}
+.ed .psec.flash > summary{background:var(--accent-soft)}
+.ed .body{padding:2px 14px 16px;gap:14px}
+.ed .f > label,.ed .fl label{font-size:13px;color:var(--ink-2)}
+.ed .hint{color:var(--faint)}
+.ed .linkbtn{color:var(--accent-fg)}
+.ed .sidefoot a:hover{color:var(--accent-fg)}
+
+/* fields */
+.ed input[type=number],.ed input[type=text],.ed select{background-color:var(--field);border:1px solid transparent;border-radius:10px;padding:8px 10px}
+.ed input[type=number]:hover,.ed input[type=text]:hover,.ed select:hover{border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
+.ed input[type=number]:focus,.ed input[type=text]:focus,.ed select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ed input[type=color]{background:var(--field);border-color:transparent;border-radius:10px}
+
+/* sliders: filled track (--p is set by paintRanges) and a round thumb */
+.ed input[type=range]{--pr:.5;-webkit-appearance:none;appearance:none;height:24px;background:transparent;cursor:pointer;border-radius:9px}
+.ed input[type=range]::-webkit-slider-runnable-track{height:24px;border-radius:9px;background:linear-gradient(to right,var(--accent) calc(3px + (100% - 6px) * var(--pr)),var(--field) 0)}
+.ed input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:6px;height:14px;margin-top:5px;border:0;border-radius:3px;background:var(--ink);box-shadow:0 0 0 1.5px rgba(0,0,0,.35);transition:height .15s var(--ease-out),margin-top .15s var(--ease-out)}
+.ed input[type=range]::-moz-range-track{height:24px;border-radius:9px;background:var(--field)}
+.ed input[type=range]::-moz-range-progress{height:24px;border-radius:9px;background:var(--accent)}
+.ed input[type=range]::-moz-range-thumb{width:6px;height:14px;border:0;border-radius:3px;background:var(--ink);box-shadow:0 0 0 1.5px rgba(0,0,0,.35)}
+.ed input[type=range]:active::-webkit-slider-thumb{height:18px;margin-top:3px}
+.ed input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* option tiles (segmented choices) */
+.ed .seg{gap:6px;padding:0;background:transparent;border-radius:0}
+.ed .seg label{min-height:40px;padding:9px 4px;border-radius:12px;background:var(--field);transition:background .15s ease,color .15s ease,transform .16s var(--ease-out)}
+.ed .seg label:active{transform:scale(.97)}
+.ed .seg input:checked + label{background:var(--accent);color:var(--accent-ink);box-shadow:none;font-weight:600}
+@media (hover:hover) and (pointer:fine){ .ed .seg input:not(:checked):not(:disabled) + label:hover{background:color-mix(in srgb,var(--field) 90%,var(--ink));color:var(--ink)} }
+
+/* checkboxes that switch something on read as toggles, with the switch at the right */
+.ed .chk{justify-content:space-between;gap:12px}
+.ed .chk input[type=checkbox]{-webkit-appearance:none;appearance:none;order:2;position:relative;width:36px;height:22px;border-radius:99px;background:var(--field);cursor:pointer;transition:background .2s ease}
+.ed .chk input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ink-2);transition:transform .2s var(--ease-out),background .2s ease}
+.ed .chk input[type=checkbox]:checked{background:var(--accent)}
+.ed .chk input[type=checkbox]:checked::after{transform:translateX(14px);background:var(--accent-ink)}
+.ed .chk input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* sheet table and file rows */
+.ed .fitwrap{border-radius:12px;border-color:var(--line)}
+.ed table.fit th{background:var(--field)}
+.ed .fitbtn.best b{color:var(--accent-fg)}
+.ed .fitbtn.cur{border-radius:6px}
+.ed .fitem{background:var(--field);border-color:transparent;border-radius:12px}
+
+/* type: Inter, tuned for small UI text. Labels lead, hints step back, numbers line up. */
+body.editor{font-size:14px;line-height:1.5;letter-spacing:-.006em}
+.ed .logo{font-weight:600;letter-spacing:-.02em}
+.ed .ptitle{font-weight:600;letter-spacing:-.015em}
+.ed .psec > summary,.ed .psec > .hd{font-weight:600;letter-spacing:-.01em}
+.ed .f > label,.ed .fl label,.ed .chk{font-weight:500}
+.ed .hint{font-size:12px;line-height:1.55;letter-spacing:0}
+.ed .dz-meta,.ed .stats,.ed .ptitle span{letter-spacing:0}
+.ed input[type=number],.ed .zpct,.ed .stats,.ed .fitbtn,.ed .filepill .sz{font-variant-numeric:tabular-nums}
+.ed .btn{font-weight:500;letter-spacing:-.01em}
+.ed .btn.primary{font-weight:600}
+.ed .seg label{font-size:12px;letter-spacing:0}
+.ed .rail .rb::after{font-size:12px;font-weight:500;padding:6px 10px;border-radius:8px}
+
+/* clarity: a quiet divider between the main steps and the optional extras, and calmer status messages */
+.ed .sgrp{display:flex;align-items:center;gap:10px;margin:18px 6px 2px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.ed .sgrp::after{content:"";flex:1;height:1px;background:var(--line)}
+.ed .two:has(#sizeOf){grid-template-columns:minmax(0,1fr) 96px}
+.ed .stats div span{color:var(--faint)}
+.ed .warn div{border:1px solid color-mix(in srgb,var(--warn-ink) 22%,transparent);border-radius:12px;padding:9px 12px;font-size:12.5px;line-height:1.5}
+
+@media (max-height: 640px){ .ed .rail .rb{width:32px;height:32px} .ed .rail{padding:6px 0;gap:0} }
+@media (max-width: 900px){
+  .ed{grid-template-columns:1fr;grid-template-rows:auto auto auto;padding:8px;gap:8px}
+  .ed-top{top:8px;border-radius:16px}
+  .ed .stage{border-radius:16px}
+  .ed .side{border-radius:16px;overflow:visible}
+  .ed .ptitle{position:static}
+}
+@media (prefers-reduced-motion: reduce){
+  .ed .menu[open] .menu-pop{animation:none}
+}
 </style>
 <!--head:start-->
 <script>try{var t=localStorage.getItem('dlm-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
 <!--head:end-->
 </head>
-<body class="editor">
+<body class="editor skin">
 <a class="skip" href="#settings">Skip to settings</a>
 <p class="sr-only" id="toolNote" aria-live="polite"></p>
 <div class="ed" id="tool">
@@ -537,6 +666,7 @@ body.editor{height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
           </div>
         </details>
 
+        <p class="sgrp">Optional extras</p>
         <details class="psec" id="secArt">
           <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1a1.6 1.6 0 0 1 1.7-1.7h2c3 0 5.5-2.5 5.5-5.5C22 6 17.5 2 12 2z"/><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/></svg> Artwork style</summary>
           <div class="body">
@@ -1833,7 +1963,16 @@ function fitView(){
   const s = Math.max(0.01, Math.min((r.width - 2*pad)/L.W, (r.height - 2*pad)/L.H));
   state.view = { s, ox:(r.width - L.W*s)/2, oy:(r.height - L.H*s)/2, user:false }; state.fitS = s;
 }
+// slider fill: the track shows the value up to the thumb (read by the editor skin's CSS as --pr, 0 to 1)
+function paintRanges(){
+  document.querySelectorAll('input[type=range]').forEach(r => {
+    const lo = +r.min || 0, hi = +r.max || 100;
+    r.style.setProperty('--pr', (r.value - lo) / (hi - lo));
+  });
+}
+document.addEventListener('input', paintRanges, true);
 function draw(){
+  paintRanges();
   const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
   const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr);
   if (!W || !H) return;
@@ -2513,6 +2652,6 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.pi
 // open in a working state: the sample sticker (fonts first, so its lettering matches)
 (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(() => { if (!state.img){ if (/[?&]sample\b/.test(location.search)) makeSample(); else clearImage(); } });
 </script>
-<script src="assets/site.js?v=b5748bae" defer></script>
+<script src="assets/site.js?v=de46a4a9" defer></script>
 </body>
 </html>
