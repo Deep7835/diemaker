@@ -327,11 +327,15 @@ body.editor{height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
 .ed-top{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:0 10px 0 14px;box-shadow:var(--hl),var(--shadow)}
 .ed-top .vr{background:var(--line)}
 .ed .logo b{color:var(--accent-fg)}
-.ed .rail{align-self:start;max-height:100%;overflow:visible;gap:2px;padding:8px 0;border:1px solid var(--line);border-radius:16px;box-shadow:var(--hl),var(--shadow)}
+.ed .rail{align-self:stretch;overflow:visible;gap:2px;padding:8px 0;border:1px solid var(--line);border-radius:16px;box-shadow:var(--hl),var(--shadow)}
 .ed .rail .rb{width:38px;height:38px;border-radius:12px;transition:background .15s ease,color .15s ease,transform .16s var(--ease-out)}
 .ed .rail .rb:active{transform:scale(.95)}
 .ed .rail .rb.on{background:var(--accent);color:var(--accent-ink)}
-.ed .rail .sep{background:var(--line)}
+/* full-height rail: section tools at the top, Guides and Help pinned to the bottom */
+.ed .rail .sep{background:var(--line);margin-top:auto}
+.ed .rail .bottom{margin-top:0}
+.ed .rail .rb::after{left:calc(100% + 12px);padding:6px 10px;border-radius:8px;box-shadow:var(--shadow);transform:translate(-4px,-50%);transition:opacity .15s var(--ease-out),transform .15s var(--ease-out)}
+.ed .rail .rb:hover::after,.ed .rail .rb:focus-visible::after{transform:translate(0,-50%)}
 .ed .stage{background:var(--canvas);border:1px solid var(--line);border-radius:20px}
 .ed .side{border:1px solid var(--line);border-radius:20px;box-shadow:var(--hl),var(--shadow);padding:0 10px 10px}
 .ed .side,.ed .status,.ed .rail{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
@@ -435,8 +439,62 @@ body.editor{font-size:14px;line-height:1.5;letter-spacing:-.006em}
 .ed .sgrp{display:flex;align-items:center;gap:10px;margin:18px 6px 2px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
 .ed .sgrp::after{content:"";flex:1;height:1px;background:var(--line)}
 .ed .two:has(#sizeOf){grid-template-columns:minmax(0,1fr) 96px}
-.ed .stats div span{color:var(--faint)}
-.ed .warn div{border:1px solid color-mix(in srgb,var(--warn-ink) 22%,transparent);border-radius:12px;padding:9px 12px;font-size:12.5px;line-height:1.5}
+/* status: each figure is a small chip; warnings are calm orange notes (orange = "too narrow" in the preview) */
+.ed .status{gap:10px;padding:12px 14px}
+.ed .stats{gap:6px}
+.ed .stats > div{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:10px;background:var(--field);color:var(--ink);white-space:nowrap}
+.ed .stats div span{margin-right:0;color:var(--faint)}
+.ed .stats b{font-weight:600}
+.ed .warn div{position:relative;padding:10px 12px 10px 30px;border:1px solid color-mix(in srgb,#ff8c00 32%,transparent);border-radius:12px;background:color-mix(in srgb,#ff8c00 9%,transparent);color:var(--ink-2);font-size:12.5px;line-height:1.5}
+.ed .warn div::before{content:"";position:absolute;left:13px;top:17px;width:7px;height:7px;border-radius:50%;background:#ff8c00;box-shadow:0 0 0 3px color-mix(in srgb,#ff8c00 22%,transparent)}
+.ed .warn b{color:var(--ink);font-weight:600}
+
+/* setting cards: every slider setting sits in its own inset card (label + value, slider, hint) */
+.ed .body{gap:10px}
+.ed .f:has(> input[type=range]){gap:10px;padding:12px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface-2) 55%,var(--bg))}
+/* settings show controls only; each hint line appears as a tooltip on its setting name (wired up in the script) */
+.ed .side .hint{display:none}
+.ed label.has-tip{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--ink) 35%,transparent);text-underline-offset:4px;text-decoration-thickness:1px}
+.settip{position:fixed;left:0;top:0;z-index:80;max-width:264px;padding:9px 12px;border-radius:10px;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.5;letter-spacing:0;box-shadow:var(--shadow);pointer-events:none;opacity:0;transform:translateY(3px);transition:opacity .12s var(--ease-out),transform .12s var(--ease-out)}
+.settip.on{opacity:1;transform:none}
+.settip.instant{transition:none}
+.settip p{margin:0}
+.settip p + p{margin-top:6px}
+.settip b{font-weight:600}
+.settip code{padding:0;border:0;background:none;color:inherit;font-weight:600}
+@media (prefers-reduced-motion: reduce){ .settip{transform:none} }
+.ed .f:has(> input[type=range]) > .fl label{color:var(--ink)}
+
+/* number fields carry their unit inside, so every value lines up on the right */
+.ed .val:has(> input[type=number]){gap:0;padding-right:10px;border:1px solid transparent;border-radius:10px;background:var(--field);transition:border-color .15s ease,box-shadow .15s ease}
+.ed .val:has(> input[type=number]):hover{border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
+.ed .val:has(> input[type=number]):focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ed .val > input[type=number]{width:60px;padding:6px 6px 6px 10px;border:0;background:transparent;box-shadow:none}
+.ed .val > input[type=number]:focus{box-shadow:none}
+.ed .val em{min-width:0;font-size:11.5px}
+.ed .val em:empty{display:none}
+.ed .fl > .val:has(> input[type=number]){width:96px}
+.ed .fl > .val > input[type=number]{flex:1;width:0}
+.ed .f > .val:has(> input[type=number]){display:flex}
+.ed .f > .val > input[type=number]{flex:1}
+
+/* upload card: once an image is in, the file comes first and the drop area shrinks to one "replace" row */
+.ed #secUpload .filelist{order:-1}
+.ed .fitem{padding:10px 8px 10px 10px}
+.ed .fitem > svg{width:38px;height:38px;padding:9px;border-radius:10px;background:var(--accent-soft);color:var(--accent-fg)}
+.ed .body:has(.fitem) .dropzone{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;gap:2px 12px;padding:12px 14px;text-align:left;border-width:1px}
+.ed .body:has(.fitem) .dropzone .upicon{grid-row:span 2;width:26px;height:26px}
+.ed .body:has(.fitem) .dz-text{font-size:13px}
+.ed .body:has(.fitem) .dz-sub{font-size:11.5px;color:var(--faint)}
+.ed .body:has(.fitem) .dropzone{background:transparent}
+.ed .body:has(.fitem) .dz-meta{display:none}
+.ed .fmeta{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed .fname{font-size:13.5px}
+.ed .cardfoot .linkbtn{color:var(--muted);font-size:13px}
+.ed .cardfoot .linkbtn:hover{color:var(--ink);text-decoration:none}
+.ed .val > input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.ed .val > input[type=number]::-webkit-inner-spin-button,.ed .val > input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.ed .dz-meta{margin-top:-4px;font-size:11.5px}
 
 @media (max-height: 640px){ .ed .rail .rb{width:32px;height:32px} .ed .rail{padding:6px 0;gap:0} }
 @media (max-width: 900px){
@@ -493,7 +551,7 @@ body.editor{font-size:14px;line-height:1.5;letter-spacing:-.006em}
                 <span class="dz-text">Drag and drop your image here or <u>Choose here</u></span>
                 <span class="dz-sub">or paste it with Ctrl + V</span>
               </label>
-              <div class="dz-meta"><span>Supported formats: PNG, JPG, WEBP, GIF, BMP</span><span>Maximum size: 50 MB</span></div>
+              <div class="dz-meta"><span>PNG, JPG, WEBP, GIF or BMP</span><span>Up to 50 MB</span></div>
               <div class="upfoot">
                 <a class="helplink" href="blog/die-cut-lines-in-coreldraw.html"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg>Help</a>
                 <span class="ebtns"><button class="btn" id="emptySample" type="button">Try the sample</button><button class="btn primary" id="emptyChoose" type="button">Choose image</button></span>
@@ -530,10 +588,10 @@ body.editor{font-size:14px;line-height:1.5;letter-spacing:-.006em}
             <label class="dropzone" id="drop">
               <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" hidden>
               <svg class="upicon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25.5 12.5H28a4 4 0 0 1 4 4v11.2L24.7 35H12a4 4 0 0 1-4-4V16.5a4 4 0 0 1 4-4h2.5"/><path d="M24.5 35v-4.5a3 3 0 0 1 3-3H32"/><path d="M20 24.5V5.5M14.5 11 20 5.5l5.5 5.5"/></svg>
-              <span class="dz-text">Drag and drop your image here or <u>Choose here</u></span>
-              <span class="dz-sub">You can also paste an image (Ctrl + V)</span>
+              <span class="dz-text">Drop an image here or <u>browse</u></span>
+              <span class="dz-sub">or paste it with Ctrl + V</span>
             </label>
-            <div class="dz-meta"><span>Supported formats: PNG, JPG, WEBP, GIF, BMP</span><span>Maximum size: 50 MB</span></div>
+            <div class="dz-meta"><span>PNG, JPG, WEBP, GIF or BMP</span><span>Up to 50 MB</span></div>
             <ul class="filelist" id="fileList" aria-live="polite"></ul>
             <div class="f">
               <label id="uploadLbl">What are you uploading?</label>
@@ -2564,6 +2622,54 @@ document.querySelectorAll('input[name="fill"]').forEach(r => r.addEventListener(
 function syncShapeRows(){ const s = radio('shape'); document.querySelectorAll('[data-for]').forEach(el => el.hidden = el.dataset.for !== s); }
 document.querySelectorAll('input[name="shape"]').forEach(r => r.addEventListener('change', () => { syncShapeRows(); schedule(0); }));
 syncShapeRows();
+
+// Setting descriptions: the .hint lines are hidden in the panel and shown as a tooltip on the setting
+// name instead (on hover, or while its control has keyboard focus). Hints outside a .f field belong
+// to their section title. Screen readers get the same text through aria-describedby.
+const settip = document.createElement('div');
+settip.className = 'settip'; settip.setAttribute('aria-hidden', 'true');
+document.body.append(settip);
+let tipTimer = 0, tipLastHide = 0;
+document.querySelectorAll('.side .hint').forEach((h, i) => {
+  if (!h.id) h.id = 'hint' + i;
+  const f = h.closest('.f');
+  const label = f && f.querySelector(':scope > label, :scope > .fl label');
+  const anchor = label || h.closest('.psec').querySelector(':scope > summary, :scope > .hd');
+  anchor.classList.add('has-tip');
+  (anchor.tipHints ||= []).push(h);
+  const ctl = f && f.querySelector('input:not([type=range]), select');
+  if (ctl) ctl.setAttribute('aria-describedby', [ctl.getAttribute('aria-describedby'), h.id].filter(Boolean).join(' '));
+});
+function showTip(anchor){
+  const hints = (anchor.tipHints || []).filter(h => !h.closest('[hidden]'));
+  if (!hints.length) return;
+  clearTimeout(tipTimer);
+  const instant = performance.now() - tipLastHide < 300 || settip.classList.contains('on');
+  tipTimer = setTimeout(() => {
+    settip.innerHTML = hints.map(h => `<p>${h.innerHTML}</p>`).join('');
+    const a = anchor.getBoundingClientRect(), t = settip.getBoundingClientRect();
+    const x = Math.max(8, Math.min(a.left, innerWidth - t.width - 8));
+    const y = a.top - t.height - 8 >= 8 ? a.top - t.height - 8 : a.bottom + 8;
+    settip.style.translate = `${Math.round(x)}px ${Math.round(y)}px`;
+    settip.classList.toggle('instant', instant);
+    settip.classList.add('on');
+  }, instant ? 0 : 350);
+}
+function hideTip(){
+  clearTimeout(tipTimer);
+  if (settip.classList.contains('on')) tipLastHide = performance.now();
+  settip.classList.remove('on');
+}
+document.querySelectorAll('.has-tip').forEach(a => {
+  a.addEventListener('mouseenter', () => showTip(a));
+  a.addEventListener('mouseleave', hideTip);
+});
+$('settings').addEventListener('focusin', (e) => {
+  const f = e.target.closest('.f'), a = f && f.querySelector(':scope > label.has-tip, :scope > .fl label.has-tip');
+  if (a && e.target.matches(':focus-visible')) showTip(a);
+});
+$('settings').addEventListener('focusout', hideTip);
+$('settings').addEventListener('scroll', hideTip, { passive: true });
 ['vArt','vDie','vNodes','vSafe','vWhite'].forEach(id => $(id).addEventListener('change', draw));
 $('fitTable').addEventListener('click', (e) => {
   const b = e.target.closest('.fitbtn'); if (!b) return;
