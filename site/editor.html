@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@1&amp;display=swap">
-<link rel="stylesheet" href="assets/site.css?v=4cf0335b">
+<link rel="stylesheet" href="assets/site.css?v=6b26a31d">
 <style>
 /* Layout: product site. Sticky header, split hero with a live preview card, then the tool as an
    editor (icon rail · canvas · properties panel), then steps, features, guide and FAQ. */
@@ -2760,6 +2760,6 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.pi
 // open in a working state: the sample sticker (fonts first, so its lettering matches)
 (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(() => { if (!state.img){ if (/[?&]sample\b/.test(location.search)) makeSample(); else clearImage(); } });
 </script>
-<script src="assets/site.js?v=4cf0335b" defer></script>
+<script src="assets/site.js?v=6b26a31d" defer></script>
 </body>
 </html>

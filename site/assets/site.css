@@ -243,8 +243,9 @@ footer::after{content:"Die Line Maker" / "";display:block;max-width:1200px;margi
   .contactfab{padding:0;width:52px;justify-content:center}
 }
 
-/* ---------- product skin (body.skin: the editor and the homepage) ----------
-   Dark first, floating cards, one lime accent. The theme button switches to a light version.
+/* ---------- product skin (body.skin: every page) ----------
+   Floating cards and one lime accent, in a dark and a light (cream) version. The editor opens dark;
+   pages with body.lightfirst (homepage, blog, legal) open light. The theme button switches either way.
    Tokens sit on :root so canvas code that reads them (the editor's grid) follows the theme. */
 @media screen{
   :root:has(body.skin){
@@ -257,17 +258,20 @@ footer::after{content:"Die Line Maker" / "";display:block;max-width:1200px;margi
     --cut:#ff4fa7;
     --warn-bg:#33270c; --warn-ink:#ffd27a; --ok:#4ade80; --err:#ff8b7e; --info-bg:#1f2410; --info-ink:#e3f7a0;
     --shadow-sm:0 1px 2px rgba(0,0,0,.4); --shadow:0 18px 40px -22px rgba(0,0,0,.7);
+    --lime-soft:rgba(200,243,29,.09); --lime-ink:#12150a;
     --hl:inset 0 1px 0 rgba(255,255,255,.045);
     --ease-out:cubic-bezier(.23,1,.32,1);
+    --nav-h:76px;
     color-scheme:dark;
   }
-  :root[data-theme="light"]:has(body.skin){
-    --bg:#e8eae4; --surface:#ffffff; --surface-2:#f4f5f1; --field:#e7e9e2;
-    --ink:#16181a; --ink-2:#34373a; --muted:#62666b; --faint:#6e7278;
-    --line:rgba(20,24,20,.09); --line-2:rgba(20,24,20,.06); --soft:rgba(20,24,20,.06);
+  :root[data-theme="light"]:has(body.skin),:root:not([data-theme="dark"]):has(body.lightfirst){
+    --bg:#f4f6ea; --surface:#fdfef8; --surface-2:#f2f5e6; --field:#e8edd7;
+    --ink:#12150c; --ink-2:#2f3427; --muted:#5c6250; --faint:#6f7564;
+    --line:rgba(18,21,12,.09); --line-2:rgba(18,21,12,.06); --soft:rgba(18,21,12,.05);
+    --lime-soft:#edf7c4;
     --accent:#c8f31d; --accent-hover:#b9e40f; --accent-ink:#12150a; --accent-fg:#4d6a00;
     --accent-soft:rgba(160,205,0,.16); --accent-line:rgba(100,140,0,.5);
-    --canvas:#eff0ec; --grid-line:rgba(20,24,20,.05); --grid-major:rgba(20,24,20,.1);
+    --canvas:#eef1e3; --grid-line:rgba(18,21,12,.05); --grid-major:rgba(18,21,12,.1);
     --cut:#c8006c;
     --warn-bg:#fff6e5; --warn-ink:#7a4b00; --ok:#13733a; --err:#bf2622; --info-bg:#f3f8e1; --info-ink:#3d5200;
     --shadow-sm:0 1px 2px rgba(20,24,20,.08); --shadow:0 18px 40px -26px rgba(20,24,20,.35);
@@ -284,13 +288,49 @@ footer::after{content:"Die Line Maker" / "";display:block;max-width:1200px;margi
 .skin .themebtn,.skin .menubtn{border:0;border-radius:12px;background:var(--field);transition:background .15s ease,color .15s ease,transform .16s var(--ease-out)}
 .skin .themebtn:active,.skin .menubtn:active{transform:scale(.95)}
 .skin .themebtn .sun{display:none} .skin .themebtn .moon{display:block}
-:root[data-theme="light"] .skin .themebtn .sun{display:block} :root[data-theme="light"] .skin .themebtn .moon{display:none}
+:root[data-theme="light"] .skin .themebtn .sun,:root:not([data-theme="dark"]) .lightfirst .themebtn .sun{display:block}
+:root[data-theme="light"] .skin .themebtn .moon,:root:not([data-theme="dark"]) .lightfirst .themebtn .moon{display:none}
+/* skin: a black call-to-action with a lime arrow tile (the header CTA uses it on every page) */
+.skin .btn.ink,.skin .nav .in > .btn.primary{gap:12px;padding:6px 6px 6px 16px;border-radius:12px;background:var(--ink);color:var(--bg);font-weight:600}
+.skin .btn.ink.pill{padding:7px 7px 7px 20px;border-radius:14px}
+.skin .btn.ink::after,.skin .nav .in > .btn.primary::after{content:"";width:26px;height:26px;flex:none;border-radius:8px;background:var(--accent) no-repeat center/14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2312150a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");transition:transform .2s var(--ease-out)}
+.skin .btn.ink.pill::after{width:32px;height:32px;border-radius:10px;background-size:16px}
+
+/* skin: floating header bar */
+.skin .nav{padding:12px 12px 0;background:transparent;border-bottom:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.skin .nav .in{height:60px;padding:0 8px 0 16px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--surface) 82%,transparent);box-shadow:var(--hl),0 10px 30px -20px rgba(0,0,0,.35);-webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px)}
+.skin .nav nav{margin-inline:auto}
+.skin .nav nav a{border-radius:10px;font-size:14px}
+.skin .nav nav a[aria-current]{background:var(--lime-soft);color:var(--ink)}
+.skin .mobilemenu{left:12px;right:12px;top:calc(100% + 8px);border:1px solid var(--line);border-radius:18px;padding:8px 16px 16px}
+
+/* skin: the footer is a lime panel with dark text */
+.skin footer{margin:0 12px 12px;padding-top:56px;border:0;border-radius:28px;background:var(--accent);color:rgba(18,21,10,.72)}
+.skin footer p b,.skin footer ul a,.skin footer p a{color:var(--lime-ink)}
+.skin footer p a{text-decoration-color:rgba(18,21,10,.3)}
+.skin footer h3{color:rgba(18,21,10,.55)}
+.skin footer ul a:hover,.skin footer p a:hover{color:var(--lime-ink);text-decoration:underline;text-underline-offset:3px}
+.skin footer .fine{border-top-color:rgba(18,21,10,.14);color:rgba(18,21,10,.6)}
+.skin footer::after{background:linear-gradient(to bottom,rgba(18,21,10,.13),rgba(18,21,10,0) 85%);-webkit-background-clip:text;background-clip:text}
+.skin footer :focus-visible{outline-color:var(--lime-ink)}
+
 /* skin: headings, labels, cards and article parts (blog, legal and 404 pages) */
 .skin .eyebrow{padding:5px 12px 5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);box-shadow:var(--hl);font-size:12.5px;color:var(--ink-2)}
 .skin .bloghead h1,.skin .article h1{font-weight:650;letter-spacing:-.04em}
 .skin .pcard,.skin .toc,.skin .cta,.skin .faqs details,.skin .steps-box li,.skin .prose .tablewrap{border-radius:20px;box-shadow:var(--hl)}
-.skin .pcard{padding:26px}
-.skin .pcard:hover{box-shadow:var(--hl),var(--shadow)}
+/* guide cards: a dotted cover with the category and app, then title, summary and an arrow tile */
+.skin .pcard{gap:12px;padding:8px 8px 18px}
+.skin .pcard:hover{border-color:var(--accent-line);box-shadow:var(--hl),var(--shadow)}
+.skin .pcard .chips{display:grid;align-content:space-between;justify-items:start;min-height:118px;padding:14px 16px;border-radius:14px;background-color:var(--surface-2);background-image:radial-gradient(var(--grid-major) 1px,transparent 1px);background-size:14px 14px}
+.skin [data-app="CorelDraw"] .pcard .chips{background-color:var(--lime-soft)}
+.skin .pcard .tagline{background:var(--ink);color:var(--bg)}
+.skin .pcard .appchip{padding:0;background:none;color:var(--ink);font-size:22px;font-weight:600;letter-spacing:-.03em}
+.skin .pcard h2,.skin .pcard h3,.skin .pcard > p{padding-inline:12px}
+.skin .pcard h2,.skin .pcard h3{font-size:18px;line-height:1.25;letter-spacing:-.02em}
+.skin .pcard > p{font-size:14px;line-height:1.6}
+.skin .pcard .meta{display:flex;align-items:center;justify-content:space-between;padding:6px 12px 0}
+.skin .pcard .meta::after{content:"";width:34px;height:34px;border-radius:10px;background:var(--accent) no-repeat center/15px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2312150a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");transition:transform .2s var(--ease-out)}
+.skin .pcard:hover .meta::after{transform:rotate(45deg)}
 .skin .faqs details{border-radius:16px}
 .skin .steps-box li{border-radius:16px}
 .skin .steps-box li::before{background:var(--accent);color:var(--accent-ink)}
@@ -312,6 +352,8 @@ footer::after{content:"Die Line Maker" / "";display:block;max-width:1200px;margi
   .skin .btn:hover,.skin .themebtn:hover{background:color-mix(in srgb,var(--field) 90%,var(--ink));border-color:transparent}
   .skin .btn.ghost:hover{background:var(--soft)}
   .skin .btn.primary:hover{background:var(--accent-hover)}
+  .skin .btn.ink:hover,.skin .nav .in > .btn.primary:hover{background:color-mix(in srgb,var(--ink) 86%,var(--bg))}
+  .skin .btn.ink:hover::after,.skin .nav .in > .btn.primary:hover::after{transform:rotate(45deg)}
 }
 
 /* ---------- print: articles and legal pages print as clean text ---------- */

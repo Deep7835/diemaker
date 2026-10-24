@@ -224,7 +224,7 @@ def article_page(a, arts):
     related = "".join(f'<li><a href="{s}.html">{e(arts[s]["h1"])}</a></li>' for s in a.get("related", []) if s in arts)
     sources = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{e(t)}</a></li>' for t, u in a.get("sources", []))
     return f"""{head(a["metaTitle"], a["metaDesc"], note, extra, path, "article")}
-<body class="skin">
+<body class="skin lightfirst">
 <a class="skip" href="#article">Skip to the article</a>
 {header()}
 <main id="article" class="gut">
@@ -261,7 +261,7 @@ def index_page(arts):
     desc = ("Free die cut tutorials, guides and tips for CorelDraw and Photoshop: cut lines, PowerTRACE, Contour, "
             "CutContour, print and cut with VersaWorks, sticker sheets, white borders, bleed and white ink.")
     return f"""{head(title, desc, "", "", "blog/")}
-<body class="skin">
+<body class="skin lightfirst">
 <a class="skip" href="#guides">Skip to the guides</a>
 {header()}
 <main id="guides">
@@ -289,7 +289,7 @@ def home_sections(arts):
     e = html.escape
     pick = [s for s in ORDER if arts.get(s, {}).get("app") == "CorelDraw"][:3] + [s for s in ORDER if arts.get(s, {}).get("app") == "Photoshop"][:3]
     cards = "".join(f"""
-      <li><a class="pcard" href="blog/{s}.html">
+      <li data-app="{e(arts[s]['app'])}"><a class="pcard" href="blog/{s}.html">
         <span class="chips"><span class="tagline">{e(arts[s].get('cat', 'Guide'))}</span><span class="appchip">{e(arts[s]['app'])}</span></span>
         <h3 style="font-size:18px;line-height:1.25">{e(arts[s]['h1'])}</h3>
         <p>{e(arts[s]['summary'])}</p>
@@ -302,7 +302,7 @@ def home_sections(arts):
       <p class="lede">Step-by-step help for every part of the job, from tracing a sticker to sending a print and cut file. {len(arts)} free guides and counting.</p></div>
     <ul class="cards" style="margin-bottom:24px">{cards}
     </ul>
-    <a class="btn" href="blog/index.html">See all tutorials &amp; guides</a>
+    <a class="btn ink pill" href="blog/index.html">See all tutorials &amp; guides</a>
   </div>
 </section>
 <!--learn:end-->"""
@@ -342,7 +342,7 @@ def contact_line():
 def legal_page(slug, title, desc, h1, body, arts):
     d = f"{LEGAL_DATE.day} {LEGAL_DATE.strftime('%B %Y')}"
     return f"""{head(title, desc, "", "", f"{slug}.html", "website", "")}
-<body class="skin">
+<body class="skin lightfirst">
 <a class="skip" href="#legal">Skip to content</a>
 {header("", "blog/", "")}
 <main id="legal" class="gut">
@@ -470,7 +470,7 @@ def write_site_files(arts):
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@1&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
 {THEME_HEAD}</head>
-<body class="skin">
+<body class="skin lightfirst">
 <main class="gut" style="min-height:100vh;display:grid;place-items:center;text-align:center">
   <div style="display:grid;gap:14px;justify-items:center;max-width:460px">
     <a class="logo" href="/">{LOGO}<span>{html.escape(SITE_NAME)}<b>.</b></span></a>

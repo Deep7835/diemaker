@@ -74,8 +74,9 @@
 
   // light / dark toggle (the choice is remembered on this device; the head script applies it before paint)
   const root = document.documentElement, darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
-  // pages with the product skin (body.skin) are dark until the visitor picks light
-  const current = () => root.dataset.theme || (darkMQ.matches || document.body.classList.contains('skin') ? 'dark' : 'light');
+  // product-skin pages open dark (the editor) or light (body.lightfirst) until the visitor picks a theme
+  const bodyCls = document.body.classList;
+  const current = () => root.dataset.theme || (bodyCls.contains('lightfirst') ? 'light' : darkMQ.matches || bodyCls.contains('skin') ? 'dark' : 'light');
   const label = () => document.querySelectorAll('.themebtn').forEach(b => {
     const d = current() === 'dark';
     b.setAttribute('aria-label', d ? 'Switch to light mode' : 'Switch to dark mode'); b.title = d ? 'Light mode' : 'Dark mode';
