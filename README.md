@@ -16,10 +16,23 @@ The site also has 14 tutorials and guides for CorelDraw and Photoshop.
 
 ## Deploy
 
-The site is static, so there is no build step on the host. Connect this repository to **Cloudflare Pages** or **Netlify** and set:
+The site is static, so there is no build step on the host. Run `python3 tools/build_blog.py` and commit before deploying.
 
-- Build command: *(leave empty)*
-- Output / publish directory: `site`
+**Cloudflare Workers (recommended).** `wrangler.jsonc` serves the `site` folder as static assets. Log in once, then deploy:
+
+```bash
+npx wrangler login
+```
+
+```bash
+npx wrangler deploy
+```
+
+To deploy on every push instead, connect the repository in the Cloudflare dashboard (Workers & Pages → Create → Import a repository), leave the build command empty and set the deploy command to `npx wrangler deploy`. To use your own domain, uncomment `routes` in `wrangler.jsonc`, then set `site_url` in `site.config.json` and rebuild.
+
+`site/_headers` adds security headers and long caching for `site.css` and `site.js`. `site/.assetsignore` keeps `site/README.md` off the live site. Addresses ending in `.html` redirect to the same address without it (`/editor.html` → `/editor`).
+
+**Cloudflare Pages or Netlify** also work: set the build command to nothing and the output / publish directory to `site`.
 
 ## Work on it locally
 

@@ -1,0 +1,20 @@
+// Cloudflare Workers config: serves the static site in ./site (no build step, no Worker script).
+// Deploy with `npx wrangler deploy`; preview locally with `npx wrangler dev`.
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "die-line-maker",
+  "compatibility_date": "2026-10-28",
+  "assets": {
+    "directory": "./site",
+    // unknown addresses get site/404.html with a 404 status
+    "not_found_handling": "404-page",
+    // /editor serves editor.html, and /editor.html redirects to /editor
+    "html_handling": "auto-trailing-slash"
+  },
+  // the site is static, so turn on the workers.dev address and version previews for testing
+  "workers_dev": true,
+  "preview_urls": true
+
+  // To serve on your own domain, add it here (the zone must be on your Cloudflare account):
+  // "routes": [{ "pattern": "dielinemaker.com", "custom_domain": true }]
+}

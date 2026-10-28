@@ -6,3 +6,6 @@ tests/images/14_real_rio_sheet_9.jpg
 # first prototype, replaced by site/
 /index.html
 __pycache__/
+# Cloudflare wrangler local state
+.wrangler/
+node_modules/

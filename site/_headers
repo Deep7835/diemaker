@@ -1,0 +1,18 @@
+# Response headers for Cloudflare (Workers static assets and Pages read this file; it is not served).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# site.css and site.js are linked with a ?v=<hash> that changes whenever they do, so they can be cached for a year
+/assets/site.css
+  Cache-Control: public, max-age=31536000, immutable
+/assets/site.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# icons and the share image keep their names when they change, so cache them for a day
+/assets/*.png
+  Cache-Control: public, max-age=86400
